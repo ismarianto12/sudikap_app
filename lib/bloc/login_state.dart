@@ -10,11 +10,19 @@ class LoginInitial extends LoginState {}
 
 class LoginLoading extends LoginState {}
 
+class LoginValidate extends LoginState {
+  final bool formValid;
+  LoginValidate({this.formValid = false}); // Tambahkan nilai default di sini
+  @override
+  List<Object> get porps => [formValid];
+}
+
 class LoginFailure extends LoginState {
   final String error;
-  const LoginFailure({required this.error});
+  final bool formValid;
+  const LoginFailure({required this.error, this.formValid = false});
   @override
-  List<Object> get props => [error];
+  List<Object> get props => [error, formValid];
   @override
-  String toString() => ' Login failure {error:$error} ';
+  String toString() => ' LoginFailure {error: $error, formValid: $formValid}';
 }

@@ -66,7 +66,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-
+  final _formKey = GlobalKey<FormState>();
+  bool closeinfo = false;
   TextEditingController username = TextEditingController();
   TextEditingController password = TextEditingController();
 
@@ -135,6 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           height: 20,
                         ),
                         Form(
+                          key: _formKey,
                           child: Padding(
                             padding: const EdgeInsets.all(18.0),
                             child: Column(
@@ -158,6 +160,12 @@ class _MyHomePageState extends State<MyHomePage> {
                                       ),
                                     ),
                                   ),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Masukkan username';
+                                    }
+                                    return null;
+                                  },
                                 ),
                                 SizedBox(
                                   height: 30,
@@ -174,6 +182,12 @@ class _MyHomePageState extends State<MyHomePage> {
                                     prefixIcon: Icon(Icons.password),
                                     border: OutlineInputBorder(),
                                   ),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Masukkan password';
+                                    }
+                                    return null;
+                                  },
                                 ),
                                 SizedBox(
                                   height: 20,
@@ -195,16 +209,21 @@ class _MyHomePageState extends State<MyHomePage> {
                                 ),
                                 GestureDetector(
                                   onTap: () {
-                                    // BlocProvider.of<LoginBloc>(context).add(
-                                    //   LoginSubmitted(
-                                    //       username: username.text,
-                                    //       password: password.text),
-                                    // );
-                                    BlocProvider.of<LoginBloc>(context).add(
-                                      LoginSubmitted(
-                                          username: username.text,
-                                          password: password.text),
-                                    );
+                                    if (_formKey.currentState!.validate()) {
+                                      // BlocProvider.of<LoginBloc>(context).add(
+                                      //   LoginSubmitted(
+                                      //       username: username.text,
+                                      //       password: password.text),
+                                      // );
+                                      setState(() {
+                                        closeinfo = false;
+                                      });
+                                      BlocProvider.of<LoginBloc>(context).add(
+                                        LoginSubmitted(
+                                            username: username.text,
+                                            password: password.text),
+                                      );
+                                    }
                                   },
                                   child: Button(
                                       title: "Login", color: Colors.orange),
@@ -255,23 +274,66 @@ class _MyHomePageState extends State<MyHomePage> {
                         SizedBox(
                           height: 20,
                         ),
-                        Container(
-                          width: MediaQuery.sizeOf(context).width * 0.9,
-                          decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(100)),
-                              color: Colors.green),
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Flexible(
-                              child: Text(
-                                '${state.error}',
-                                style: TextStyle(fontSize: 12),
+                        closeinfo
+                            ? Container()
+                            : Container(
+                                height:
+                                    MediaQuery.sizeOf(context).height * 0.10,
+                                width: MediaQuery.sizeOf(context).width * 0.9,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(10),
+                                  ),
+                                  color: Color.fromARGB(133, 5, 70, 119),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      child: Flexible(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            '${state.error}',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    // Marquee(
+                                    //   key: key,
+                                    //   title: this.title,
+                                    //   style: TextStyle(
+                                    //     color: Colors.white,
+                                    //     leadingDistribution: TextLeadingDistribution.even,
+                                    //     // wordSpacing: 10.0,
+                                    //   ),
+                                    // ),
+                                    // MarqueeWidget(
+                                    //   direction: Axis.horizontal,
+                                    //   child: Text("This text is to long to be shown in just one line "),
+                                    // ),
+
+                                    GestureDetector(
+                                      onTap: () => {
+                                        setState(() {
+                                          closeinfo = true;
+                                        })
+                                      },
+                                      child: Icon(
+                                        Icons.close,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ),
-                        ),
                         Form(
+                          key: _formKey,
                           child: Padding(
                             padding: const EdgeInsets.all(18.0),
                             child: Column(
@@ -332,16 +394,16 @@ class _MyHomePageState extends State<MyHomePage> {
                                 ),
                                 GestureDetector(
                                   onTap: () {
-                                    // BlocProvider.of<LoginBloc>(context).add(
-                                    //   LoginSubmitted(
-                                    //       username: username.text,
-                                    //       password: password.text),
-                                    // );
-                                    BlocProvider.of<LoginBloc>(context).add(
-                                      LoginSubmitted(
-                                          username: username.text,
-                                          password: password.text),
-                                    );
+                                    if (_formKey.currentState!.validate()) {
+                                      setState(() {
+                                        closeinfo = false;
+                                      });
+                                      BlocProvider.of<LoginBloc>(context).add(
+                                        LoginSubmitted(
+                                            username: username.text,
+                                            password: password.text),
+                                      );
+                                    }
                                   },
                                   child: Button(
                                       title: "Login", color: Colors.orange),

@@ -12,6 +12,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   @override
   Stream<LoginState> mapEventToState(LoginEvent event) async* {
+    if (event is LoginCheckValid) {
+      final bool isFormValid =
+          event.username.isNotEmpty && event.password.isNotEmpty;
+
+      yield LoginValidate(formValid: isFormValid);
+    }
+
     if (event is LoginSubmitted) {
       yield LoginLoading();
       try {
