@@ -6,9 +6,13 @@ sealed class DisposisiEvent extends Equatable {
 
 class DisposisiGetted extends DisposisiEvent {
   final int idsurat;
-
-  const DisposisiGetted({required this.idsurat});
-
+  const DisposisiGetted(reposurat, {required this.idsurat});
   @override
   List<Object> get props => [];
+}
+
+abstract class DisposisiSave extends DisposisiEvent {
+  final dynamic data;
+  @override
+  const DisposisiSave(this.data);
 }

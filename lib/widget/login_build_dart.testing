@@ -172,135 +172,153 @@ class _MyHomePageState extends State<MyHomePage> {
             print(state);
             // if (state is LoginInitial) {
             return Scaffold(
-              body: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 50,
-                    ),
-                    Text(
-                      "SUDIKAP APPS",
-                      style:
-                          Theme.of(context).textTheme.headlineSmall!.copyWith(
-                                fontWeight: FontWeight.w700,
-                              ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      "Satu layanan Arsip Terpadu.",
-                      style:
-                          Theme.of(context).textTheme.headlineSmall!.copyWith(
-                                fontWeight: FontWeight.w100,
-                              ),
-                    ),
-                    Image.network(
-                      "https://simpel4.ombudsman.go.id/media/svg/icons/Tools/banerlogin.png",
-                      width: 300,
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Form(
-                      key: _formKey,
-                      child: Padding(
-                        padding: const EdgeInsets.all(18.0),
-                        child: Column(
-                          children: [
-                            TextFormField(
-                              controller: username,
-                              decoration: InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 10,
-                                    horizontal:
-                                        10), // Atur ukuran teks kecil di sini
-                                labelText: 'Username',
-                                prefixIcon: Icon(Icons.person),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                      Radius.circular(
-                                          4.0)), // Mengatur radius border
-                                  borderSide: BorderSide(
-                                    color: Colors.grey, // Warna border
-                                    width: 1.0, // Ketebalan border
-                                  ),
+              body: Column(
+                children: [
+                  Container(
+                    height: 100,
+                    child: Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            "SUDIKAP APPS",
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineSmall!
+                                .copyWith(
+                                  fontWeight: FontWeight.w700,
                                 ),
-                              ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Masukkan username';
-                                }
-                                return null;
-                              },
-                            ),
-                            SizedBox(
-                              height: 30,
-                            ),
-                            TextFormField(
-                              obscureText: true,
-                              controller: password,
-                              decoration: InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 10,
-                                    horizontal:
-                                        10), // Atur ukuran teks kecil di sini
-                                labelText: 'Password',
-                                prefixIcon: Icon(Icons.password),
-                                border: OutlineInputBorder(),
-                              ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Masukkan password';
-                                }
-                                return null;
-                              },
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => lupaPassord(
-                                        title: 'Lupa Password',
-                                      ),
-                                    ),
-                                  );
-                                },
-                                child: Text("Lupa Kata Sandi ? ")),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                if (_formKey.currentState!.validate()) {
-                                  setState(() {
-                                    closeinfo = false;
-                                  });
-                                  BlocProvider.of<LoginBloc>(context).add(
-                                    LoginSubmitted(
-                                        username: username.text,
-                                        password: password.text),
-                                  );
-                                }
-                              },
-                              child:
-                                  Button(title: "Login", color: Colors.orange),
-                            ),
-                          ],
-                        ),
+                          ),
+                          Text(
+                            "Satu layanan Arsip Terpadu.",
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineSmall!
+                                .copyWith(
+                                  fontWeight: FontWeight.w100,
+                                ),
+                          ),
+                        ],
                       ),
                     ),
-                    Container(
-                      child: state is LoginInitial
-                          ? CircularProgressIndicator()
-                          : null,
+                  ),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Image.network(
+                            "https://simpel4.ombudsman.go.id/media/svg/icons/Tools/banerlogin.png",
+                            width: 300,
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Form(
+                            key: _formKey,
+                            child: Padding(
+                              padding: const EdgeInsets.all(18.0),
+                              child: Column(
+                                children: [
+                                  TextFormField(
+                                    controller: username,
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 10,
+                                          horizontal:
+                                              10), // Atur ukuran teks kecil di sini
+                                      labelText: 'Username',
+                                      // prefixIcon: Icon(Icons.person),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(
+                                                4.0)), // Mengatur radius border
+                                        borderSide: BorderSide(
+                                          color: Colors.grey, // Warna border
+                                          width: 1.0, // Ketebalan border
+                                        ),
+                                      ),
+                                    ),
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Masukkan username';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                  SizedBox(
+                                    height: 30,
+                                  ),
+                                  TextFormField(
+                                    obscureText: true,
+                                    controller: password,
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 10,
+                                          horizontal:
+                                              10), // Atur ukuran teks kecil di sini
+                                      labelText: 'Password',
+                                      prefixIcon: Icon(Icons.password),
+                                      border: OutlineInputBorder(),
+                                    ),
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Masukkan password';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => lupaPassord(
+                                              title: 'Lupa Password',
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      child: Text("Lupa Kata Sandi ? ")),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      if (_formKey.currentState!.validate()) {
+                                        setState(() {
+                                          closeinfo = false;
+                                        });
+                                        BlocProvider.of<LoginBloc>(context).add(
+                                          LoginSubmitted(
+                                              username: username.text,
+                                              password: password.text),
+                                        );
+                                      }
+                                    },
+                                    child: Button(
+                                        title: "Login", color: Colors.orange),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ],
-                ),
+                  ),
+                  Container(
+                    child: state is LoginInitial
+                        ? CircularProgressIndicator()
+                        : null,
+                  ),
+                ],
               ),
             );
 

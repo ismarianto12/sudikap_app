@@ -8,19 +8,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 class loginRepo {
   Future<dynamic> authenticate(String username, String password) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-
     try {
-      var response = await http
-          .post(Uri.parse("${Base_Url}/auth/login"), headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      }, body: {
-        "username": username,
-        "password": password
-      });
+      var response = await http.post(Uri.parse("${Base_Url}login"),
+          body: {"username": username, "password": password});
+
       if (response.statusCode == 200) {
         var jsonResponse = json.decode(response.body);
-        prefs.setString("token", jsonResponse["token"]);
-        String token = jsonResponse["token"];
+        prefs.setString("token", jsonResponse["accessToken"]);
+        String token = jsonResponse["accessToken"];
         return token;
       } else {
         print("error" + response.body);

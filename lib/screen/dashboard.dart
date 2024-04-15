@@ -9,6 +9,7 @@ import 'package:sistem_kearsipan/screen/profile.dart';
 import 'package:sistem_kearsipan/screen/reportSurat.dart';
 import 'package:sistem_kearsipan/screen/searchDasboard.dart';
 import 'package:sistem_kearsipan/widget/Alert.dart';
+import 'package:sistem_kearsipan/widget/GetCurrenDisposisi.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -174,14 +175,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
-                          ListData(context),
-                          ListData(context),
-                          ListData(context),
-                          ListData(context),
-                          ListData(context),
-                          ListData(context),
-                          ListData(context),
-                          ListData(context),
+                          Expanded(
+                            child: GetCurrenDisposisi(),
+                          ),
                           SizedBox(
                             height: 210,
                           ),

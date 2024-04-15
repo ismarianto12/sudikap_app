@@ -22,7 +22,7 @@ class LoginFailure extends LoginState {
   final bool formValid;
   const LoginFailure({required this.error, this.formValid = false});
   @override
-  List<Object> get props => [error, formValid];
+  List<Object> get props => [error];
   @override
-  String toString() => ' LoginFailure {error: $error, formValid: $formValid}';
+  String toString() => error;
 }

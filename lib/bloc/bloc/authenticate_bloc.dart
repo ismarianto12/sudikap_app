@@ -15,7 +15,8 @@ class AuthenticateBloc extends Bloc<AuthenticateEvent, AuthenticateState> {
       yield AuthenticateInitial();
       await Future.delayed(const Duration(seconds: 3));
       final bool hasToken = await loginrepo.hasToken();
-      if (hasToken != null) {
+      print("status Token ${hasToken}");
+      if (hasToken) {
         yield AuthenticateAuthenticated();
       } else {
         yield AuthenticateunAuthenticated();
@@ -25,6 +26,8 @@ class AuthenticateBloc extends Bloc<AuthenticateEvent, AuthenticateState> {
     if (event is LoggedIn) {
       yield AuthenticateisLoading();
       await loginrepo.hasToken();
+      // await loginrepo.hasToken();
+      // print("status Token ${hasToken}");
       yield AuthenticateAuthenticated();
     }
     if (event is LoggedOut) {

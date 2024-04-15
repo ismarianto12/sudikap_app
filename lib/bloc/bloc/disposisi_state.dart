@@ -19,3 +19,16 @@ class DisposisiFilure extends DisposisiState {
   @override
   String toString() => 'disposisi surat failure';
 }
+
+class Dispisissaveinitial extends DisposisiState {}
+
+class DispisissaveIsloaded extends DisposisiState {}
+
+class DispisissaveFailure extends DisposisiState {
+  final String error;
+  const DispisissaveFailure({required this.error});
+  @override
+  List<Object> get props => [error];
+  @override
+  String toString() => "${error}";
+}

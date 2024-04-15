@@ -52,21 +52,38 @@ class _dataArsipState extends State<dataArsip> {
 
   @override
   Widget build(BuildContext context) {
-    print("${heigOfSlide} tinggi slide ");
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.green,
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ArsipForm(),
-            ),
-          );
-        },
-        child: Icon(
-          Icons.add,
-          color: Colors.white,
+      // floatingActionButton: FloatingActionButton(
+      //   backgroundColor: Colors.green,
+      //   onPressed: () {
+      //     Navigator.push(
+      //       context,
+      //       MaterialPageRoute(
+      //         builder: (context) => ArsipForm(),
+      //       ),
+      //     );
+      //   },
+      //   child: Icon(
+      //     Icons.add,
+      //     color: Colors.white,
+      //   ),
+      // ),
+      floatingActionButton: CircleAvatar(
+        child: FloatingActionButton(
+          elevation: 0,
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ArsipForm(),
+              ),
+            );
+          },
+          child: Icon(
+            Icons.add,
+            color: Color.fromARGB(255, 0, 0, 0),
+          ),
+          backgroundColor: Colors.transparent,
         ),
       ),
       backgroundColor: Colors.white,

@@ -42,12 +42,13 @@ class _sppdDataState extends State<sppdData> {
     return Scaffold(
       floatingActionButton: CircleAvatar(
         child: FloatingActionButton(
+          elevation: 0,
           onPressed: () {},
           child: Icon(
             Icons.add,
-            color: Colors.white,
+            color: Color.fromARGB(255, 0, 0, 0),
           ),
-          backgroundColor: Color.fromARGB(255, 7, 236, 248),
+          backgroundColor: Colors.transparent,
         ),
       ),
       backgroundColor: Colors.white,

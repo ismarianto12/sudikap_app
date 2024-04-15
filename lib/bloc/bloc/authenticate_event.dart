@@ -10,8 +10,8 @@ sealed class AuthenticateEvent extends Equatable {
 class AppStarted extends AuthenticateEvent {}
 
 class LoggedIn extends AuthenticateEvent {
-  final dynamic data;
-  const LoggedIn({this.data});
+  final String data;
+  const LoggedIn(this.data);
   @override
   List<Object> get props => [data];
 

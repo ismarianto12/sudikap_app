@@ -1,7 +1,9 @@
 import 'dart:ffi';
+import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sistem_kearsipan/repository/suratRepo.dart';
 import 'package:sistem_kearsipan/screen/Sppd/sppdForm.dart';
@@ -47,19 +49,32 @@ class _suratMasukState extends State<suratMasuk> {
   Widget build(BuildContext context) {
     return Scaffold(
       // bottomNavigationBar: Button,
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.green,
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => SuratMasukForm(),
+      floatingActionButton: Container(
+        decoration: BoxDecoration(
+          color: Colors.orange,
+          borderRadius: BorderRadius.all(Radius.circular(100)),
+        ),
+        child: CircleAvatar(
+          backgroundColor: Colors.orange,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: FloatingActionButton(
+              elevation: 0,
+              backgroundColor: Colors.transparent,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SuratMasukForm(),
+                  ),
+                );
+              },
+              child: Icon(
+                Icons.add,
+                color: Colors.white,
+              ),
             ),
-          );
-        },
-        child: Icon(
-          Icons.add,
-          color: Colors.white,
+          ),
         ),
       ),
       // appBar: AppBar(

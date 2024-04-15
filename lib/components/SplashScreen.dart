@@ -29,18 +29,16 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            // Gambar atau logo aplikasi Anda
-            // Image.asset(
-            //   'assets/images/logo.png', // Ganti dengan path logo atau gambar splash screen Anda
-            //   width: 150, // Sesuaikan ukuran dengan kebutuhan
-            // ),
+            Image.network(
+              "https://simpel4.ombudsman.go.id/media/svg/icons/Tools/banerlogin.png",
+              width: 300,
+            ),
             SizedBox(height: 20),
             // Teks atau nama aplikasi Anda
             Text(
-              'Nama Aplikasi',
+              'Selamat datang di satu klik layanan arsip',
               style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
+                fontSize: 19,
                 color: Colors.black, // Ubah warna sesuai kebutuhan
               ),
             ),

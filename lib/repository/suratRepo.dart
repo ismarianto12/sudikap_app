@@ -141,6 +141,26 @@ class SuratRepo {
     }
   }
 
+  Future<dynamic> getlistDisposisi() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString("token");
+    try {
+      var response = await http.get(
+          Uri.parse("${Base_Url}disposisi/currentdisposisi"),
+          headers: <String, String>{
+            'Authorization': '${token}',
+          });
+      print(response);
+      if (response.statusCode == 200) {
+        return response.body;
+      } else {
+        return response.body;
+      }
+    } catch (e) {
+      return e;
+    }
+  }
+
   static Future<http.Response> updateSuratkeluar(
     String _kodeController,
     String _noAgendaController,
