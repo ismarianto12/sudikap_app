@@ -10,6 +10,7 @@ import 'package:sistem_kearsipan/screen/reportSurat.dart';
 import 'package:sistem_kearsipan/screen/searchDasboard.dart';
 import 'package:sistem_kearsipan/widget/Alert.dart';
 import 'package:sistem_kearsipan/widget/GetCurrenDisposisi.dart';
+import 'package:sistem_kearsipan/widget/Sliderdashoard.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -178,11 +179,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Expanded(
-                            child: GetCurrenDisposisi(),
-                          ),
                           SizedBox(
                             height: 210,
+                          ),
+                          Expanded(
+                            child: GetCurrenDisposisi(),
                           ),
                         ],
                       ),
@@ -250,40 +251,67 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         height: 20,
                       ),
                       SearchingBar(context),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 25, top: 10),
-                        child: Row(
-                          children: [
-                            Text(
-                              "Hy Rian",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleSmall!
-                                  .copyWith(
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              ",Selamat Pagi",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleSmall!
-                                  .copyWith(
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                            )
-                          ],
+                      // Padding(
+                      //   padding: const EdgeInsets.only(left: 25, top: 10),
+                      //   child: Row(
+                      //     children: [
+                      //       Text(
+                      //         "Hy Rian",
+                      //         style: Theme.of(context)
+                      //             .textTheme
+                      //             .titleSmall!
+                      //             .copyWith(
+                      //               fontWeight: FontWeight.w500,
+                      //             ),
+                      //       ),
+                      //       SizedBox(
+                      //         width: 10,
+                      //       ),
+                      //       Text(
+                      //         ",Selamat Pagi",
+                      //         style: Theme.of(context)
+                      //             .textTheme
+                      //             .titleSmall!
+                      //             .copyWith(
+                      //               fontWeight: FontWeight.w500,
+                      //             ),
+                      //       )
+                      //     ],
+                      //   ),
+                      // ),
+                      // Padding(
+                      //   padding:
+                      //       const EdgeInsets.only(left: 20, right: 20, top: 10),
+                      //   child: AlertStatus(
+                      //       title:
+                      //           'Silahkan gunakan menu disamping untuk app...'),
+                      // ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Expanded(child: Sliderdashoard()),
+                      SizedBox(
+                        height: 10,
+                      ),
+
+                      Center(
+                        child: Text(
+                          "Menu",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500),
                         ),
                       ),
-                      Padding(
-                        padding:
-                            const EdgeInsets.only(left: 20, right: 20, top: 10),
-                        child: AlertStatus(
-                            title:
-                                'Silahkan gunakan menu disamping untuk app...'),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        width: MediaQuery.sizeOf(context).width * 0.5,
+                        height: 0.7,
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 161, 161, 161),
+                        ),
                       ),
                       Expanded(
                         child: Padding(

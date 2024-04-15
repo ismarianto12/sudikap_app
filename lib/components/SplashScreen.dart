@@ -1,60 +1,172 @@
 import 'dart:async';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sistem_kearsipan/widget/Button.dart';
 
 class SplashScreen extends StatefulWidget {
+  const SplashScreen({Key? key}) : super(key: key);
+
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  final PageController _pageController = PageController();
+  int _currentPage = 0;
+
   @override
   void initState() {
+    print('${_currentPage} current');
     super.initState();
-    // Tunggu 2 detik kemudian navigasikan ke halaman utama
-    Timer(Duration(seconds: 2), () {
-      // Navigator.pushReplacement(
-      //   context,
-      //   MaterialPageRoute(builder: (context) => HomeScreen()), // Ganti dengan halaman utama aplikasi Anda
-      // );
+    Timer.periodic(Duration(seconds: 3), (Timer timer) {
+      if (_currentPage < 2) {
+        _currentPage++;
+      } else {
+        _currentPage = 0;
+      }
+      _pageController.animateToPage(
+        _currentPage,
+        duration: Duration(milliseconds: 350),
+        curve: Curves.easeIn,
+      );
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, // Ubah warna sesuai kebutuhan
-      body: Center(
+      backgroundColor: Colors.white,
+      body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Image.network(
-              "https://simpel4.ombudsman.go.id/media/svg/icons/Tools/banerlogin.png",
-              width: 300,
-            ),
-            SizedBox(height: 20),
-            // Teks atau nama aplikasi Anda
-            Text(
-              'Selamat datang di satu klik layanan arsip',
-              style: TextStyle(
-                fontSize: 19,
-                color: Colors.black, // Ubah warna sesuai kebutuhan
+          // crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Center(
+              child: Column(
+                children: [
+                  Text(
+                    "Sudikap APPS",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 28,
+                        fontWeight: FontWeight.w500),
+                  ),
+                  _assigmenText(_currentPage),
+                ],
               ),
             ),
-            SizedBox(height: 20),
-            // Loading indicator atau pesan lainnya
-            CircularProgressIndicator(), // Ubah sesuai kebutuhan
-            SizedBox(height: 30),
-
-            GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(context, '/login');
-                },
-                child: Button(title: "Get Started ..", color: Colors.orange)),
+            Container(
+              height: MediaQuery.of(context).size.width * 0.9,
+              width: MediaQuery.of(context).size.width * 0.9,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(100)),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(
+                    MediaQuery.of(context).size.width * 0.6 * 0.1),
+                child: Stack(
+                  children: [
+                    PageView(
+                      controller: _pageController,
+                      onPageChanged: (int page) {
+                        setState(() {
+                          _currentPage = page;
+                        });
+                      },
+                      children: [
+                        Image.network(
+                          "https://static.vecteezy.com/system/resources/thumbnails/013/927/147/small_2x/adaptive-interface-design-illustration-concept-on-white-background-vector.jpg",
+                          fit: BoxFit.cover,
+                        ),
+                        Image.network(
+                          "https://cdni.iconscout.com/illustration/premium/thumb/login-10299071-8333958.png?f=webp",
+                          fit: BoxFit.cover,
+                        ),
+                        Image.network(
+                          "https://img.freepik.com/free-vector/colleagues-working-together-project_74855-6308.jpg",
+                          fit: BoxFit.cover,
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Positioned(
+                      bottom: 10,
+                      left: 0,
+                      right: 0,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: List.generate(
+                          3,
+                          (index) => AnimatedContainer(
+                            duration: Duration(milliseconds: 300),
+                            margin: EdgeInsets.symmetric(horizontal: 5),
+                            width: _currentPage == index ? 100 : 30,
+                            height: 14,
+                            decoration: BoxDecoration(
+                              color: _currentPage == index
+                                  ? Color.fromARGB(255, 6, 145, 134)
+                                  : Colors.grey,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 30,
+            ),
+            _assigmen(_currentPage),
           ],
         ),
       ),
     );
+  }
+
+  Widget _assigmenText(currentIndex) {
+    if (currentIndex == 0) {
+      return Text(
+        "Selamat datang di layanan sekali klik arsip",
+        style: TextStyle(
+            color: Colors.black, fontSize: 18, fontWeight: FontWeight.w100),
+      );
+    } else if (currentIndex == 1) {
+      return Text(
+        "Mempermudah pengelolaan arsip",
+        style: TextStyle(
+            color: Colors.black, fontSize: 18, fontWeight: FontWeight.w100),
+      );
+    } else if (currentIndex == 2) {
+      return Text(
+        "Mempermudah pengelolaan data surat",
+        style: TextStyle(
+            color: Colors.black, fontSize: 18, fontWeight: FontWeight.w100),
+      );
+    } else {
+      return Text(
+        "Selamat datang di layanan sekali klik arsip",
+        style: TextStyle(
+            color: Colors.black, fontSize: 18, fontWeight: FontWeight.w500),
+      );
+    }
+  }
+
+  Widget _assigmen(currentIndex) {
+    if (currentIndex == 2) {
+      return GestureDetector(
+        onTap: () {
+          Navigator.pushNamed(context, '/login');
+        },
+        child: Button(
+            title: "Get Started",
+            color: const Color.fromARGB(255, 243, 166, 33)),
+      );
+    } else {
+      return Container();
+    }
   }
 }

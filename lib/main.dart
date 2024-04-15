@@ -84,11 +84,13 @@ class _MyAppState extends State<MyApp> {
 
   Widget _buildLoadingDialog() {
     return AlertDialog(
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
+      content: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           CircularProgressIndicator(),
-          SizedBox(height: 16),
+          SizedBox(
+            width: 10,
+          ),
           Text('Loading...'),
         ],
       ),
