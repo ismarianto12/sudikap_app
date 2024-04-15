@@ -145,6 +145,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
               minHeight: MediaQuery.sizeOf(context).height * 0.25,
               backdropEnabled: false,
               panel: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(
                     height: 25,
@@ -160,7 +162,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ),
                   ),
                   SizedBox(
-                    height: 10,
+                    height: 30,
                   ),
                   Text(
                     "Daftar List Disposisi",
@@ -169,11 +171,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         ),
                   ),
                   SizedBox(
-                    height: isPanelOpen ? 0 : 200,
+                    height: isPanelOpen ? 10 : 200,
                   ),
                   Expanded(
                     child: SingleChildScrollView(
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Expanded(
                             child: GetCurrenDisposisi(),
