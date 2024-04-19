@@ -40,16 +40,38 @@ class _sppdDataState extends State<sppdData> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: CircleAvatar(
-        child: FloatingActionButton(
-          elevation: 0,
-          onPressed: () {},
-          child: Icon(
-            Icons.add,
-            color: Color.fromARGB(255, 0, 0, 0),
+      appBar: AppBar(
+        elevation: 0, // Menghilangkan bayangan di bawah appbar
+        backgroundColor: Color.fromARGB(226, 0, 170, 255),
+        actions: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(right: 15),
+            child: Icon(
+              Icons.add,
+              color: Color.fromARGB(255, 255, 255, 255),
+            ),
+          )
+        ],
+        title: Text(
+          'Master SPPD',
+          style: TextStyle(
+            color: Colors.white,
           ),
-          backgroundColor: Colors.transparent,
         ),
+        actionsIconTheme: IconThemeData(
+          color: Colors.white,
+        ),
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Icon(
+            Icons.arrow_back_ios_sharp,
+            color: Colors.white,
+          ),
+        ),
+        // Menghilangkan border bawah
+        shape: Border(bottom: BorderSide.none),
       ),
       backgroundColor: Colors.white,
       body: SlidingUpPanel(
@@ -62,19 +84,9 @@ class _sppdDataState extends State<sppdData> {
         ),
         panel: Column(
           children: [
-            Padding(
+            Container(
               padding: const EdgeInsets.only(left: 15, right: 15, top: 16),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SearchingBar(context),
-                  Icon(
-                    Icons.filter_alt_sharp,
-                    size: 29,
-                  ),
-                ],
-              ),
+              child: SearchingBar(context),
             ),
             Expanded(
               child: Padding(
@@ -196,32 +208,33 @@ class _sppdDataState extends State<sppdData> {
               SizedBox(
                 height: 40,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Icon(
-                      Icons.arrow_back_ios_new,
-                      color: Colors.white,
-                    ),
-                  ),
-                  Text(
-                    "Master data SPPD",
-                    style: TextStyle(fontSize: 16, color: Colors.white),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  // Text(
-                  //   "Kembali",
-                  //   style: TextStyle(fontSize: 15),
-                  // )
-                ],
-              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+              //   crossAxisAlignment: CrossAxisAlignment.end,
+              //   children: [
+              //     GestureDetector(
+              //       onTap: () {
+              //         Navigator.pop(context);
+              //       },
+              //       child: Icon(
+              //         Icons.arrow_back_ios_new,
+              //         color: Colors.white,
+              //       ),
+              //     ),
+              //     Text(
+              //       "Master data SPPD",
+              //       style: TextStyle(fontSize: 16, color: Colors.white),
+              //     ),
+              //     SizedBox(
+              //       width: 10,
+              //     ),
+              //     // Text(
+              //     //   "Kembali",
+              //     //   style: TextStyle(fontSize: 15),
+              //     // )
+              //   ],
+              // ),
+
               Padding(
                 padding: const EdgeInsets.only(left: 40, top: 25),
                 child: Row(
@@ -268,7 +281,8 @@ class _sppdDataState extends State<sppdData> {
 
 Widget SearchingBar(BuildContext context) {
   return Container(
-    width: MediaQuery.sizeOf(context).width * 0.7,
+    width: MediaQuery.of(context).size.width * 0.9,
+    height: MediaQuery.of(context).size.width * 0.09,
     decoration: BoxDecoration(
       boxShadow: [
         BoxShadow(
@@ -287,15 +301,24 @@ Widget SearchingBar(BuildContext context) {
       padding: const EdgeInsets.all(8.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Icon(Icons.search, color: Colors.white),
           SizedBox(
             width: 10,
           ),
-          Text(
-            "Searching ....",
-            style: TextStyle(color: Colors.white),
-          )
+          Expanded(
+            child: Container(
+              height: MediaQuery.sizeOf(context).height * 0.04,
+              child: TextFormField(
+                decoration: InputDecoration(
+                  hintStyle: TextStyle(color: Colors.white),
+                  border: InputBorder.none,
+                ),
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ),
         ],
       ),
     ),

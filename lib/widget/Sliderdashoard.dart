@@ -51,15 +51,15 @@ class _SliderdashoardState extends State<Sliderdashoard> {
               },
               children: [
                 Image.network(
-                  "https://images.tokopedia.net/img/cache/1208/NsjrJu/2024/4/5/ebcdf4a8-5b03-4620-8b18-14fb940401fe.jpg.webp?ect=4g",
+                  "https://berita.pesisirselatankab.go.id/asset/data1/images/puncak_langkisau.jpg",
                   fit: BoxFit.cover,
                 ),
                 Image.network(
-                  "https://images.tokopedia.net/img/cache/1208/NsjrJu/2024/4/5/ebcdf4a8-5b03-4620-8b18-14fb940401fe.jpg.webp?ect=4g",
+                  "https://berita.pesisirselatankab.go.id/asset/data1/images/ayo.jpg",
                   fit: BoxFit.cover,
                 ),
                 Image.network(
-                  "https://images.tokopedia.net/img/cache/1208/NsjrJu/2024/4/5/ebcdf4a8-5b03-4620-8b18-14fb940401fe.jpg.webp?ect=4g",
+                  "https://berita.pesisirselatankab.go.id/asset/data1/images/ayo.jpg",
                   fit: BoxFit.cover,
                 ),
               ],

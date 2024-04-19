@@ -1,7 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:sistem_kearsipan/repository/suratRepo.dart';
 
-class searchDashoard extends StatelessWidget {
+class searchDashoard extends StatefulWidget {
+  const searchDashoard({super.key});
+
+  @override
+  State<searchDashoard> createState() => _searchDashoardState();
+}
+
+class _searchDashoardState extends State<searchDashoard> {
   final List<String> items = List.generate(100, (index) => "Item $index");
+  String search = '';
+  List data = [];
+  @override
+  Future<dynamic> getdata() async {
+    var response = await SuratRepo.getCurrentsurat(search);
+    print("${response.length} responsedata server:");
+    if (response.length < 0) {
+      setState(() {
+        data = response;
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Can\'t call api '),
+        backgroundColor: Colors.red,
+      ));
+    }
+  }
+
+  void initState() {
+    getdata();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,10 +49,10 @@ class searchDashoard extends StatelessWidget {
         ],
       ),
       body: ListView.builder(
-        itemCount: items.length,
+        itemCount: data.length,
         itemBuilder: (context, index) {
           return ListTile(
-            title: Text(items[index]),
+            title: Text(data[index]["no_surat"]),
           );
         },
       ),
@@ -59,7 +89,9 @@ class CustomSearchDelegate extends SearchDelegate<String> {
         ),
         backgroundColor: Colors.blue,
       ),
-      body: Container(), // Placeholder for search results
+      body: Container(
+        child: Text("Search data"),
+      ), // Placeholder for search results
     );
   }
 

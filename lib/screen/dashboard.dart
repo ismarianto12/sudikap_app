@@ -133,18 +133,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
       body: _index == 0
           ? SlidingUpPanel(
+              boxShadow: [BoxShadow(color: Colors.black45, blurRadius: 0.1)],
               onPanelSlide: (double pos) {
                 setState(() {
-                  // Jika posisi adalah 0, berarti panel ditutup
-                  // Jika posisi bukan 0, berarti panel sedang dibuka
                   isPanelOpen = pos != 0;
                 });
               },
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(30), topRight: Radius.circular(30)),
-              maxHeight: MediaQuery.sizeOf(context).height * 0.60,
+              maxHeight: MediaQuery.sizeOf(context).height * 0.80,
               minHeight: MediaQuery.sizeOf(context).height * 0.25,
-              backdropEnabled: false,
+              backdropEnabled: true,
               panel: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -166,9 +165,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     height: 30,
                   ),
                   Text(
-                    "Daftar List Disposisi",
+                    "Surat Disposisi Terbaru",
                     style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.w700,
                         ),
                   ),
                   SizedBox(
@@ -179,11 +178,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          SingleChildScrollView(child: GetCurrenDisposisi()),
                           SizedBox(
-                            height: 210,
-                          ),
-                          Expanded(
-                            child: GetCurrenDisposisi(),
+                            height: 300,
                           ),
                         ],
                       ),
@@ -230,25 +227,23 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           ),
                           Text(
                             "SUDIKAP APPS",
-                            style: Theme.of(context)
-                                .textTheme
-                                .headlineSmall!
-                                .copyWith(
-                                  fontWeight: FontWeight.w700,
-                                  color: Color.fromARGB(255, 0, 0, 0),
-                                ),
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
                           ),
                           SizedBox(
                             width: 10,
                           ),
-                          Icon(
-                            Icons.notification_add_sharp,
-                            color: const Color.fromARGB(255, 0, 0, 0),
+                          GestureDetector(
+                            onTap: () {},
+                            child: Icon(
+                              Icons.notification_add_sharp,
+                              color: const Color.fromARGB(255, 0, 0, 0),
+                            ),
                           )
                         ],
                       ),
                       SizedBox(
-                        height: 20,
+                        height: 10,
                       ),
                       SearchingBar(context),
                       // Padding(
@@ -287,16 +282,28 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       //           'Silahkan gunakan menu disamping untuk app...'),
                       // ),
                       SizedBox(
-                        height: 20,
+                        height: 10,
                       ),
-                      Expanded(child: Sliderdashoard()),
+                      Center(
+                        child: Text(
+                          "Selamat Datang Di Pesisir Selatan",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500),
+                        ),
+                      ),
                       SizedBox(
                         height: 10,
+                      ),
+                      Sliderdashoard(),
+                      SizedBox(
+                        height: 4,
                       ),
 
                       Center(
                         child: Text(
-                          "Menu",
+                          "Menu Apps",
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 18,
@@ -304,18 +311,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         ),
                       ),
                       SizedBox(
-                        height: 10,
+                        height: 2,
                       ),
                       Container(
                         width: MediaQuery.sizeOf(context).width * 0.5,
-                        height: 0.7,
+                        height: 0.1,
                         decoration: BoxDecoration(
                           color: const Color.fromARGB(255, 161, 161, 161),
                         ),
                       ),
                       Expanded(
                         child: Padding(
-                          padding: const EdgeInsets.all(12),
+                          padding: const EdgeInsets.all(5),
                           child: Menu(),
                         ),
                       ),
@@ -538,6 +545,7 @@ Widget SearchingBar(BuildContext context) {
       );
     },
     child: Container(
+      height: MediaQuery.of(context).size.width * 0.09,
       width: MediaQuery.sizeOf(context).width * 0.9,
       decoration: BoxDecoration(
         boxShadow: [

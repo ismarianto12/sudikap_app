@@ -50,16 +50,20 @@ class _AnimatedContainerWithTapState extends State<AnimatedContainerWithTap> {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedContainer(
-      duration: Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
-      width: MediaQuery.of(context).size.width * 0.9,
-      height: MediaQuery.of(context).size.width * 0.10,
+    return Container(
       decoration: BoxDecoration(
         color: widget.color,
-        borderRadius: BorderRadius.all(Radius.circular(100)),
+        borderRadius: BorderRadius.all(
+          Radius.circular(100),
+        ),
       ),
-      child: Center(
+      width: MediaQuery.sizeOf(context).width,
+      height: MediaQuery.sizeOf(context).height * 0.06,
+      child: TextButton(
+        style: TextButton.styleFrom(
+            // backgroundColor: Color.fromARGB(255, 0, 194, 253),
+            shape:
+                const RoundedRectangleBorder(borderRadius: BorderRadius.zero)),
         child: Text(
           widget.title,
           style: Theme.of(context).textTheme.headline6!.copyWith(
@@ -68,6 +72,7 @@ class _AnimatedContainerWithTapState extends State<AnimatedContainerWithTap> {
                 color: Colors.white,
               ),
         ),
+        onPressed: null,
       ),
     );
   }

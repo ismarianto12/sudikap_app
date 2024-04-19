@@ -4,6 +4,8 @@ import 'package:flutter/widgets.dart';
 import 'package:sistem_kearsipan/repository/arsipRepo.dart';
 
 class ArsipForm extends StatefulWidget {
+  int idarsip = 0;
+  ArsipForm({required this.idarsip});
   @override
   _ArsipFormState createState() => _ArsipFormState();
 }
@@ -112,34 +114,61 @@ class _ArsipFormState extends State<ArsipForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
+      appBar: AppBar(
+        shadowColor: null,
+        elevation: 0, // Menghilangkan bayangan di bawah appbar
+        backgroundColor: Colors.green,
+        actions: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(right: 15),
+            child: Container(
+              height: MediaQuery.sizeOf(context).width * 0.08,
+              width: MediaQuery.sizeOf(context).width * 0.3,
+              child: ElevatedButton(
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                ),
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    _submitdata();
+                  }
+                },
+                child: Text(
+                  'Submit',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
+          )
+        ],
+        // iconTheme: IconThemeData(color: Color.fromARGB(255, 255, 255, 255)),
+        title: Text(
+          'Arsip ${widget.idarsip != 0 ? "Edit" : "Tambah"}',
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+        actionsIconTheme: IconThemeData(
+          color: Colors.white,
+        ),
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Icon(
+            Icons.arrow_back_ios_sharp,
+            color: Colors.white,
+          ),
+        ),
+        // Menghilangkan border bawah
+        shape: Border(bottom: BorderSide.none),
+      ),
+      body: SingleChildScrollView(
+        child: SafeArea(
           child: Column(
             children: [
               SizedBox(
                 height: 20,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: Row(
-                    children: [
-                      Icon(Icons.arrow_back_ios_new_rounded),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        "Kembali",
-                        style: TextStyle(
-                          fontSize: 18,
-                        ),
-                      )
-                    ],
-                  ),
-                ),
               ),
               Padding(
                 padding: EdgeInsets.all(16.0),
@@ -147,101 +176,174 @@ class _ArsipFormState extends State<ArsipForm> {
                   key: _formKey,
                   child: Column(
                     children: [
-                      DropdownButtonFormField<String>(
-                        value: _selectedJenisArsip,
-                        items: _jenisArsip.map((jenis) {
-                          return DropdownMenuItem(
-                            value: jenis,
-                            child: Text(jenis),
-                          );
-                        }).toList(),
-                        onChanged: (value) {
-                          setState(() {
-                            _selectedJenisArsip = value!;
-                          });
-                        },
-                        decoration: InputDecoration(labelText: 'Jenis Arsip'),
-                        validator: (value) {
-                          if (value == null ||
-                              value.isEmpty ||
-                              value == 'Pilih Jenis Arsip') {
-                            return 'Pilih Jenis Arsip';
-                          }
-                          return null;
-                        },
+                      Container(
+                        height: 45,
+                        width: MediaQuery.sizeOf(context).width,
+                        decoration: BoxDecoration(
+                          color: Color.fromRGBO(244, 244, 244, 1),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10.0),
+                          child: DropdownButtonFormField<String>(
+                            decoration: InputDecoration(
+                              enabledBorder: InputBorder.none,
+                            ),
+                            isDense: true,
+                            value: _selectedJenisArsip,
+                            items: _jenisArsip.map((jenis) {
+                              return DropdownMenuItem(
+                                value: jenis,
+                                child: Text(jenis),
+                              );
+                            }).toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                _selectedJenisArsip = value!;
+                              });
+                            },
+                            // decoration: InputDecoration(labelText: 'Jenis Arsip'),
+                            validator: (value) {
+                              if (value == null ||
+                                  value.isEmpty ||
+                                  value == 'Pilih Jenis Arsip') {
+                                return 'Pilih Jenis Arsip';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
                       ),
-                      TextFormField(
-                        controller: _namaArsipController,
-                        decoration: InputDecoration(labelText: 'Nama Arsip'),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Masukkan Nama Arsip';
-                          }
-                          return null;
-                        },
+                      SizedBox(
+                        height: 10,
                       ),
-                      DropdownButtonFormField<String>(
-                        value: _selectedJenisArsip,
-                        items: _jenisArsip.map((jenis) {
-                          return DropdownMenuItem(
-                            value: jenis,
-                            child: Text(jenis),
-                          );
-                        }).toList(),
-                        onChanged: (value) {
-                          setState(() {
-                            _selectedJenisArsip = value!;
-                          });
-                        },
-                        decoration: InputDecoration(labelText: 'Lokasi'),
-                        validator: (value) {
-                          if (value == null ||
-                              value.isEmpty ||
-                              value == 'Lokasi Arsip') {
-                            return 'Pilih Jenis Arsip';
-                          }
-                          return null;
-                        },
+                      Container(
+                        height: 50,
+                        width: MediaQuery.sizeOf(context).width,
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 185, 185, 185),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                        ),
+                        child: TextFormField(
+                          controller: _namaArsipController,
+                          decoration: InputDecoration(
+                              enabledBorder: InputBorder.none,
+                              labelText: 'Nama Arsip'),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Masukkan Nama Arsip';
+                            }
+                            return null;
+                          },
+                        ),
                       ),
-                      TextFormField(
-                        controller: _namaArsipController,
-                        decoration: InputDecoration(labelText: 'Jumlah'),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Masukkan Nama Arsip';
-                          }
-                          return null;
-                        },
+                      SizedBox(
+                        height: 10,
                       ),
-                      TextFormField(
-                        controller: _namaArsipController,
-                        decoration: InputDecoration(labelText: 'Keterangan'),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Masukkan Nama Arsip';
-                          }
-                          return null;
-                        },
+                      Container(
+                        height: 50,
+                        width: MediaQuery.sizeOf(context).width,
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 185, 185, 185),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10),
+                          child: DropdownButtonFormField<String>(
+                            decoration: InputDecoration(
+                              enabledBorder: InputBorder.none,
+                            ),
+                            isDense: true,
+                            value: _selectedJenisArsip,
+                            items: _jenisArsip.map((jenis) {
+                              return DropdownMenuItem(
+                                value: jenis,
+                                child: Text(jenis),
+                              );
+                            }).toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                _selectedJenisArsip = value!;
+                              });
+                            },
+                            // decoration: InputDecoration(labelText: 'Lokasi'),
+                            validator: (value) {
+                              if (value == null ||
+                                  value.isEmpty ||
+                                  value == 'Lokasi Arsip') {
+                                return 'Pilih Jenis Arsip';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        height: 50,
+                        width: MediaQuery.sizeOf(context).width,
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 185, 185, 185),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextFormField(
+                            controller: _namaArsipController,
+                            decoration: InputDecoration(
+                              labelText: 'Jumlah',
+                              border: InputBorder.none,
+                            ),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Masukkan Nama Arsip';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        height: 50,
+                        width: MediaQuery.sizeOf(context).width,
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 185, 185, 185),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextFormField(
+                            controller: _namaArsipController,
+                            decoration: InputDecoration(
+                              labelText: 'Keterangan',
+                              enabledBorder: InputBorder.none,
+                            ),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Masukkan Nama Arsip';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
                       ),
                       SizedBox(
                         height: 25,
-                      ),
-                      Container(
-                        width: MediaQuery.sizeOf(context).width,
-                        child: ElevatedButton(
-                          style: TextButton.styleFrom(
-                            backgroundColor: Colors.blue,
-                          ),
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              _submitdata();
-                            }
-                          },
-                          child: Text(
-                            'Submit',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
                       ),
                     ],
                   ),

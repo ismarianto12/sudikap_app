@@ -153,36 +153,34 @@ class _SuratMasukFormState extends State<SuratMasukForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        actions: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(right: 15),
+            child: Icon(Icons.share),
+          )
+        ],
+        iconTheme: IconThemeData(color: const Color.fromARGB(255, 0, 0, 0)),
+        title: Text('Form Surat'),
+        actionsIconTheme: IconThemeData(color: Colors.black),
+        leading: GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Icon(Icons.arrow_back_ios_sharp)),
+      ),
       body: SafeArea(
         child: Column(
           children: [
-            GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  SizedBox(width: 20),
-                  Icon(Icons.arrow_back_ios_new),
-                  SizedBox(width: 10),
-                  Text(
-                    "Surat Masuk ${widget.idSurat == 0 ? "Tambah" : "Edit"}",
-                    style: TextStyle(fontSize: 18),
-                  ),
-                ],
-              ),
-            ),
             SizedBox(
               height: 10,
             ),
             Expanded(
               child: SingleChildScrollView(
-                child: Form(
-                  key: _formKey,
-                  child: Padding(
-                    padding: const EdgeInsets.all(14.0),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 20, right: 20),
+                  child: Form(
+                    key: _formKey,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -196,86 +194,95 @@ class _SuratMasukFormState extends State<SuratMasukForm> {
                         //   textAlign: TextAlign.center,
                         // ),
                         // SizedBox(height: 20),
-                        TextFormField(
-                          controller: _kodeController,
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 10,
-                                horizontal:
-                                    10), // Atur ukuran teks kecil di sini
-                            labelText: 'Kode Klafikasi',
-                            // prefixIcon: Icon(Icons.person),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(
-                                  11.0)), // Mengatur radius border
-                              borderSide: BorderSide(
-                                color: Colors.grey, // Warna border
-                                width: 1.0, // Ketebalan border
+                        Container(
+                          height: MediaQuery.sizeOf(context).height * 0.06,
+                          child: TextFormField(
+                            controller: _kodeController,
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 10,
+                                  horizontal:
+                                      10), // Atur ukuran teks kecil di sini
+                              labelText: 'Kode Klafikasi',
+                              // prefixIcon: Icon(Icons.person),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.all(Radius.circular(
+                                    11.0)), // Mengatur radius border
+                                borderSide: BorderSide(
+                                  color: Colors.grey, // Warna border
+                                  width: 1.0, // Ketebalan border
+                                ),
                               ),
                             ),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please enter some text';
+                              }
+                              return null;
+                            },
                           ),
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Please enter some text';
-                            }
-                            return null;
-                          },
                         ),
                         SizedBox(
                           height: 15,
                         ),
-                        TextFormField(
-                          controller: _noAgendaController,
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 10,
-                                horizontal:
-                                    10), // Atur ukuran teks kecil di sini
-                            labelText: 'No Agenda',
-                            // prefixIcon: Icon(Icons.person),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(
-                                  11.0)), // Mengatur radius border
-                              borderSide: BorderSide(
-                                color: Colors.grey, // Warna border
-                                width: 1.0, // Ketebalan border
+                        Container(
+                          height: MediaQuery.sizeOf(context).height * 0.06,
+                          child: TextFormField(
+                            controller: _noAgendaController,
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 10,
+                                  horizontal:
+                                      10), // Atur ukuran teks kecil di sini
+                              labelText: 'No Agenda',
+                              // prefixIcon: Icon(Icons.person),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.all(Radius.circular(
+                                    11.0)), // Mengatur radius border
+                                borderSide: BorderSide(
+                                  color: Colors.grey, // Warna border
+                                  width: 1.0, // Ketebalan border
+                                ),
                               ),
                             ),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please enter some text';
+                              }
+                              return null;
+                            },
                           ),
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Please enter some text';
-                            }
-                            return null;
-                          },
                         ),
                         SizedBox(
                           height: 10,
                         ),
-                        TextFormField(
-                          controller: _nosuratController,
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 10,
-                                horizontal:
-                                    10), // Atur ukuran teks kecil di sini
-                            labelText: 'No Surat',
-                            // prefixIcon: Icon(Icons.person),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(
-                                  11.0)), // Mengatur radius border
-                              borderSide: BorderSide(
-                                color: Colors.grey, // Warna border
-                                width: 1.0, // Ketebalan border
+                        Container(
+                          height: MediaQuery.sizeOf(context).height * 0.06,
+                          child: TextFormField(
+                            controller: _nosuratController,
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 10,
+                                  horizontal:
+                                      10), // Atur ukuran teks kecil di sini
+                              labelText: 'No Surat',
+                              // prefixIcon: Icon(Icons.person),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.all(Radius.circular(
+                                    11.0)), // Mengatur radius border
+                                borderSide: BorderSide(
+                                  color: Colors.grey, // Warna border
+                                  width: 1.0, // Ketebalan border
+                                ),
                               ),
                             ),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Wajib di isi enter some text';
+                              }
+                              return null;
+                            },
                           ),
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Wajib di isi enter some text';
-                            }
-                            return null;
-                          },
                         ),
 
                         SizedBox(
@@ -305,6 +312,7 @@ class _SuratMasukFormState extends State<SuratMasukForm> {
                           height: 18,
                         ),
                         Container(
+                          height: MediaQuery.sizeOf(context).height * 0.07,
                           decoration: BoxDecoration(
                             border: Border.all(
                               color: Colors.grey, // Border color

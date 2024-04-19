@@ -53,6 +53,41 @@ class _dataArsipState extends State<dataArsip> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        shadowColor: null,
+        elevation: 0, // Menghilangkan bayangan di bawah appbar
+        backgroundColor: Colors.green,
+        actions: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(right: 15),
+            child: Icon(
+              Icons.add,
+              color: Color.fromARGB(255, 255, 255, 255),
+            ),
+          )
+        ],
+        // iconTheme: IconThemeData(color: Color.fromARGB(255, 255, 255, 255)),
+        title: Text(
+          'Master data Arsip',
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+        actionsIconTheme: IconThemeData(
+          color: Colors.white,
+        ),
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Icon(
+            Icons.arrow_back_ios_sharp,
+            color: Colors.white,
+          ),
+        ),
+        // Menghilangkan border bawah
+        shape: Border(bottom: BorderSide.none),
+      ),
       // floatingActionButton: FloatingActionButton(
       //   backgroundColor: Colors.green,
       //   onPressed: () {
@@ -68,24 +103,6 @@ class _dataArsipState extends State<dataArsip> {
       //     color: Colors.white,
       //   ),
       // ),
-      floatingActionButton: CircleAvatar(
-        child: FloatingActionButton(
-          elevation: 0,
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ArsipForm(),
-              ),
-            );
-          },
-          child: Icon(
-            Icons.add,
-            color: Color.fromARGB(255, 0, 0, 0),
-          ),
-          backgroundColor: Colors.transparent,
-        ),
-      ),
       backgroundColor: Colors.white,
       body: SlidingUpPanel(
         margin: EdgeInsets.only(left: 28, right: 28),
@@ -163,10 +180,60 @@ class _dataArsipState extends State<dataArsip> {
                                         ),
                                         GestureDetector(
                                           onTap: () {},
-                                          child: Icon(
-                                            Icons.arrow_forward_ios_outlined,
-                                            color: const Color.fromARGB(
-                                                255, 0, 0, 0),
+                                          child: PopupMenuButton<String>(
+                                            // Define the menu items
+                                            itemBuilder:
+                                                (BuildContext context) {
+                                              return <PopupMenuEntry<String>>[
+                                                PopupMenuItem<String>(
+                                                  value: 'edit',
+                                                  child: Text('Edit'),
+                                                ),
+                                                PopupMenuItem<String>(
+                                                  value: 'delete',
+                                                  child: Text('Delete'),
+                                                ),
+                                                PopupMenuItem<String>(
+                                                  value: 'detail',
+                                                  child: Text('Detail'),
+                                                ),
+                                              ];
+                                            },
+                                            // Define what happens when a menu item is selected
+                                            onSelected: (String value) {
+                                              // print('Selected: $value');
+                                              if (value == 'edit') {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (_) {
+                                                      return ArsipForm(
+                                                          idarsip: 0);
+                                                    },
+                                                  ),
+                                                );
+                                              } else if (value == 'detail') {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (_) {
+                                                      return ArsipForm(
+                                                          idarsip: 0);
+                                                    },
+                                                  ),
+                                                );
+                                              } else if (value == 'delete') {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (_) {
+                                                      return ArsipForm(
+                                                          idarsip: 0);
+                                                    },
+                                                  ),
+                                                );
+                                              }
+                                            },
                                           ),
                                         ),
                                       ],
@@ -221,32 +288,6 @@ class _dataArsipState extends State<dataArsip> {
               SizedBox(
                 height: 35,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Icon(
-                      Icons.arrow_back_ios_new,
-                      color: Colors.white,
-                    ),
-                  ),
-                  Text(
-                    "Data Arsips",
-                    style: TextStyle(fontSize: 16, color: Colors.white),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  // Text(
-                  //   "Kembali",
-                  //   style: TextStyle(fontSize: 15),
-                  // )
-                ],
-              ),
               Padding(
                 padding: const EdgeInsets.only(left: 40, top: 25),
                 child: Row(
@@ -292,6 +333,7 @@ class _dataArsipState extends State<dataArsip> {
 
   Widget SearchingBar(BuildContext context) {
     return Container(
+      height: MediaQuery.of(context).size.width * 0.09,
       width: MediaQuery.of(context).size.width * 0.9,
       decoration: BoxDecoration(
         boxShadow: [

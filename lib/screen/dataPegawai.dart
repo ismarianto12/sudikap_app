@@ -13,7 +13,6 @@ import 'package:sistem_kearsipan/screen/dataArsip.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class dataPegawai extends StatefulWidget {
-
   @override
   State<dataPegawai> createState() => _dataPegawaiState();
 }
@@ -250,25 +249,25 @@ class _dataPegawaiState extends State<dataPegawai> {
                 onTap: () {
                   Navigator.pop(context);
                 },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: 20,
-                    ),
-                    Icon(Icons.arrow_back_ios_new),
-                    Text(
-                      "Data Pegawai",
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    // Text(
-                    //   "Kembali",
-                    //   style: TextStyle(fontSize: 15),
-                    // )
-                  ],
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Icon(Icons.arrow_back_ios_new),
+                      Text(
+                        "Data Pegawai",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      // Text(
+                      //   "Kembali",
+                      //   style: TextStyle(fontSize: 15),
+                      // )
+                    ],
+                  ),
                 ),
               ),
               SizedBox(
@@ -414,6 +413,7 @@ class _dataPegawaiState extends State<dataPegawai> {
 
 Widget SearchingBar(BuildContext context) {
   return Container(
+    height: MediaQuery.of(context).size.width * 0.09,
     width: MediaQuery.sizeOf(context).width * 0.9,
     decoration: BoxDecoration(
       boxShadow: [

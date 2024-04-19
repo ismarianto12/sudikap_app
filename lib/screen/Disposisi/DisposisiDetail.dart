@@ -1,65 +1,95 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:sistem_kearsipan/widget/Button.dart';
 
-class DetailSurat extends StatelessWidget {
-  final dynamic suratData;
-  const DetailSurat({Key? key, this.suratData}) : super(key: key);
+class DisposisDetail extends StatelessWidget {
+  final dynamic disposisidata;
+  const DisposisDetail({Key? key, this.disposisidata}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    // print(disposisidata['tujuan']);
     return Scaffold(
+      appBar: AppBar(
+        actions: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(right: 15),
+            child: Icon(Icons.share),
+          )
+        ],
+        iconTheme: IconThemeData(color: const Color.fromARGB(255, 0, 0, 0)),
+        title: Text('Detail Disposisi'),
+        actionsIconTheme: IconThemeData(color: Colors.black),
+        leading: GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Icon(Icons.arrow_back_ios_sharp)),
+      ),
+      backgroundColor: Color.fromARGB(255, 250, 250, 250),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(8.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-              height: 15,
-            ),
-            Row(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: Icon(Icons.arrow_back_ios_new),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Flexible(
-                  child: Text(
-                    "${suratData['asal_surat']}",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            // Text(disposisidata['tujuan']),
             SizedBox(
               height: 20,
             ),
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      height: 50,
+            // Padding(
+            //   padding: const EdgeInsets.all(8.0),
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //     children: [
+            //       GestureDetector(
+            //         child: Icon(Icons.arrow_back_ios_new),
+            //         onTap: () {
+            //           Navigator.pop(context);
+            //         },
+            //       ),
+            //       Text(
+            //         "Data Surat Masuk",
+            //         style: TextStyle(fontSize: 18),
+            //       ),
+            //       SizedBox(
+            //         width: 10,
+            //       ),
+            //       // Text(
+            //       //   "Kembali",
+            //       //   style: TextStyle(fontSize: 15),
+            //       // )
+            //     ],
+            //   ),
+            // ),
+
+            SizedBox(
+              height: 40,
+            ),
+            Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color:
+                          Color.fromARGB(255, 145, 145, 145).withOpacity(0.5),
+                      spreadRadius: 1,
+                      blurRadius: 7,
+                      offset: Offset(0, 2), // changes position of shadow
                     ),
+                  ]),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
                     Text(
-                      "Detail Surat Keluar:",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      "Detail Disposisi",
+                      style: TextStyle(color: Colors.black, fontSize: 18.0),
                     ),
                     SizedBox(
                       height: 10,
                     ),
+                    Divider(),
                     Table(
                       border: TableBorder.all(color: Colors.transparent),
                       columnWidths: {
@@ -85,7 +115,7 @@ class DetailSurat extends StatelessWidget {
                               child: Padding(
                                 padding: EdgeInsets.all(8.0),
                                 child: Text(
-                                  "${suratData['no_surat']}",
+                                  "${disposisidata['no_surat']}",
                                   textAlign: TextAlign.start,
                                 ),
                               ),
@@ -110,7 +140,7 @@ class DetailSurat extends StatelessWidget {
                               child: Padding(
                                 padding: EdgeInsets.all(8.0),
                                 child: Text(
-                                  "${suratData['indeks']}",
+                                  "${disposisidata['indeks']}",
                                   textAlign: TextAlign.start,
                                 ),
                               ),
@@ -135,7 +165,7 @@ class DetailSurat extends StatelessWidget {
                               child: Padding(
                                 padding: EdgeInsets.all(8.0),
                                 child: Text(
-                                  "${suratData['no_agenda']}",
+                                  "${disposisidata['no_agenda']}",
                                   textAlign: TextAlign.start,
                                 ),
                               ),
@@ -161,7 +191,7 @@ class DetailSurat extends StatelessWidget {
                               child: Padding(
                                 padding: EdgeInsets.all(8.0),
                                 child: Text(
-                                  "${suratData['isi']}",
+                                  "${disposisidata['isi']}",
                                   textAlign: TextAlign.start,
                                 ),
                               ),
@@ -186,7 +216,7 @@ class DetailSurat extends StatelessWidget {
                               child: Padding(
                                 padding: EdgeInsets.all(8.0),
                                 child: Text(
-                                  "${suratData['kode']}",
+                                  "${disposisidata['kode']}",
                                   textAlign: TextAlign.start,
                                 ),
                               ),
@@ -211,7 +241,7 @@ class DetailSurat extends StatelessWidget {
                               child: Padding(
                                 padding: EdgeInsets.all(8.0),
                                 child: Text(
-                                  "${suratData['keterangan']}",
+                                  "${disposisidata['keterangan']}",
                                   textAlign: TextAlign.start,
                                 ),
                               ),
@@ -220,18 +250,47 @@ class DetailSurat extends StatelessWidget {
                         ),
                       ],
                     ),
-              
                   ],
                 ),
               ),
             ),
             SizedBox(
-              height: 50,
+              height: 25,
             ),
-            InkWell(
-              onTap: () {},
-              child: Button(title: "Download File", color: Colors.orange),
-            ),
+            // Container(
+            //   color: Colors.green,
+            //   height: 40,
+            //   width: MediaQuery.sizeOf(context).width,
+            //   child: ElevatedButton(
+            //     clipBehavior: Clip.none,
+            //     onPressed: () {},
+            //     child: Row(
+            //       mainAxisAlignment: MainAxisAlignment.center,
+            //       children: [Icon(Icons.download), Text("Download Lampiran")],
+            //     ),
+            //   ),
+            // ),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.green,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(100),
+                ),
+              ),
+              width: MediaQuery.sizeOf(context).width,
+              height: MediaQuery.sizeOf(context).height * 0.06,
+              child: TextButton(
+                style: TextButton.styleFrom(
+                    // backgroundColor: Color.fromARGB(255, 0, 194, 253),
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.zero)),
+                child: const Text(
+                  "Download Lampiran",
+                  style: TextStyle(color: Colors.white),
+                ),
+                onPressed: () {},
+              ),
+            )
           ],
         ),
       ),

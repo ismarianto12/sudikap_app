@@ -70,6 +70,7 @@ class _suratKeluarState extends State<suratKeluar> {
       //   title: Text("Data SPPD - Perjalanan dinas"),
       // ),
       body: SlidingUpPanel(
+        backdropEnabled: true,
         maxHeight: MediaQuery.sizeOf(context).height * 0.88,
         minHeight: MediaQuery.sizeOf(context).height * 0.55,
         borderRadius: BorderRadius.only(
@@ -239,7 +240,7 @@ class _suratKeluarState extends State<suratKeluar> {
                               ),
                             ),
                           ),
-                          Divider(),  
+                          Divider(),
                         ],
                       );
                     } else {
@@ -324,6 +325,7 @@ class _suratKeluarState extends State<suratKeluar> {
 
 Widget SearchingBar(BuildContext context) {
   return Container(
+    height: MediaQuery.of(context).size.width * 0.09,
     width: MediaQuery.of(context).size.width * 0.9,
     decoration: BoxDecoration(
       boxShadow: [

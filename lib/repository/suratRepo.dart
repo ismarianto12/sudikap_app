@@ -53,7 +53,7 @@ class SuratRepo {
     }
   }
 
-  static Future<dynamic> getDataDisposisi(int page) async {
+  static Future<dynamic> getDataDisposisi(int page, String search) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString("token");
 
@@ -150,14 +150,13 @@ class SuratRepo {
           headers: <String, String>{
             'Authorization': '${token}',
           });
-      print(response);
       if (response.statusCode == 200) {
-        return response.body;
+        return json.decode(response.body)['data'];
       } else {
-        return response.body;
+        throw Exception('Failed to load data');
       }
     } catch (e) {
-      return e;
+      throw Exception('Failed to load data');
     }
   }
 
@@ -349,6 +348,21 @@ class SuratRepo {
   //     return http.Response('Error uploading data and file: $e', 500);
   //   }
   // }
+  static Future<dynamic> getCurrentsurat(String search) async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    String? token = pref.getString("token");
+    var response = await http
+        .post(Uri.parse("${Base_Url}/currentletter"), headers: <String, String>{
+      'Authorization': '${token}',
+    }, body: {
+      'search': search,
+    });
+    if (response.statusCode == 200) {
+      return json.decode(response.body)['data'];
+    } else {
+      throw Exception("Cant get data");
+    }
+  }
 }
 
 // action to create or delete function in

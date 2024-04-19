@@ -42,6 +42,20 @@ class _MyAppState extends State<MyApp> {
     super.initState();
   }
 
+  Widget _buildLoadingWidget() {
+    return _isLoading
+        ? _buildLoadingDialog()
+        : Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(),
+              SizedBox(height: 16),
+              Text("Loading..."),
+            ],
+          );
+  }
+
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
@@ -64,18 +78,15 @@ class _MyAppState extends State<MyApp> {
             } else if (state is AuthenticateAuthenticated) {
               return const DashboardScreen();
             } else if (state is AuthenticateunAuthenticated) {
-              return const MyHomePage(title: "and berhasil lgoout aplikasi");
-            } else
+              return MyHomePage(
+                  title: "Logout berhasil, silahkan login kembali");
+            } else {
+              // Handling loading state
               return Scaffold(
-                body: _isLoading
-                    ? _buildLoadingDialog()
-                    : Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text("PANTEK"),
-                        ],
-                      ),
+                body:
+                    _buildLoadingWidget(), // Use a separate method to build loading widget
               );
+            }
           },
         ),
       ),
@@ -130,10 +141,9 @@ class _MyHomePageState extends State<MyHomePage> {
           loginrepo: loginrepo),
       child: BlocListener<LoginBloc, LoginState>(
         listener: (context, state) {
-          print("testing listener nggal jalan");
           // TODO: implement listener
           if (state is LoginFailure) {
-            print('login failed');
+            // print('login failed');
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text('Username dan password Salah ${state.error}'),
               backgroundColor: Colors.red,
@@ -141,7 +151,6 @@ class _MyHomePageState extends State<MyHomePage> {
           }
           if (state is LoginLoading) {
             Future.delayed(Duration(seconds: 3), () {
-              // Menutup dialog setelah 3 detik
               Navigator.of(context).pop();
             });
             state is LoginLoading
@@ -166,7 +175,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 : null;
           }
           if (state is AuthenticateAuthenticated) {
-            DashboardScreen();
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => DashboardScreen()),
+            );
           }
         },
         child: BlocBuilder<LoginBloc, LoginState>(

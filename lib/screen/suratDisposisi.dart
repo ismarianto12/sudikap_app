@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sistem_kearsipan/repository/suratRepo.dart';
+import 'package:sistem_kearsipan/screen/Disposisi/DisposisiDetail.dart';
 import 'package:sistem_kearsipan/screen/Sppd/sppdForm.dart';
 import 'package:sistem_kearsipan/screen/suratKeluar/DetailSurat.dart';
 import 'package:sistem_kearsipan/screen/SuratMasuk/SuratMasukForm.dart';
@@ -21,6 +22,7 @@ class _suratDisposisiState extends State<suratDisposisi> {
   List<dynamic> suratData = [];
   final scrollController = ScrollController();
   bool isLoadingMore = false;
+  String search = '';
   int page = 0;
 
   @override
@@ -32,7 +34,7 @@ class _suratDisposisiState extends State<suratDisposisi> {
 
   Future<void> getDataDisposisi() async {
     try {
-      var data = await SuratRepo.getDataDisposisi(page);
+      var data = await SuratRepo.getDataDisposisi(page, search);
       setState(() {
         suratData = data;
       });
@@ -138,101 +140,107 @@ class _suratDisposisiState extends State<suratDisposisi> {
                 ],
               ),
             ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(18.0),
-                child: ListView.builder(
-                  controller: scrollController,
-                  itemCount:
-                      isLoadingMore ? suratData.length + 1 : suratData.length,
-                  shrinkWrap: true,
-                  // gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  //   crossAxisCount: 2,
-                  //   crossAxisSpacing: 10.0,
-                  //   mainAxisSpacing: 10.0,
-                  // ),
-                  itemBuilder: (BuildContext context, int index) {
-                    if (index < suratData.length) {
-                      return Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                spreadRadius: 0.1,
-                                blurRadius: 0.1,
-                                offset: Offset(0, 2),
-                              ),
-                            ],
-                            color: Color.fromARGB(255, 255, 255, 255),
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    CircleAvatar(
-                                      backgroundColor:
-                                          const Color.fromARGB(255, 0, 0, 0),
-                                      child: Text("${index + 1}"),
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8.0),
-                                        child: Text(
-                                          '${suratData[index]['no_surat']}',
-                                          style: TextStyle(
-                                            color: const Color.fromARGB(
-                                                255, 0, 0, 0),
-                                            fontSize: 15.0,
-                                          ),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {},
-                                      child: Icon(
-                                        Icons.arrow_forward_ios,
-                                        color:
-                                            const Color.fromARGB(255, 0, 0, 0),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 45),
-                                  child: Text(
-                                    '${suratData[index]['asal_surat']}',
-                                    style: TextStyle(
-                                      color: const Color.fromARGB(255, 0, 0, 0),
-                                      fontSize: 14.0,
-                                    ),
-                                  ),
-                                ),
-                              ],
+            Padding(
+              padding: const EdgeInsets.all(18.0),
+              child: ListView.builder(
+                controller: scrollController,
+                itemCount:
+                    isLoadingMore ? suratData.length + 1 : suratData.length,
+                shrinkWrap: true,
+                itemBuilder: (BuildContext context, int index) {
+                  if (index < suratData.length) {
+                    return Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 0.1,
+                              blurRadius: 0.1,
+                              offset: Offset(0, 2),
                             ),
-                          ),
+                          ],
+                          color: Color.fromARGB(255, 255, 255, 255),
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
                         ),
-                      );
-                    } else {
-                      return Center(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: CircularProgressIndicator(),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  CircleAvatar(
+                                    backgroundColor:
+                                        const Color.fromARGB(255, 0, 0, 0),
+                                    child: Text("${index + 1}"),
+                                  ),
+                                  Expanded(
+                                    flex: 1,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0),
+                                      child: Text(
+                                        '${suratData[index]['no_surat']}',
+                                        style: TextStyle(
+                                          color: const Color.fromARGB(
+                                              255, 0, 0, 0),
+                                          fontSize: 15.0,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      print("tekan tombol");
+                                      //     Navigator.push(
+                                      //   context,
+                                      //   MaterialPageRoute(builder: (context) => DashboardScreen()),
+                                      // );
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => DisposisDetail(
+                                            disposisidata: suratData[index],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    child: Icon(
+                                      Icons.arrow_forward_ios,
+                                      color: const Color.fromARGB(255, 0, 0, 0),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 45),
+                                child: Text(
+                                  '${suratData[index]['asal_surat']}',
+                                  style: TextStyle(
+                                    color: const Color.fromARGB(255, 0, 0, 0),
+                                    fontSize: 14.0,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      );
-                    }
-                  },
-                ),
+                      ),
+                    );
+                  } else {
+                    return Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
+                  }
+                },
               ),
             ),
           ],
@@ -302,6 +310,7 @@ class _suratDisposisiState extends State<suratDisposisi> {
 
 Widget SearchingBar(BuildContext context) {
   return Container(
+    height: MediaQuery.of(context).size.width * 0.09,
     width: MediaQuery.sizeOf(context).width * 0.9,
     decoration: BoxDecoration(
       boxShadow: [

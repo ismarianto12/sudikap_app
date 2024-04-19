@@ -20,7 +20,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     if (event is LoginCheckValid) {
       final bool isFormValid =
           event.username.isNotEmpty && event.password.isNotEmpty;
-
       yield LoginValidate(formValid: isFormValid);
     }
 
@@ -29,8 +28,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       try {
         final response =
             await loginrepo.authenticate(event.username, event.password);
-        print("testing parameter ..");
-        print(response);
+        // print("testing parameter ..");
+        // print(response);
         if (response != null) {
           authenticateBloc.add(LoggedIn(response));
         } else {

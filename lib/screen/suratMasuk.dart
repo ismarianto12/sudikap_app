@@ -49,38 +49,63 @@ class _suratMasukState extends State<suratMasuk> {
   Widget build(BuildContext context) {
     return Scaffold(
       // bottomNavigationBar: Button,
-      floatingActionButton: Container(
-        decoration: BoxDecoration(
-          color: Colors.orange,
-          borderRadius: BorderRadius.all(Radius.circular(100)),
-        ),
-        child: CircleAvatar(
-          backgroundColor: Colors.orange,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: FloatingActionButton(
-              elevation: 0,
-              backgroundColor: Colors.transparent,
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => SuratMasukForm(),
-                  ),
-                );
-              },
-              child: Icon(
-                Icons.add,
-                color: Colors.white,
-              ),
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.white,
+        actions: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(right: 15),
+            child: Icon(
+              Icons.add,
+              color: Color.fromARGB(255, 0, 0, 0),
             ),
-          ),
-        ),
+          )
+        ],
+        iconTheme: IconThemeData(color: const Color.fromARGB(255, 0, 0, 0)),
+        title: Text('List Surat Masuk'),
+        actionsIconTheme: IconThemeData(color: Colors.black),
+        leading: GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Icon(Icons.arrow_back_ios_sharp)),
       ),
-      // appBar: AppBar(
-      //   title: Text("Data SPPD - Perjalanan dinas"),
+      // floatingActionButton: Container(
+      //   decoration: BoxDecoration(
+      //     color: Colors.orange,
+      //     borderRadius: BorderRadius.all(Radius.circular(100)),
+      //   ),
+      //   child: CircleAvatar(
+      //     backgroundColor: Colors.orange,
+      //     child: Padding(
+      //       padding: const EdgeInsets.all(8.0),
+      //       child: FloatingActionButton(
+      //         mini: false,
+      //         elevation: 0,
+      //         backgroundColor: Colors.transparent,
+      //         onPressed: () {
+      //           Navigator.push(
+      //             context,
+      //             MaterialPageRoute(
+      //               builder: (context) => SuratMasukForm(),
+      //             ),
+      //           );
+      //         },
+      //         child: Icon(
+      //           size: 120,
+      //           Icons.add,
+      //           color: Colors.white,
+      //         ),
+      //       ),
+      //     ),
+      //   ),
       // ),
+      // // appBar: AppBar(
+      // //   title: Text("Data SPPD - Perjalanan dinas"),
+      // // ),
+
       body: SlidingUpPanel(
+        backdropEnabled: false,
         maxHeight: MediaQuery.sizeOf(context).height * 0.88,
         minHeight: MediaQuery.sizeOf(context).height * 0.55,
         borderRadius: BorderRadius.only(
@@ -194,7 +219,7 @@ class _suratMasukState extends State<suratMasuk> {
                                   children: [
                                     CircleAvatar(
                                       backgroundColor:
-                                          const Color.fromARGB(255, 0, 0, 0),
+                                          Color.fromARGB(255, 242, 242, 242),
                                       child: Text("${index + 1}"),
                                     ),
                                     Expanded(
@@ -273,26 +298,6 @@ class _suratMasukState extends State<suratMasuk> {
                 onTap: () {
                   Navigator.pop(context);
                 },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: 20,
-                    ),
-                    Icon(Icons.arrow_back_ios_new),
-                    Text(
-                      "Data Surat Masuk",
-                      style: TextStyle(fontSize: 18),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    // Text(
-                    //   "Kembali",
-                    //   style: TextStyle(fontSize: 15),
-                    // )
-                  ],
-                ),
               ),
               // SizedBox(
               //   height: 100,
@@ -326,6 +331,7 @@ class _suratMasukState extends State<suratMasuk> {
 Widget SearchingBar(BuildContext context) {
   return Container(
     width: MediaQuery.of(context).size.width * 0.9,
+    height: MediaQuery.of(context).size.width * 0.09,
     decoration: BoxDecoration(
       boxShadow: [
         BoxShadow(
