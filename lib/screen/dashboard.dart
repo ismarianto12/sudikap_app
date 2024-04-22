@@ -164,7 +164,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ),
                   ),
                   SizedBox(
-                    height: 6,
+                    height: 8,
                   ),
                   Text(
                     "Surat Disposisi Terbaru",

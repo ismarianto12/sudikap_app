@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:sistem_kearsipan/components/Loadingpage.dart';
 import 'package:sistem_kearsipan/repository/arsipRepo.dart';
 import 'package:sistem_kearsipan/screen/Arsip/ArsipForm.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -22,6 +23,7 @@ class _dataArsipState extends State<dataArsip> {
   int page = 0;
   bool isFocused = false;
   double heigOfSlide = 0.80;
+  bool loading = true;
   @override
   void initState() {
     super.initState();
@@ -41,12 +43,15 @@ class _dataArsipState extends State<dataArsip> {
     try {
       var data = await arsipRepo.listdataArsip(page);
       setState(() {
+        loading = false;
         suratData = data;
       });
       print(data);
     } catch (e) {
+      setState(() {
+        loading = false;
+      });
       print('Error fetching data: $e');
-      // Handle error accordingly
     }
   }
 
@@ -133,172 +138,183 @@ class _dataArsipState extends State<dataArsip> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(18.0),
-                child: ListView.builder(
-                  controller: scrollController,
-                  itemCount:
-                      isLoadingMore ? suratData.length + 1 : suratData.length,
-                  shrinkWrap: true,
-                  itemBuilder: (BuildContext context, int index) {
-                    if (index < suratData.length) {
-                      return Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: Column(
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                // boxShadow: [
-                                //   BoxShadow(
-                                //     color: Colors.grey.withOpacity(0.5),
-                                //     spreadRadius: 0,
-                                //     blurRadius: 10,
-                                //     offset: Offset(1, 0),
-                                //   ),
-                                // ],
-                                color: Color.fromARGB(255, 255, 255, 255),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(6)),
+                child: loading
+                    ? LoadingPage(
+                        color: const Color.fromARGB(255, 186, 186, 186),
+                        itemCount: 13)
+                    : ListView.builder(
+                        controller: scrollController,
+                        itemCount: isLoadingMore
+                            ? suratData.length + 1
+                            : suratData.length,
+                        shrinkWrap: true,
+                        itemBuilder: (BuildContext context, int index) {
+                          if (index < suratData.length) {
+                            return Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      // boxShadow: [
+                                      //   BoxShadow(
+                                      //     color: Colors.grey.withOpacity(0.5),
+                                      //     spreadRadius: 0,
+                                      //     blurRadius: 10,
+                                      //     offset: Offset(1, 0),
+                                      //   ),
+                                      // ],
+                                      color: Color.fromARGB(255, 255, 255, 255),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(6)),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              // CircleAvatar(
+                                              //   backgroundColor:
+                                              //       const Color.fromARGB(255, 0, 0, 0),
+                                              //   child: Text(
+                                              //     "${index + 1}",
+                                              //     style: TextStyle(
+                                              //       color: Colors.white,
+                                              //     ),
+                                              //   ),
+                                              // ),
+                                              Expanded(
+                                                flex: 1,
+                                                child: Text(
+                                                  '${suratData[index]['nama_arsip']}',
+                                                  style: TextStyle(
+                                                    color: const Color.fromARGB(
+                                                        255, 0, 0, 0),
+                                                    fontSize: 16.0,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {},
+                                                child: PopupMenuButton<String>(
+                                                  // Define the menu items
+                                                  itemBuilder:
+                                                      (BuildContext context) {
+                                                    return <PopupMenuEntry<
+                                                        String>>[
+                                                      PopupMenuItem<String>(
+                                                        value: 'edit',
+                                                        child: Text('Edit'),
+                                                      ),
+                                                      PopupMenuItem<String>(
+                                                        value: 'delete',
+                                                        child: Text('Delete'),
+                                                      ),
+                                                      PopupMenuItem<String>(
+                                                        value: 'detail',
+                                                        child: Text('Detail'),
+                                                      ),
+                                                    ];
+                                                  },
+                                                  // Define what happens when a menu item is selected
+                                                  onSelected: (String value) {
+                                                    // print('Selected: $value');
+                                                    if (value == 'edit') {
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (_) {
+                                                            return ArsipForm(
+                                                              idarsip: suratData[
+                                                                      index]
+                                                                  ['id_arsip'],
+                                                              judul: suratData[
+                                                                      index][
+                                                                  'nama_arsip'],
+                                                            );
+                                                          },
+                                                        ),
+                                                      );
+                                                    } else if (value ==
+                                                        'detail') {
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (_) {
+                                                            return ArsipForm(
+                                                              idarsip: 0,
+                                                              judul: '',
+                                                            );
+                                                          },
+                                                        ),
+                                                      );
+                                                    } else if (value ==
+                                                        'delete') {
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (_) {
+                                                            return ArsipForm(
+                                                                idarsip: 0,
+                                                                judul: '');
+                                                          },
+                                                        ),
+                                                      );
+                                                    }
+                                                  },
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                '${suratData[index]['tanggal']}',
+                                                style: TextStyle(
+                                                  color: const Color.fromARGB(
+                                                      255, 0, 0, 0),
+                                                  fontSize: 14.0,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 10,
+                                              ),
+                                              Text(
+                                                '${suratData[index]['jenis_arsip']}',
+                                                style: TextStyle(
+                                                  color: const Color.fromARGB(
+                                                      255, 0, 0, 0),
+                                                  fontSize: 14.0,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Divider(),
+                                ],
                               ),
+                            );
+                          } else {
+                            return Center(
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        // CircleAvatar(
-                                        //   backgroundColor:
-                                        //       const Color.fromARGB(255, 0, 0, 0),
-                                        //   child: Text(
-                                        //     "${index + 1}",
-                                        //     style: TextStyle(
-                                        //       color: Colors.white,
-                                        //     ),
-                                        //   ),
-                                        // ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: Text(
-                                            '${suratData[index]['nama_arsip']}',
-                                            style: TextStyle(
-                                              color: const Color.fromARGB(
-                                                  255, 0, 0, 0),
-                                              fontSize: 16.0,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ),
-                                        GestureDetector(
-                                          onTap: () {},
-                                          child: PopupMenuButton<String>(
-                                            // Define the menu items
-                                            itemBuilder:
-                                                (BuildContext context) {
-                                              return <PopupMenuEntry<String>>[
-                                                PopupMenuItem<String>(
-                                                  value: 'edit',
-                                                  child: Text('Edit'),
-                                                ),
-                                                PopupMenuItem<String>(
-                                                  value: 'delete',
-                                                  child: Text('Delete'),
-                                                ),
-                                                PopupMenuItem<String>(
-                                                  value: 'detail',
-                                                  child: Text('Detail'),
-                                                ),
-                                              ];
-                                            },
-                                            // Define what happens when a menu item is selected
-                                            onSelected: (String value) {
-                                              // print('Selected: $value');
-                                              if (value == 'edit') {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (_) {
-                                                      return ArsipForm(
-                                                        idarsip:
-                                                            suratData[index]
-                                                                ['id_arsip'],
-                                                        judul: suratData[index]
-                                                            ['nama_arsip'],
-                                                      );
-                                                    },
-                                                  ),
-                                                );
-                                              } else if (value == 'detail') {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (_) {
-                                                      return ArsipForm(
-                                                        idarsip: 0,
-                                                        judul: '',
-                                                      );
-                                                    },
-                                                  ),
-                                                );
-                                              } else if (value == 'delete') {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (_) {
-                                                      return ArsipForm(
-                                                          idarsip: 0,
-                                                          judul: '');
-                                                    },
-                                                  ),
-                                                );
-                                              }
-                                            },
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        Text(
-                                          '${suratData[index]['tanggal']}',
-                                          style: TextStyle(
-                                            color: const Color.fromARGB(
-                                                255, 0, 0, 0),
-                                            fontSize: 14.0,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text(
-                                          '${suratData[index]['jenis_arsip']}',
-                                          style: TextStyle(
-                                            color: const Color.fromARGB(
-                                                255, 0, 0, 0),
-                                            fontSize: 14.0,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
+                                child: CircularProgressIndicator(),
                               ),
-                            ),
-                            Divider(),
-                          ],
-                        ),
-                      );
-                    } else {
-                      return Center(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: CircularProgressIndicator(),
-                        ),
-                      );
-                    }
-                  },
-                ),
+                            );
+                          }
+                        },
+                      ),
               ),
             ),
           ],

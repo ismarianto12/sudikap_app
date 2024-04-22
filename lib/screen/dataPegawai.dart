@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:sistem_kearsipan/components/Loadingpage.dart';
 import 'package:sistem_kearsipan/repository/pegawaiRepo.dart';
 import 'package:sistem_kearsipan/repository/suratRepo.dart';
 import 'package:sistem_kearsipan/screen/Pegawai/pegawaiForm.dart';
@@ -22,6 +23,7 @@ class _dataPegawaiState extends State<dataPegawai> {
   final scrollController = ScrollController();
   bool isLoadingMore = false;
   int page = 0;
+  bool loading = true;
 
   @override
   void initState() {
@@ -34,10 +36,17 @@ class _dataPegawaiState extends State<dataPegawai> {
     try {
       var data = await PegawaiRepo.getData(page);
       setState(() {
+        loading = false;
         suratData = data;
       });
       print(data);
     } catch (e) {
+      setState(
+        () {
+          loading = false;
+          suratData = [];
+        },
+      );
       print('Error fetching data: $e');
       // Handle error accordingly
     }
@@ -93,14 +102,10 @@ class _dataPegawaiState extends State<dataPegawai> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(
-                    width: 10,
-                  ),
-
-                  SizedBox(
                     height: 30,
                   ),
                   Container(
-                      width: MediaQuery.sizeOf(context).width * 0.78,
+                      width: MediaQuery.sizeOf(context).width * 0.9,
                       child: SearchingBar(context)),
                   SizedBox(
                     width: 10,
@@ -127,112 +132,113 @@ class _dataPegawaiState extends State<dataPegawai> {
                   //     ),
                   //   ),
                   // ),
-                  CircleAvatar(
-                    backgroundColor: Colors.grey,
-                    child: Icon(
-                      Icons.filter_alt_sharp,
-                      size: 29,
-                      color: Colors.white,
-                    ),
-                  ),
                 ],
               ),
             ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(18.0),
-                child: ListView.builder(
-                  controller: scrollController,
-                  itemCount:
-                      isLoadingMore ? suratData.length + 1 : suratData.length,
-                  shrinkWrap: true,
-                  // gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  //   crossAxisCount: 2,
-                  //   crossAxisSpacing: 10.0,
-                  //   mainAxisSpacing: 10.0,
-                  // ),
-                  itemBuilder: (BuildContext context, int index) {
-                    if (index < suratData.length) {
-                      return Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                spreadRadius: 0.1,
-                                blurRadius: 0.1,
-                                offset: Offset(0, 2),
-                              ),
-                            ],
-                            color: Color.fromARGB(255, 255, 255, 255),
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    CircleAvatar(
-                                      backgroundColor:
-                                          const Color.fromARGB(255, 0, 0, 0),
-                                      child: Text("${index + 1}"),
+                child: loading
+                    ? LoadingPage(color: Colors.black26, itemCount: 14)
+                    : ListView.builder(
+                        controller: scrollController,
+                        itemCount: isLoadingMore
+                            ? suratData.length + 1
+                            : suratData.length,
+                        shrinkWrap: true,
+                        // gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        //   crossAxisCount: 2,
+                        //   crossAxisSpacing: 10.0,
+                        //   mainAxisSpacing: 10.0,
+                        // ),
+                        itemBuilder: (BuildContext context, int index) {
+                          if (index < suratData.length) {
+                            return Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      spreadRadius: 0.1,
+                                      blurRadius: 0.1,
+                                      offset: Offset(0, 2),
                                     ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8.0),
+                                  ],
+                                  color: Color.fromARGB(255, 255, 255, 255),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          CircleAvatar(
+                                            backgroundColor:
+                                                const Color.fromARGB(
+                                                    255, 0, 0, 0),
+                                            child: Text("${index + 1}"),
+                                          ),
+                                          Expanded(
+                                            flex: 1,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 8.0),
+                                              child: Text(
+                                                '${suratData[index]['nama']}',
+                                                style: TextStyle(
+                                                  color: const Color.fromARGB(
+                                                      255, 0, 0, 0),
+                                                  fontSize: 15.0,
+                                                ),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                          ),
+                                          GestureDetector(
+                                            onTap: () {},
+                                            child: Icon(
+                                              Icons.arrow_forward_ios,
+                                              color: const Color.fromARGB(
+                                                  255, 0, 0, 0),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 45),
                                         child: Text(
-                                          '${suratData[index]['nama']}',
+                                          '${suratData[index]['nip']}',
                                           style: TextStyle(
                                             color: const Color.fromARGB(
                                                 255, 0, 0, 0),
-                                            fontSize: 15.0,
+                                            fontSize: 14.0,
                                           ),
-                                          overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {},
-                                      child: Icon(
-                                        Icons.arrow_forward_ios,
-                                        color:
-                                            const Color.fromARGB(255, 0, 0, 0),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 45),
-                                  child: Text(
-                                    '${suratData[index]['nip']}',
-                                    style: TextStyle(
-                                      color: const Color.fromARGB(255, 0, 0, 0),
-                                      fontSize: 14.0,
-                                    ),
+                                    ],
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
-                    } else {
-                      return Center(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: CircularProgressIndicator(),
-                        ),
-                      );
-                    }
-                  },
-                ),
+                              ),
+                            );
+                          } else {
+                            return Center(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: CircularProgressIndicator(),
+                              ),
+                            );
+                          }
+                        },
+                      ),
               ),
             ),
           ],
@@ -413,8 +419,8 @@ class _dataPegawaiState extends State<dataPegawai> {
 
 Widget SearchingBar(BuildContext context) {
   return Container(
+    width: MediaQuery.of(context).size.width * 0.9,
     height: MediaQuery.of(context).size.width * 0.09,
-    width: MediaQuery.sizeOf(context).width * 0.9,
     decoration: BoxDecoration(
       boxShadow: [
         BoxShadow(
@@ -433,15 +439,24 @@ Widget SearchingBar(BuildContext context) {
       padding: const EdgeInsets.all(8.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Icon(Icons.search, color: Colors.white),
           SizedBox(
             width: 10,
           ),
-          Text(
-            "Searching ....",
-            style: TextStyle(color: Colors.white),
-          )
+          Expanded(
+            child: Container(
+              height: MediaQuery.sizeOf(context).height * 0.04,
+              child: TextFormField(
+                decoration: InputDecoration(
+                  hintStyle: TextStyle(color: Colors.white),
+                  border: InputBorder.none,
+                ),
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ),
         ],
       ),
     ),

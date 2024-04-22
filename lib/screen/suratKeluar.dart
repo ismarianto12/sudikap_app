@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:sistem_kearsipan/components/Loadingpage.dart';
 import 'package:sistem_kearsipan/repository/suratRepo.dart';
 import 'package:sistem_kearsipan/screen/Sppd/sppdForm.dart';
 import 'package:sistem_kearsipan/screen/suratKeluar/DetailSurat.dart';
@@ -23,7 +24,7 @@ class _suratKeluarState extends State<suratKeluar> {
   final scrollController = ScrollController();
   bool isLoadingMore = false;
   int page = 0;
-
+  bool loading = true;
   @override
   void initState() {
     super.initState();
@@ -35,10 +36,14 @@ class _suratKeluarState extends State<suratKeluar> {
     try {
       var data = await SuratRepo.getDataSuratKeluar(page);
       setState(() {
+        loading = false;
         suratData = data;
       });
-      // print(data);
     } catch (e) {
+      setState(() {
+        suratData = [];
+        loading = false;
+      });
       print('Error fetching data: $e');
       // Handle error accordingly
     }
@@ -46,7 +51,27 @@ class _suratKeluarState extends State<suratKeluar> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      // bottomNavigationBar: Button,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.white,
+        actions: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(right: 15),
+            child: Icon(
+              Icons.add,
+              color: Color.fromARGB(255, 0, 0, 0),
+            ),
+          )
+        ],
+        iconTheme: IconThemeData(color: const Color.fromARGB(255, 0, 0, 0)),
+        title: Text('List Surat Keluar'),
+        actionsIconTheme: IconThemeData(color: Colors.black),
+        leading: GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Icon(Icons.arrow_back_ios_sharp)),
+      ),
       floatingActionButton: CircleAvatar(
         child: FloatingActionButton(
           backgroundColor: const Color.fromARGB(255, 97, 97, 97),
@@ -147,112 +172,122 @@ class _suratKeluarState extends State<suratKeluar> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(18.0),
-                child: ListView.builder(
-                  controller: scrollController,
-                  itemCount:
-                      isLoadingMore ? suratData.length + 1 : suratData.length,
-                  shrinkWrap: true,
-                  // gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  //   crossAxisCount: 2,
-                  //   crossAxisSpacing: 10.0,
-                  //   mainAxisSpacing: 10.0,
-                  // ),
-                  itemBuilder: (BuildContext context, int index) {
-                    if (index < suratData.length) {
-                      return Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Color.fromARGB(255, 255, 255, 255),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10)),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        CircleAvatar(
-                                          backgroundColor: const Color.fromARGB(
-                                              255, 0, 0, 0),
-                                          child: Text(
-                                            "${index + 1}",
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                            ),
+                child: loading
+                    ? LoadingPage(color: Colors.black26, itemCount: 8)
+                    : ListView.builder(
+                        controller: scrollController,
+                        itemCount: isLoadingMore
+                            ? suratData.length + 1
+                            : suratData.length,
+                        shrinkWrap: true,
+                        // gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        //   crossAxisCount: 2,
+                        //   crossAxisSpacing: 10.0,
+                        //   mainAxisSpacing: 10.0,
+                        // ),
+                        itemBuilder: (BuildContext context, int index) {
+                          if (index < suratData.length) {
+                            return Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Color.fromARGB(255, 255, 255, 255),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(10)),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              CircleAvatar(
+                                                backgroundColor:
+                                                    const Color.fromARGB(
+                                                        255, 0, 0, 0),
+                                                child: Text(
+                                                  "${index + 1}",
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                flex: 1,
+                                                child: Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 8.0),
+                                                  child: Text(
+                                                    '${suratData[index]['no_surat']}',
+                                                    style: TextStyle(
+                                                      color:
+                                                          const Color.fromARGB(
+                                                              255, 0, 0, 0),
+                                                      fontSize: 15.0,
+                                                    ),
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+                                                ),
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          DetailSuratKeluar(
+                                                        suratData:
+                                                            suratData[index],
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                                child: Icon(
+                                                  Icons.arrow_forward_ios,
+                                                  color: const Color.fromARGB(
+                                                      255, 0, 0, 0),
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 8.0),
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(left: 45),
                                             child: Text(
-                                              '${suratData[index]['no_surat']}',
+                                              '${suratData[index]['tujuan']}',
                                               style: TextStyle(
                                                 color: const Color.fromARGB(
                                                     255, 0, 0, 0),
-                                                fontSize: 15.0,
+                                                fontSize: 14.0,
                                               ),
-                                              overflow: TextOverflow.ellipsis,
                                             ),
                                           ),
-                                        ),
-                                        GestureDetector(
-                                          onTap: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    DetailSuratKeluar(
-                                                  suratData: suratData[index],
-                                                ),
-                                              ),
-                                            );
-                                          },
-                                          child: Icon(
-                                            Icons.arrow_forward_ios,
-                                            color: const Color.fromARGB(
-                                                255, 0, 0, 0),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 45),
-                                      child: Text(
-                                        '${suratData[index]['tujuan']}',
-                                        style: TextStyle(
-                                          color: const Color.fromARGB(
-                                              255, 0, 0, 0),
-                                          fontSize: 14.0,
-                                        ),
+                                        ],
                                       ),
                                     ),
-                                  ],
+                                  ),
                                 ),
+                                Divider(),
+                              ],
+                            );
+                          } else {
+                            return Center(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: CircularProgressIndicator(),
                               ),
-                            ),
-                          ),
-                          Divider(),
-                        ],
-                      );
-                    } else {
-                      return Center(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: CircularProgressIndicator(),
-                        ),
-                      );
-                    }
-                  },
-                ),
+                            );
+                          }
+                        },
+                      ),
               ),
             ),
           ],
@@ -265,34 +300,7 @@ class _suratKeluarState extends State<suratKeluar> {
               SizedBox(
                 height: 40,
               ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: 20,
-                    ),
-                    Icon(Icons.arrow_back_ios_new),
-                    SizedBox(
-                      width: 15,
-                    ),
-                    Text(
-                      "Data Surat Keluar",
-                      style: TextStyle(fontSize: 18),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    // Text(
-                    //   "Kembali",
-                    //   style: TextStyle(fontSize: 15),
-                    // )
-                  ],
-                ),
-              ),
+
               // SizedBox(
               //   height: 100,
               // ),
@@ -312,6 +320,7 @@ class _suratKeluarState extends State<suratKeluar> {
     if (scrollController.position.pixels ==
         scrollController.position.maxScrollExtent) {
       setState(() {
+        loading = false;
         isLoadingMore = true;
         page = page + 1;
       });
