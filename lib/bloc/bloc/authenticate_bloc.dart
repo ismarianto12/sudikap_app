@@ -13,9 +13,9 @@ class AuthenticateBloc extends Bloc<AuthenticateEvent, AuthenticateState> {
   Stream<AuthenticateState> mapEventToState(AuthenticateEvent event) async* {
     if (event is AppStarted) {
       yield AuthenticateInitial();
-      await Future.delayed(const Duration(seconds: 3));
+      // await Future.delayed(const Duration(seconds: 3));
       final bool hasToken = await loginrepo.hasToken();
-      print("status Token ${hasToken}");
+      // print("status Token ${hasToken}");
       if (hasToken) {
         yield AuthenticateAuthenticated();
       } else {

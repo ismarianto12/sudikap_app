@@ -4,6 +4,43 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sistem_kearsipan/environtment.dart';
 
 class arsipRepo {
+  static Future<dynamic> listdataArsip(int page) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString("token");
+
+    String url = '${Base_Url}arsip/list?page=$page';
+    var response = await http.get(
+      Uri.parse(url),
+      headers: <String, String>{
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      print(json.decode(response.body)['data']);
+      return json.decode(response.body)['data'];
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
+  static Future<dynamic> getDataDetail(int id) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString("token");
+    String url = '${Base_Url}arsip/detail/${id}';
+    var response = await http.get(
+      Uri.parse(url),
+      headers: <String, String>{
+        'Authorization': 'Bearer $token',
+      },
+    );
+    print("${url}");
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
   static Future<dynamic> getData(int page) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString("token");

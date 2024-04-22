@@ -122,10 +122,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ListTile(
               title: Text('Logout'),
               onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => MyApp()),
-                // );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MyHomePage(title: "Login Lagi"),
+                  ),
+                );
               },
             ),
           ],
@@ -162,7 +164,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ),
                   ),
                   SizedBox(
-                    height: 30,
+                    height: 6,
                   ),
                   Text(
                     "Surat Disposisi Terbaru",
@@ -170,6 +172,32 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           fontWeight: FontWeight.w700,
                         ),
                   ),
+                  isPanelOpen
+                      ? Container()
+                      : Padding(
+                          padding: const EdgeInsets.only(left: 20, right: 20),
+                          child: Container(
+                            width: MediaQuery.sizeOf(context).width,
+                            // padding: EdgeInsets.only(left: 10, right: 10),
+                            decoration: BoxDecoration(
+                              color: Colors.amber,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(5),
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Scrool ke atas untuk melihat disposisi terbaru",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                   SizedBox(
                     height: isPanelOpen ? 10 : 200,
                   ),

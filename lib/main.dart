@@ -72,11 +72,11 @@ class _MyAppState extends State<MyApp> {
         ),
         home: BlocBuilder<AuthenticateBloc, AuthenticateState>(
           builder: (context, state) {
-            print("main state status ${state}");
-            if (state is AuthenticateInitial) {
+            print("status state login : ${state}");
+            if (state is AuthenticateAuthenticated) {
+              return DashboardScreen();
+            } else if (state is AuthenticateInitial) {
               return SplashScreen();
-            } else if (state is AuthenticateAuthenticated) {
-              return const DashboardScreen();
             } else if (state is AuthenticateunAuthenticated) {
               return MyHomePage(
                   title: "Logout berhasil, silahkan login kembali");
@@ -175,10 +175,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 : null;
           }
           if (state is AuthenticateAuthenticated) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => DashboardScreen()),
-            );
+            DashboardScreen();
           }
         },
         child: BlocBuilder<LoginBloc, LoginState>(
@@ -233,8 +230,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                 prefixIcon: Icon(Icons.person),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.all(
-                                      Radius.circular(
-                                          4.0)), // Mengatur radius border
+                                    Radius.circular(4.0),
+                                  ), // Mengatur radius border
                                   borderSide: BorderSide(
                                     color: Colors.grey, // Warna border
                                     width: 1.0, // Ketebalan border
@@ -290,6 +287,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                             GestureDetector(
                               onTap: () {
+                                // print(state);
                                 if (_formKey.currentState!.validate()) {
                                   setState(() {
                                     closeinfo = false;
@@ -299,6 +297,14 @@ class _MyHomePageState extends State<MyHomePage> {
                                         username: username.text,
                                         password: password.text),
                                   );
+                                  // if (state is AuthenticateAuthenticated) {
+                                  //   Navigator.push(
+                                  //     context,
+                                  //     MaterialPageRoute(
+                                  //       builder: (context) => DashboardScreen(),
+                                  //     ),
+                                  //   );
+                                  // }
                                 }
                               },
                               child:

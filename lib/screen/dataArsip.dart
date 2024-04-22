@@ -39,7 +39,7 @@ class _dataArsipState extends State<dataArsip> {
 
   Future<void> fetchData() async {
     try {
-      var data = await arsipRepo.getData(page);
+      var data = await arsipRepo.listdataArsip(page);
       setState(() {
         suratData = data;
       });
@@ -60,9 +60,21 @@ class _dataArsipState extends State<dataArsip> {
         actions: <Widget>[
           Padding(
             padding: const EdgeInsets.only(right: 15),
-            child: Icon(
-              Icons.add,
-              color: Color.fromARGB(255, 255, 255, 255),
+            child: IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return ArsipForm(idarsip: 0, judul: "");
+                    },
+                  ),
+                );
+              },
+              icon: Icon(
+                Icons.add,
+                color: Color.fromARGB(255, 255, 255, 255),
+              ),
             ),
           )
         ],
@@ -168,7 +180,7 @@ class _dataArsipState extends State<dataArsip> {
                                         Expanded(
                                           flex: 1,
                                           child: Text(
-                                            '${suratData[index]['no_surat']}',
+                                            '${suratData[index]['nama_arsip']}',
                                             style: TextStyle(
                                               color: const Color.fromARGB(
                                                   255, 0, 0, 0),
@@ -208,7 +220,12 @@ class _dataArsipState extends State<dataArsip> {
                                                   MaterialPageRoute(
                                                     builder: (_) {
                                                       return ArsipForm(
-                                                          idarsip: 0);
+                                                        idarsip:
+                                                            suratData[index]
+                                                                ['id_arsip'],
+                                                        judul: suratData[index]
+                                                            ['nama_arsip'],
+                                                      );
                                                     },
                                                   ),
                                                 );
@@ -218,7 +235,9 @@ class _dataArsipState extends State<dataArsip> {
                                                   MaterialPageRoute(
                                                     builder: (_) {
                                                       return ArsipForm(
-                                                          idarsip: 0);
+                                                        idarsip: 0,
+                                                        judul: '',
+                                                      );
                                                     },
                                                   ),
                                                 );
@@ -228,7 +247,8 @@ class _dataArsipState extends State<dataArsip> {
                                                   MaterialPageRoute(
                                                     builder: (_) {
                                                       return ArsipForm(
-                                                          idarsip: 0);
+                                                          idarsip: 0,
+                                                          judul: '');
                                                     },
                                                   ),
                                                 );
@@ -238,13 +258,28 @@ class _dataArsipState extends State<dataArsip> {
                                         ),
                                       ],
                                     ),
-                                    Text(
-                                      '${suratData[index]['asal_surat']}',
-                                      style: TextStyle(
-                                        color:
-                                            const Color.fromARGB(255, 0, 0, 0),
-                                        fontSize: 14.0,
-                                      ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          '${suratData[index]['tanggal']}',
+                                          style: TextStyle(
+                                            color: const Color.fromARGB(
+                                                255, 0, 0, 0),
+                                            fontSize: 14.0,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(
+                                          '${suratData[index]['jenis_arsip']}',
+                                          style: TextStyle(
+                                            color: const Color.fromARGB(
+                                                255, 0, 0, 0),
+                                            fontSize: 14.0,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),

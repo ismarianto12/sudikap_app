@@ -5,7 +5,8 @@ import 'package:sistem_kearsipan/repository/arsipRepo.dart';
 
 class ArsipForm extends StatefulWidget {
   int idarsip = 0;
-  ArsipForm({required this.idarsip});
+  String judul = '';
+  ArsipForm({required this.idarsip, required this.judul});
   @override
   _ArsipFormState createState() => _ArsipFormState();
 }
@@ -64,9 +65,30 @@ class _ArsipFormState extends State<ArsipForm> {
   @override
   void initState() {
     super.initState();
+
+    if (widget.idarsip != 0 || widget.idarsip != '') {
+      var responsedata = arsipRepo.getDataDetail(widget.idarsip);
+      print(responsedata);
+      print("detail arsip");
+      _namaArsipController.text = "test";
+      _jumlahController.text = "test";
+      _keteranganController.text = "test";
+      id_satuanController.text = "test";
+      id_jenisController.text = "test";
+      id_pejabatController.text = "test";
+    }
     _selectedJenisArsip =
         _jenisArsip.first; // Set initial value to the first item in the list
     _selectedLokasi = _jenisArsip.first;
+  }
+
+  void _clearSatus() {
+    _namaArsipController.text = "";
+    _jumlahController.text = "";
+    _keteranganController.text = "";
+    id_satuanController.text = "";
+    id_jenisController.text = "";
+    id_pejabatController.text = "";
   }
 
   Future<void> _submitdata() async {
@@ -93,6 +115,7 @@ class _ArsipFormState extends State<ArsipForm> {
           );
         },
       );
+      _clearSatus();
     } else {
       showDialog(
         context: context,
@@ -113,11 +136,13 @@ class _ArsipFormState extends State<ArsipForm> {
 
   @override
   Widget build(BuildContext context) {
+    print("widget arsip");
+    print(widget.idarsip);
     return Scaffold(
       appBar: AppBar(
         shadowColor: null,
         elevation: 0, // Menghilangkan bayangan di bawah appbar
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.transparent,
         actions: <Widget>[
           Padding(
             padding: const EdgeInsets.only(right: 15),
@@ -145,7 +170,7 @@ class _ArsipFormState extends State<ArsipForm> {
         title: Text(
           'Arsip ${widget.idarsip != 0 ? "Edit" : "Tambah"}',
           style: TextStyle(
-            color: Colors.white,
+            color: const Color.fromARGB(255, 0, 0, 0),
           ),
         ),
         actionsIconTheme: IconThemeData(
@@ -157,7 +182,7 @@ class _ArsipFormState extends State<ArsipForm> {
           },
           child: Icon(
             Icons.arrow_back_ios_sharp,
-            color: Colors.white,
+            color: Colors.black,
           ),
         ),
         // Menghilangkan border bawah
@@ -176,6 +201,13 @@ class _ArsipFormState extends State<ArsipForm> {
                   key: _formKey,
                   child: Column(
                     children: [
+                      widget.idarsip != 0
+                          ? Text(
+                              "Edit Action : ${widget.judul} ${widget.idarsip}")
+                          : Text(""),
+                      SizedBox(
+                        height: 20,
+                      ),
                       Container(
                         height: 45,
                         width: MediaQuery.sizeOf(context).width,
@@ -223,7 +255,7 @@ class _ArsipFormState extends State<ArsipForm> {
                         height: 50,
                         width: MediaQuery.sizeOf(context).width,
                         decoration: BoxDecoration(
-                          color: const Color.fromARGB(255, 185, 185, 185),
+                          color: Color.fromRGBO(244, 244, 244, 1),
                           borderRadius: BorderRadius.all(
                             Radius.circular(10),
                           ),
@@ -248,7 +280,7 @@ class _ArsipFormState extends State<ArsipForm> {
                         height: 50,
                         width: MediaQuery.sizeOf(context).width,
                         decoration: BoxDecoration(
-                          color: const Color.fromARGB(255, 185, 185, 185),
+                          color: Color.fromRGBO(244, 244, 244, 1),
                           borderRadius: BorderRadius.all(
                             Radius.circular(10),
                           ),
@@ -291,7 +323,7 @@ class _ArsipFormState extends State<ArsipForm> {
                         height: 50,
                         width: MediaQuery.sizeOf(context).width,
                         decoration: BoxDecoration(
-                          color: const Color.fromARGB(255, 185, 185, 185),
+                          color: Color.fromRGBO(244, 244, 244, 1),
                           borderRadius: BorderRadius.all(
                             Radius.circular(10),
                           ),
@@ -320,7 +352,7 @@ class _ArsipFormState extends State<ArsipForm> {
                         height: 50,
                         width: MediaQuery.sizeOf(context).width,
                         decoration: BoxDecoration(
-                          color: const Color.fromARGB(255, 185, 185, 185),
+                          color: Color.fromRGBO(244, 244, 244, 1),
                           borderRadius: BorderRadius.all(
                             Radius.circular(10),
                           ),
