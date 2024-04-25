@@ -70,24 +70,29 @@ class _MyAppState extends State<MyApp> {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: BlocBuilder<AuthenticateBloc, AuthenticateState>(
-          builder: (context, state) {
-            print("status state login : ${state}");
+        home: BlocListener<AuthenticateBloc, AuthenticateState>(
+          listener: (context, state) {
+            // print("status state login : ${state}");
             if (state is AuthenticateAuthenticated) {
-              return DashboardScreen();
-            } else if (state is AuthenticateInitial) {
-              return SplashScreen();
-            } else if (state is AuthenticateunAuthenticated) {
-              return MyHomePage(
-                  title: "Logout berhasil, silahkan login kembali");
-            } else {
-              // Handling loading state
-              return Scaffold(
-                body:
-                    _buildLoadingWidget(), // Use a separate method to build loading widget
+              // return DashboardScreen();
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => DashboardScreen(),
+                ),
               );
+            } else if (state is AuthenticateInitial) {
+              // return SplashScreen();
+              Navigator.of(context).pushReplacementNamed('/login');
+            } else if (state is AuthenticateunAuthenticated) {
+              // return MyHomePage(
+              //     title: "Logout berhasil, silahkan login kembali");
+              Navigator.of(context).pushReplacementNamed('/login');
             }
           },
+          child: MyHomePage(
+            title: "Login Apps",
+          ),
         ),
       ),
     );
@@ -143,13 +148,11 @@ class _MyHomePageState extends State<MyHomePage> {
         listener: (context, state) {
           // TODO: implement listener
           if (state is LoginFailure) {
-            // print('login failed');
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text('Username dan password Salah ${state.error}'),
               backgroundColor: Colors.red,
             ));
-          }
-          if (state is LoginLoading) {
+          } else if (state is LoginLoading) {
             Future.delayed(Duration(seconds: 3), () {
               Navigator.of(context).pop();
             });
@@ -173,9 +176,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     },
                   )
                 : null;
-          }
-          if (state is AuthenticateAuthenticated) {
-            DashboardScreen();
           }
         },
         child: BlocBuilder<LoginBloc, LoginState>(
@@ -287,7 +287,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                             GestureDetector(
                               onTap: () {
-                                // print(state);
+                                print(state);
                                 if (_formKey.currentState!.validate()) {
                                   setState(() {
                                     closeinfo = false;

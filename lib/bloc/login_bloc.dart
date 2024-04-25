@@ -32,6 +32,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         // print(response);
         if (response != null) {
           authenticateBloc.add(LoggedIn(response));
+          // yield AuthenticateAuthenticated();
         } else {
           yield LoginInitial();
         }

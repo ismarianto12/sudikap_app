@@ -1,12 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sistem_kearsipan/repository/pegawaiRepo.dart';
 
 class pegawaiForm extends StatefulWidget {
+  String action;
+  int id = 0;
+  pegawaiForm({Key? key, required this.action, required id}) : super(key: key);
   @override
   _pegawaiFormState createState() => _pegawaiFormState();
 }
 
 class _pegawaiFormState extends State<pegawaiForm> {
+  List data = [];
   final _formKey = GlobalKey<FormState>();
 
   TextEditingController nipController = TextEditingController();
@@ -30,6 +35,18 @@ class _pegawaiFormState extends State<pegawaiForm> {
   TextEditingController tanggalPelatihanController = TextEditingController();
 
   @override
+  Future<dynamic> CallactionEdit() async {
+    var response = await PegawaiRepo.getData(10);
+    setState(() {
+      data = response;
+    });
+  }
+
+  void initState() {
+    if (widget.action == 'edit') {}
+    super.initState();
+  }
+
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 4,

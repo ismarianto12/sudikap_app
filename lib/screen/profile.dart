@@ -14,36 +14,40 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        shadowColor: Colors.transparent,
+        elevation: 0, // Menghilangkan bayangan di bawah appbar
+        backgroundColor: Color.fromARGB(225, 255, 255, 255),
+        actions: <Widget>[],
+        title: Text(
+          'Update Profile',
+          style: TextStyle(
+            color: Colors.black,
+          ),
+        ),
+        actionsIconTheme: IconThemeData(
+          color: Colors.black,
+        ),
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Icon(
+            Icons.arrow_back_ios_sharp,
+            color: Colors.black,
+          ),
+        ),
+        // Menghilangkan border bawah
+        shape: Border(bottom: BorderSide.none),
+      ),
       body: SafeArea(
         child: Column(
           children: [
-            GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Icon(Icons.arrow_back_ios_new),
-                  SizedBox(
-                    width: 100,
-                  ),
-                  Text(
-                    "Update Profile",
-                    style: TextStyle(fontSize: 18),
-                  ),
-                ],
-              ),
-            ),
             Expanded(
               child: SingleChildScrollView(
                 child: Form(
                   child: Padding(
-                    padding: const EdgeInsets.all(14.0),
+                    padding: const EdgeInsets.all(35.0),
                     child: Column(
                       children: [
                         Image.network(
@@ -124,7 +128,7 @@ class _ProfileState extends State<Profile> {
             ),
             Button(
               title: "Simpan Surat",
-              color: Colors.orange,
+              color: Color.fromARGB(255, 4, 110, 152),
             ),
             SizedBox(
               height: 20,
@@ -134,6 +138,4 @@ class _ProfileState extends State<Profile> {
       ),
     );
   }
-
-
 }

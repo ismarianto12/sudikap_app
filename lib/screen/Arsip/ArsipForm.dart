@@ -24,6 +24,7 @@ class _ArsipFormState extends State<ArsipForm> {
   String _selectedLokasi = '';
   String _selectedSatuan = '';
   List<String> _selectedPermissions = [];
+  dynamic datedit = [];
 
   List<String> _jenisArsip = [
     'Pilih Jenis Arsip',
@@ -50,7 +51,6 @@ class _ArsipFormState extends State<ArsipForm> {
     'sd',
     'Ruang Kasubbag Keuangan',
   ];
-
   List<String> _satuanArsip = [
     '-Pilih Satuan-',
     'Bendel',
@@ -63,14 +63,21 @@ class _ArsipFormState extends State<ArsipForm> {
   ];
 
   @override
+  Future<dynamic> getDataEdit() async {
+    var responsedata = await arsipRepo.getDataDetail(widget.idarsip);
+    setState(() {
+      datedit = responsedata;
+    });
+  }
+
   void initState() {
     super.initState();
-
     if (widget.idarsip != 0 || widget.idarsip != '') {
-      var responsedata = arsipRepo.getDataDetail(widget.idarsip);
-      print(responsedata);
-      print("detail arsip");
-      _namaArsipController.text = "test";
+      getDataEdit();
+      print("testing data ${datedit}");
+      print(datedit);
+
+      _namaArsipController.text = "";
       _jumlahController.text = "test";
       _keteranganController.text = "test";
       id_satuanController.text = "test";
@@ -92,22 +99,36 @@ class _ArsipFormState extends State<ArsipForm> {
   }
 
   Future<void> _submitdata() async {
-    var response = await arsipRepo.createArchive(
-      _namaArsipController.text,
-      _jumlahController.text,
-      _keteranganController.text,
-      id_satuanController.text,
-      id_jenisController.text,
-      id_pejabatController.text,
-    );
+    var response = widget.idarsip != 0
+        ? await arsipRepo.updateArchive(
+            widget.idarsip,
+            _namaArsipController.text,
+            _jumlahController.text,
+            _keteranganController.text,
+            id_satuanController.text,
+            id_jenisController.text,
+            id_pejabatController.text,
+          )
+        : await arsipRepo.createArchive(
+            _namaArsipController.text,
+            _jumlahController.text,
+            _keteranganController.text,
+            id_satuanController.text,
+            id_jenisController.text,
+            id_pejabatController.text,
+          );
     if (response.statusCode == 200) {
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text("Success"),
+            title: Text(widget.idarsip != 0
+                ? "Updaate data arsip berhasil"
+                : "Berhasil Menambahkan data arsip"),
             titleTextStyle: TextStyle(
-                fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20),
+                fontWeight: FontWeight.bold,
+                color: const Color.fromARGB(255, 255, 255, 255),
+                fontSize: 20),
             backgroundColor: Colors.greenAccent,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(20))),
@@ -386,5 +407,11 @@ class _ArsipFormState extends State<ArsipForm> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    
+    super.dispose();
   }
 }

@@ -24,6 +24,23 @@ class PegawaiRepo {
     }
   }
 
+  static Future<dynamic> GedetailPegawai(int id) async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    String? token = pref.getString("token");
+    var response = await http.post(
+      Uri.parse("${Base_Url}detail/${id}"),
+      headers: <String, String>{
+        'Authorization': 'Bearer ${token}',
+        'Content-Type': 'application/json'
+      },
+    );
+    if (response.statusCode == 200) {
+      return json.decode(response.body)[0];
+    } else {
+      throw Exception("failed load karyawan data");
+    }
+  }
+
   // untuk surat masuk
   static Future<dynamic> getDataSuratKeluar(int page) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();

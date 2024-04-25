@@ -61,7 +61,7 @@ class _dataPegawaiState extends State<dataPegawai> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => pegawaiForm(),
+              builder: (context) => pegawaiForm(id: 0, action: 'create'),
             ),
           );
         },
@@ -183,7 +183,11 @@ class _dataPegawaiState extends State<dataPegawai> {
                                             backgroundColor:
                                                 const Color.fromARGB(
                                                     255, 0, 0, 0),
-                                            child: Text("${index + 1}"),
+                                            child: Text(
+                                              "${index + 1}",
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
                                           ),
                                           Expanded(
                                             flex: 1,
@@ -405,10 +409,13 @@ class _dataPegawaiState extends State<dataPegawai> {
   Future<void> _scrollistener() async {
     if (scrollController.position.pixels ==
         scrollController.position.maxScrollExtent) {
-      setState(() {
-        isLoadingMore = true;
-      });
-      page = page + 1;
+      setState(
+        () {
+          isLoadingMore = true;
+          page = page + 1;
+        },
+      );
+
       await fetchData();
       print("Scrool call");
     } else {

@@ -21,7 +21,9 @@ class suratKeluar extends StatefulWidget {
 
 class _suratKeluarState extends State<suratKeluar> {
   List<dynamic> suratData = [];
+  // TextEditingController searchingdata = TextEditingController();
   final scrollController = ScrollController();
+  final TextEditingController searchcontroller = TextEditingController();
   bool isLoadingMore = false;
   int page = 0;
   bool loading = true;
@@ -29,15 +31,17 @@ class _suratKeluarState extends State<suratKeluar> {
   void initState() {
     super.initState();
     scrollController.addListener(_scrollistener);
-    fetchData(); // Call fetchData() on initState()
+    fetchData();
   }
 
   Future<void> fetchData() async {
     try {
-      var data = await SuratRepo.getDataSuratKeluar(page);
+      var data =
+          await SuratRepo.getDataSuratKeluar(page, searchcontroller.text);
+      print("response data : ${data}");
       setState(() {
-        loading = false;
         suratData = data;
+        loading = false;
       });
     } catch (e) {
       setState(() {
@@ -76,17 +80,16 @@ class _suratKeluarState extends State<suratKeluar> {
         child: FloatingActionButton(
           backgroundColor: const Color.fromARGB(255, 97, 97, 97),
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => SuratKeluarForm(
-                  idSurat: 0,
-                ),
-              ),
-            );
+            setState(() {
+              searchcontroller.text = "";
+              page = 10;
+              loading = true;
+            });
+
+            fetchData();
           },
           child: Icon(
-            Icons.add,
+            Icons.refresh,
             color: Colors.white,
           ),
         ),
@@ -95,7 +98,7 @@ class _suratKeluarState extends State<suratKeluar> {
       //   title: Text("Data SPPD - Perjalanan dinas"),
       // ),
       body: SlidingUpPanel(
-        backdropEnabled: true,
+        // backdropEnabled: true,
         maxHeight: MediaQuery.sizeOf(context).height * 0.88,
         minHeight: MediaQuery.sizeOf(context).height * 0.55,
         borderRadius: BorderRadius.only(
@@ -322,7 +325,11 @@ class _suratKeluarState extends State<suratKeluar> {
       setState(() {
         loading = false;
         isLoadingMore = true;
-        page = page + 1;
+        if (suratData.isEmpty) {
+          page = 10;
+        } else {
+          page = page + 1;
+        }
       });
       await fetchData();
       print("Scrool call");
@@ -330,50 +337,59 @@ class _suratKeluarState extends State<suratKeluar> {
       print("tidak ");
     }
   }
-}
 
-Widget SearchingBar(BuildContext context) {
-  return Container(
-    height: MediaQuery.of(context).size.width * 0.09,
-    width: MediaQuery.of(context).size.width * 0.9,
-    decoration: BoxDecoration(
-      boxShadow: [
-        BoxShadow(
-          color: const Color.fromARGB(255, 234, 234, 234).withOpacity(0.5),
-          spreadRadius: 5,
-          blurRadius: 7,
-          offset: Offset(0, 2), // changes position of shadow
-        ),
-      ],
-      color: Color.fromARGB(122, 146, 146, 146),
-      borderRadius: BorderRadius.all(
-        Radius.circular(10),
-      ),
-    ),
-    child: Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Icon(Icons.search, color: Colors.white),
-          SizedBox(
-            width: 10,
-          ),
-          Expanded(
-            child: Container(
-              height: MediaQuery.sizeOf(context).height * 0.04,
-              child: TextFormField(
-                decoration: InputDecoration(
-                  hintStyle: TextStyle(color: Colors.white),
-                  border: InputBorder.none,
-                ),
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
+  Widget SearchingBar(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.width * 0.09,
+      width: MediaQuery.of(context).size.width * 0.9,
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: const Color.fromARGB(255, 234, 234, 234).withOpacity(0.5),
+            spreadRadius: 5,
+            blurRadius: 7,
+            offset: Offset(0, 2), // changes position of shadow
           ),
         ],
+        color: Color.fromARGB(122, 146, 146, 146),
+        borderRadius: BorderRadius.all(
+          Radius.circular(10),
+        ),
       ),
-    ),
-  );
+      child: Padding(
+        padding: const EdgeInsets.only(top: 8),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 14, left: 10),
+              child: Icon(Icons.search, color: Colors.white),
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Expanded(
+              child: Container(
+                height: MediaQuery.sizeOf(context).height * 0.04,
+                child: TextFormField(
+                  onChanged: (String value) {
+                    // print("${value} param");
+                    fetchData();
+                  },
+                  controller: searchcontroller,
+                  // focusNode: _focusNode,
+                  decoration: InputDecoration(
+                    hintStyle: TextStyle(color: Colors.white),
+                    border: InputBorder.none,
+                  ),
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }

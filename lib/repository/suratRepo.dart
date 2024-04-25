@@ -34,11 +34,11 @@ class SuratRepo {
   }
 
   // untuk surat masuk
-  static Future<dynamic> getDataSuratKeluar(int page) async {
+  static Future<dynamic> getDataSuratKeluar(int page, String search) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString("token");
 
-    String url = '${Base_Url}surat_keluar/list?page=$page';
+    String url = '${Base_Url}surat_keluar/list?page=$page&search=${search}';
     var response = await http.get(
       Uri.parse(url),
       headers: <String, String>{

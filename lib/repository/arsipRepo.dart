@@ -4,11 +4,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sistem_kearsipan/environtment.dart';
 
 class arsipRepo {
-  static Future<dynamic> listdataArsip(int page) async {
+  static Future<dynamic> listdataArsip(int page, String searchingdata) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString("token");
-
-    String url = '${Base_Url}arsip/list?page=$page';
+    String url = '${Base_Url}arsip/list?page=$page&search=${searchingdata}';
     var response = await http.get(
       Uri.parse(url),
       headers: <String, String>{
@@ -33,9 +32,8 @@ class arsipRepo {
         'Authorization': 'Bearer $token',
       },
     );
-    print("${url}");
     if (response.statusCode == 200) {
-      return json.decode(response.body);
+      return json.decode(response.body)[0];
     } else {
       throw Exception('Failed to load data');
     }
@@ -126,6 +124,39 @@ class arsipRepo {
       );
       print(response);
       print("${Base_Url}/arsip/insert");
+      return response;
+    } catch (e) {
+      throw Exception('Failed to insert data');
+    }
+  }
+
+  static Future<dynamic> updateArchive(
+    int idarsip,
+    String _namaArsipController,
+    String _jumlahController,
+    String _keteranganController,
+    String _id_satuanController,
+    String _id_jenisController,
+    String _id_pejabatController,
+  ) async {
+    try {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString("token");
+
+      var response = await http.post(
+        Uri.parse("${Base_Url}arsip/update/${idarsip}"),
+        headers: <String, String>{'Authorization': 'Bearer $token'},
+        body: {
+          'nama': _namaArsipController,
+          'jumlah': _jumlahController,
+          'keterangan': _keteranganController,
+          'id_satuan': _id_satuanController,
+          'id_jenis': _id_jenisController, // Fixed this line
+          'id_pejabat': _id_pejabatController, // Fixed this line
+        },
+      );
+      print(response);
+      print("${Base_Url}/arsip/update");
       return response;
     } catch (e) {
       throw Exception('Failed to insert data');

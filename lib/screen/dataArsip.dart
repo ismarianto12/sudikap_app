@@ -16,6 +16,8 @@ class dataArsip extends StatefulWidget {
 }
 
 class _dataArsipState extends State<dataArsip> {
+  final TextEditingController searchingdata = TextEditingController();
+
   List<dynamic> suratData = [];
   final scrollController = ScrollController();
   final FocusNode _focusNode = FocusNode();
@@ -41,7 +43,7 @@ class _dataArsipState extends State<dataArsip> {
 
   Future<void> fetchData() async {
     try {
-      var data = await arsipRepo.listdataArsip(page);
+      var data = await arsipRepo.listdataArsip(page, searchingdata.text);
       setState(() {
         loading = false;
         suratData = data;
@@ -138,183 +140,202 @@ class _dataArsipState extends State<dataArsip> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(18.0),
-                child: loading
-                    ? LoadingPage(
-                        color: const Color.fromARGB(255, 186, 186, 186),
-                        itemCount: 13)
-                    : ListView.builder(
-                        controller: scrollController,
-                        itemCount: isLoadingMore
-                            ? suratData.length + 1
-                            : suratData.length,
-                        shrinkWrap: true,
-                        itemBuilder: (BuildContext context, int index) {
-                          if (index < suratData.length) {
-                            return Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: Column(
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      // boxShadow: [
-                                      //   BoxShadow(
-                                      //     color: Colors.grey.withOpacity(0.5),
-                                      //     spreadRadius: 0,
-                                      //     blurRadius: 10,
-                                      //     offset: Offset(1, 0),
-                                      //   ),
-                                      // ],
-                                      color: Color.fromARGB(255, 255, 255, 255),
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(6)),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                child: suratData.length == 0
+                    ? Expanded(
+                        child: Container(
+                          child: Text("Tidak ada data"),
+                        ),
+                      )
+                    : loading
+                        ? LoadingPage(
+                            color: const Color.fromARGB(255, 186, 186, 186),
+                            itemCount: 13)
+                        : ListView.builder(
+                            controller: scrollController,
+                            itemCount: isLoadingMore
+                                ? suratData.length + 1
+                                : suratData.length,
+                            shrinkWrap: true,
+                            itemBuilder: (BuildContext context, int index) {
+                              // print("fpajang data : ${suratData[index].length}");
+                              if (index < suratData.length) {
+                                return Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          // boxShadow: [
+                                          //   BoxShadow(
+                                          //     color: Colors.grey.withOpacity(0.5),
+                                          //     spreadRadius: 0,
+                                          //     blurRadius: 10,
+                                          //     offset: Offset(1, 0),
+                                          //   ),
+                                          // ],
+                                          color: Color.fromARGB(
+                                              255, 255, 255, 255),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(6)),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
-                                              // CircleAvatar(
-                                              //   backgroundColor:
-                                              //       const Color.fromARGB(255, 0, 0, 0),
-                                              //   child: Text(
-                                              //     "${index + 1}",
-                                              //     style: TextStyle(
-                                              //       color: Colors.white,
-                                              //     ),
-                                              //   ),
-                                              // ),
-                                              Expanded(
-                                                flex: 1,
-                                                child: Text(
-                                                  '${suratData[index]['nama_arsip']}',
-                                                  style: TextStyle(
-                                                    color: const Color.fromARGB(
-                                                        255, 0, 0, 0),
-                                                    fontSize: 16.0,
-                                                    fontWeight: FontWeight.bold,
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  // CircleAvatar(
+                                                  //   backgroundColor:
+                                                  //       const Color.fromARGB(255, 0, 0, 0),
+                                                  //   child: Text(
+                                                  //     "${index + 1}",
+                                                  //     style: TextStyle(
+                                                  //       color: Colors.white,
+                                                  //     ),
+                                                  //   ),
+                                                  // ),
+                                                  Expanded(
+                                                    flex: 1,
+                                                    child: Text(
+                                                      '${suratData[index]['nama_arsip']}',
+                                                      style: TextStyle(
+                                                        color: const Color
+                                                            .fromARGB(
+                                                            255, 0, 0, 0),
+                                                        fontSize: 16.0,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    ),
                                                   ),
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                ),
+                                                  GestureDetector(
+                                                    onTap: () {},
+                                                    child:
+                                                        PopupMenuButton<String>(
+                                                      // Define the menu items
+                                                      itemBuilder: (BuildContext
+                                                          context) {
+                                                        return <PopupMenuEntry<
+                                                            String>>[
+                                                          PopupMenuItem<String>(
+                                                            value: 'edit',
+                                                            child: Text('Edit'),
+                                                          ),
+                                                          PopupMenuItem<String>(
+                                                            value: 'delete',
+                                                            child:
+                                                                Text('Delete'),
+                                                          ),
+                                                          PopupMenuItem<String>(
+                                                            value: 'detail',
+                                                            child:
+                                                                Text('Detail'),
+                                                          ),
+                                                        ];
+                                                      },
+                                                      // Define what happens when a menu item is selected
+                                                      onSelected:
+                                                          (String value) {
+                                                        // print('Selected: $value');
+                                                        if (value == 'edit') {
+                                                          Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                              builder: (_) {
+                                                                return ArsipForm(
+                                                                  idarsip: suratData[
+                                                                          index]
+                                                                      [
+                                                                      'id_arsip'],
+                                                                  judul: suratData[
+                                                                          index]
+                                                                      [
+                                                                      'nama_arsip'],
+                                                                );
+                                                              },
+                                                            ),
+                                                          );
+                                                        } else if (value ==
+                                                            'detail') {
+                                                          Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                              builder: (_) {
+                                                                return ArsipForm(
+                                                                  idarsip: 0,
+                                                                  judul: '',
+                                                                );
+                                                              },
+                                                            ),
+                                                          );
+                                                        } else if (value ==
+                                                            'delete') {
+                                                          Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                              builder: (_) {
+                                                                return ArsipForm(
+                                                                    idarsip: 0,
+                                                                    judul: '');
+                                                              },
+                                                            ),
+                                                          );
+                                                        }
+                                                      },
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                              GestureDetector(
-                                                onTap: () {},
-                                                child: PopupMenuButton<String>(
-                                                  // Define the menu items
-                                                  itemBuilder:
-                                                      (BuildContext context) {
-                                                    return <PopupMenuEntry<
-                                                        String>>[
-                                                      PopupMenuItem<String>(
-                                                        value: 'edit',
-                                                        child: Text('Edit'),
-                                                      ),
-                                                      PopupMenuItem<String>(
-                                                        value: 'delete',
-                                                        child: Text('Delete'),
-                                                      ),
-                                                      PopupMenuItem<String>(
-                                                        value: 'detail',
-                                                        child: Text('Detail'),
-                                                      ),
-                                                    ];
-                                                  },
-                                                  // Define what happens when a menu item is selected
-                                                  onSelected: (String value) {
-                                                    // print('Selected: $value');
-                                                    if (value == 'edit') {
-                                                      Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                          builder: (_) {
-                                                            return ArsipForm(
-                                                              idarsip: suratData[
-                                                                      index]
-                                                                  ['id_arsip'],
-                                                              judul: suratData[
-                                                                      index][
-                                                                  'nama_arsip'],
-                                                            );
-                                                          },
-                                                        ),
-                                                      );
-                                                    } else if (value ==
-                                                        'detail') {
-                                                      Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                          builder: (_) {
-                                                            return ArsipForm(
-                                                              idarsip: 0,
-                                                              judul: '',
-                                                            );
-                                                          },
-                                                        ),
-                                                      );
-                                                    } else if (value ==
-                                                        'delete') {
-                                                      Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                          builder: (_) {
-                                                            return ArsipForm(
-                                                                idarsip: 0,
-                                                                judul: '');
-                                                          },
-                                                        ),
-                                                      );
-                                                    }
-                                                  },
-                                                ),
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    '${suratData[index]['tanggal']}',
+                                                    style: TextStyle(
+                                                      color:
+                                                          const Color.fromARGB(
+                                                              255, 0, 0, 0),
+                                                      fontSize: 14.0,
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  Text(
+                                                    '${suratData[index]['jenis_arsip']}',
+                                                    style: TextStyle(
+                                                      color:
+                                                          const Color.fromARGB(
+                                                              255, 0, 0, 0),
+                                                      fontSize: 14.0,
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                             ],
                                           ),
-                                          Row(
-                                            children: [
-                                              Text(
-                                                '${suratData[index]['tanggal']}',
-                                                style: TextStyle(
-                                                  color: const Color.fromARGB(
-                                                      255, 0, 0, 0),
-                                                  fontSize: 14.0,
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                width: 10,
-                                              ),
-                                              Text(
-                                                '${suratData[index]['jenis_arsip']}',
-                                                style: TextStyle(
-                                                  color: const Color.fromARGB(
-                                                      255, 0, 0, 0),
-                                                  fontSize: 14.0,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
+                                        ),
                                       ),
-                                    ),
+                                      Divider(),
+                                    ],
                                   ),
-                                  Divider(),
-                                ],
-                              ),
-                            );
-                          } else {
-                            return Center(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: CircularProgressIndicator(),
-                              ),
-                            );
-                          }
-                        },
-                      ),
+                                );
+                              } else {
+                                return Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                );
+                              }
+                            },
+                          ),
               ),
             ),
           ],
@@ -382,50 +403,58 @@ class _dataArsipState extends State<dataArsip> {
     }
   }
 
-  Widget SearchingBar(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.width * 0.09,
-      width: MediaQuery.of(context).size.width * 0.9,
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: const Color.fromARGB(255, 234, 234, 234).withOpacity(0.5),
-            spreadRadius: 5,
-            blurRadius: 7,
-            offset: Offset(0, 2), // changes position of shadow
-          ),
-        ],
-        color: Color.fromARGB(122, 146, 146, 146),
-        borderRadius: BorderRadius.all(
-          Radius.circular(10),
+Widget SearchingBar(BuildContext context) {
+  return Container(
+    height: MediaQuery.of(context).size.width * 0.09,
+    width: MediaQuery.of(context).size.width * 0.9,
+    decoration: BoxDecoration(
+      boxShadow: [
+        BoxShadow(
+          color: const Color.fromARGB(255, 234, 234, 234).withOpacity(0.5),
+          spreadRadius: 5,
+          blurRadius: 7,
+          offset: Offset(0, 2), // changes position of shadow
         ),
+      ],
+      color: Color.fromARGB(122, 146, 146, 146),
+      borderRadius: BorderRadius.all(
+        Radius.circular(10),
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Icon(Icons.search, color: Colors.white),
-            SizedBox(
-              width: 10,
-            ),
-            Expanded(
-              child: Container(
-                height: MediaQuery.sizeOf(context).height * 0.04,
-                child: TextFormField(
-                  focusNode: _focusNode,
-                  decoration: InputDecoration(
-                    hintStyle: TextStyle(color: Colors.white),
-                    border: InputBorder.none,
-                  ),
-                  style: TextStyle(color: Colors.white),
+    ),
+    child: Padding(
+      padding: const EdgeInsets.only(top: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: 14, left: 10),
+            child: Icon(Icons.search, color: Colors.white),
+          ),
+          SizedBox(
+            width: 10,
+          ),
+          Expanded(
+            child: Container(
+              height: MediaQuery.sizeOf(context).height * 0.04,
+              child: TextFormField(
+                onChanged: (String value) {
+                  print("${value} param");
+                  fetchData();
+                },
+                controller: searchingdata,
+                focusNode: _focusNode,
+                decoration: InputDecoration(
+                  hintStyle: TextStyle(color: Colors.white),
+                  border: InputBorder.none,
                 ),
+                style: TextStyle(color: Colors.white),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
-    );
-  }
+    ),
+  );
+}
 }

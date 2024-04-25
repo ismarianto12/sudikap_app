@@ -50,29 +50,33 @@ class _AnimatedContainerWithTapState extends State<AnimatedContainerWithTap> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: widget.color,
-        borderRadius: BorderRadius.all(
-          Radius.circular(100),
+    return Padding(
+      padding: const EdgeInsets.only(left: 20, right: 20),
+      child: Container(
+        // widt
+        decoration: BoxDecoration(
+          color: widget.color,
+          borderRadius: BorderRadius.all(
+            Radius.circular(100),
+          ),
         ),
-      ),
-      width: MediaQuery.sizeOf(context).width,
-      height: MediaQuery.sizeOf(context).height * 0.06,
-      child: TextButton(
-        style: TextButton.styleFrom(
-            // backgroundColor: Color.fromARGB(255, 0, 194, 253),
-            shape:
-                const RoundedRectangleBorder(borderRadius: BorderRadius.zero)),
-        child: Text(
-          widget.title,
-          style: Theme.of(context).textTheme.headline6!.copyWith(
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
-                color: Colors.white,
-              ),
+        width: MediaQuery.sizeOf(context).width * 0.9,
+        height: MediaQuery.sizeOf(context).height * 0.06,
+        child: TextButton(
+          style: TextButton.styleFrom(
+              // backgroundColor: Color.fromARGB(255, 0, 194, 253),
+              shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.zero)),
+          child: Text(
+            widget.title,
+            style: Theme.of(context).textTheme.headline6!.copyWith(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
+                ),
+          ),
+          onPressed: null,
         ),
-        onPressed: null,
       ),
     );
   }

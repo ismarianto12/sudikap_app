@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sistem_kearsipan/main.dart';
+import 'package:sistem_kearsipan/screen/Notifikasi.dart';
 import 'package:sistem_kearsipan/screen/profile.dart';
 import 'package:sistem_kearsipan/screen/reportSurat.dart';
 import 'package:sistem_kearsipan/screen/searchDasboard.dart';
@@ -262,7 +263,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             width: 10,
                           ),
                           GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) {
+                                    return Notifikasi();
+                                  },
+                                ),
+                              );
+                            },
                             child: Icon(
                               Icons.notification_add_sharp,
                               color: const Color.fromARGB(255, 0, 0, 0),
