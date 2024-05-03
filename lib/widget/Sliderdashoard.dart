@@ -35,7 +35,7 @@ class _SliderdashoardState extends State<Sliderdashoard> {
       height: 100,
       width: MediaQuery.of(context).size.width * 0.9,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(100)),
+        borderRadius: BorderRadius.all(Radius.circular(80)),
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sistem_kearsipan/components/Loadingpage.dart';
 import 'package:sistem_kearsipan/repository/arsipRepo.dart';
+import 'package:sistem_kearsipan/route/transitionPage.dart';
 import 'package:sistem_kearsipan/screen/Arsip/ArsipForm.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -36,7 +37,7 @@ class _dataArsipState extends State<dataArsip> {
 
   void _onFocusChange() {
     setState(() {
-      heigOfSlide = 0.30;
+      heigOfSlide = 0.80;
       isFocused = _focusNode.hasFocus;
     });
   }
@@ -45,8 +46,8 @@ class _dataArsipState extends State<dataArsip> {
     try {
       var data = await arsipRepo.listdataArsip(page, searchingdata.text);
       setState(() {
-        loading = false;
         suratData = data;
+        loading = false;
       });
       print(data);
     } catch (e) {
@@ -60,6 +61,34 @@ class _dataArsipState extends State<dataArsip> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          setState(() {
+            loading = true;
+            page = 10;
+            searchingdata.text = "";
+          });
+          fetchData();
+        },
+        backgroundColor: Colors.green,
+        child: ClipOval(
+          child: Container(
+            color: Colors.green,
+            child: IconButton(
+              icon: Icon(
+                Icons.refresh,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                setState(() {
+                  loading = true;
+                });
+                fetchData();
+              }, // Dapat diubah jika diperlukan, tetapi tidak akan dijalankan karena FloatingActionButton sudah memiliki onPressed
+            ),
+          ),
+        ),
+      ),
       appBar: AppBar(
         shadowColor: null,
         elevation: 0, // Menghilangkan bayangan di bawah appbar
@@ -71,11 +100,7 @@ class _dataArsipState extends State<dataArsip> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return ArsipForm(idarsip: 0, judul: "");
-                    },
-                  ),
+                  transitionPage(ArsipForm(idarsip: 0, judul: "")),
                 );
               },
               icon: Icon(
@@ -140,10 +165,12 @@ class _dataArsipState extends State<dataArsip> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(18.0),
-                child: suratData.length == 0
-                    ? Expanded(
-                        child: Container(
-                          child: Text("Tidak ada data"),
+                child: suratData.length == 0 && loading != true
+                    ? Container(
+                        child: Image.network(
+                          "https://img.freepik.com/premium-vector/file-found-illustration-with-confused-people-holding-big-magnifier-search-no-result_258153-336.jpg",
+                          height: MediaQuery.sizeOf(context).height * 0.40,
+                          width: MediaQuery.sizeOf(context).width,
                         ),
                       )
                     : loading
@@ -219,6 +246,7 @@ class _dataArsipState extends State<dataArsip> {
                                                     onTap: () {},
                                                     child:
                                                         PopupMenuButton<String>(
+                                                      color: Colors.white,
                                                       // Define the menu items
                                                       itemBuilder: (BuildContext
                                                           context) {
@@ -247,19 +275,15 @@ class _dataArsipState extends State<dataArsip> {
                                                         if (value == 'edit') {
                                                           Navigator.push(
                                                             context,
-                                                            MaterialPageRoute(
-                                                              builder: (_) {
-                                                                return ArsipForm(
-                                                                  idarsip: suratData[
-                                                                          index]
-                                                                      [
-                                                                      'id_arsip'],
-                                                                  judul: suratData[
-                                                                          index]
-                                                                      [
-                                                                      'nama_arsip'],
-                                                                );
-                                                              },
+                                                            transitionPage(
+                                                              ArsipForm(
+                                                                idarsip: suratData[
+                                                                        index][
+                                                                    'id_arsip'],
+                                                                judul: suratData[
+                                                                        index][
+                                                                    'nama_arsip'],
+                                                              ),
                                                             ),
                                                           );
                                                         } else if (value ==
@@ -338,6 +362,7 @@ class _dataArsipState extends State<dataArsip> {
                           ),
               ),
             ),
+        
           ],
         ),
         body: Container(
@@ -403,58 +428,59 @@ class _dataArsipState extends State<dataArsip> {
     }
   }
 
-Widget SearchingBar(BuildContext context) {
-  return Container(
-    height: MediaQuery.of(context).size.width * 0.09,
-    width: MediaQuery.of(context).size.width * 0.9,
-    decoration: BoxDecoration(
-      boxShadow: [
-        BoxShadow(
-          color: const Color.fromARGB(255, 234, 234, 234).withOpacity(0.5),
-          spreadRadius: 5,
-          blurRadius: 7,
-          offset: Offset(0, 2), // changes position of shadow
-        ),
-      ],
-      color: Color.fromARGB(122, 146, 146, 146),
-      borderRadius: BorderRadius.all(
-        Radius.circular(10),
-      ),
-    ),
-    child: Padding(
-      padding: const EdgeInsets.only(top: 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 14, left: 10),
-            child: Icon(Icons.search, color: Colors.white),
-          ),
-          SizedBox(
-            width: 10,
-          ),
-          Expanded(
-            child: Container(
-              height: MediaQuery.sizeOf(context).height * 0.04,
-              child: TextFormField(
-                onChanged: (String value) {
-                  print("${value} param");
-                  fetchData();
-                },
-                controller: searchingdata,
-                focusNode: _focusNode,
-                decoration: InputDecoration(
-                  hintStyle: TextStyle(color: Colors.white),
-                  border: InputBorder.none,
-                ),
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
+  Widget SearchingBar(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.width * 0.09,
+      width: MediaQuery.of(context).size.width * 0.9,
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: const Color.fromARGB(255, 234, 234, 234).withOpacity(0.5),
+            spreadRadius: 5,
+            blurRadius: 7,
+            offset: Offset(0, 2), // changes position of shadow
           ),
         ],
+        color: Color.fromARGB(122, 146, 146, 146),
+        borderRadius: BorderRadius.all(
+          Radius.circular(10),
+        ),
       ),
-    ),
-  );
-}
+      child: Padding(
+        padding: const EdgeInsets.only(top: 8),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 14, left: 10),
+              child: Icon(Icons.search, color: Colors.white),
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Expanded(
+              child: Container(
+                height: MediaQuery.sizeOf(context).height * 0.04,
+                child: TextFormField(
+                  onChanged: (String value) {
+                    searchingdata.text = value;
+                    print("${value} param");
+                    fetchData();
+                  },
+                  controller: searchingdata,
+                  focusNode: _focusNode,
+                  decoration: InputDecoration(
+                    hintStyle: TextStyle(color: Colors.white),
+                    border: InputBorder.none,
+                  ),
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }

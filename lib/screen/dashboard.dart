@@ -4,6 +4,7 @@ import 'package:floating_bottom_navigation_bar/floating_bottom_navigation_bar.da
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sistem_kearsipan/main.dart';
 import 'package:sistem_kearsipan/screen/Notifikasi.dart';
 import 'package:sistem_kearsipan/screen/profile.dart';
@@ -40,6 +41,48 @@ class _DashboardScreenState extends State<DashboardScreen> {
     reportSurat(),
     reportSurat(),
   ];
+
+  @override
+  // Future logout() async {
+  //   SharedPreferences pref = await SharedPreferences.getInstance();
+  //   pref.remove("token");
+  //   Navigator.pushNamed(context, '/login');
+  // }
+  Future<void> logout(BuildContext context) async {
+    // Tampilkan dialog konfirmasi logout
+    bool confirmLogout = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Konfirmasi Logout'),
+          content: Text('Apakah Anda yakin ingin keluar?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false); // Tutup dialog tanpa logout
+              },
+              child: Text('Batal'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context)
+                    .pop(true); // Tutup dialog dan lanjutkan logout
+              },
+              child: Text('Keluar'),
+            ),
+          ],
+        );
+      },
+    );
+
+    // Jika pengguna mengonfirmasi logout, hapus token dan navigasikan ke halaman login
+    if (confirmLogout == true) {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove("token");
+      await prefs.clear();
+      Navigator.pushNamed(context, '/login');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -123,12 +166,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ListTile(
               title: Text('Logout'),
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MyHomePage(title: "Login Lagi"),
-                  ),
-                );
+                logout(context);
               },
             ),
           ],
@@ -178,6 +216,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       : Padding(
                           padding: const EdgeInsets.only(left: 20, right: 20),
                           child: Container(
+                            height: MediaQuery.sizeOf(context).height * 0.06,
                             width: MediaQuery.sizeOf(context).width,
                             // padding: EdgeInsets.only(left: 10, right: 10),
                             decoration: BoxDecoration(
@@ -218,18 +257,68 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ],
               ),
               body: Scaffold(
-                backgroundColor: null,
+                // backgroundColor: Color.fromARGB(194, 0, 195, 255),
                 body: Container(
-                  height: MediaQuery.sizeOf(context).height,
+                  width: MediaQuery.sizeOf(context).width,
+                  // height: MediaQuery.sizeOf(context).height * 0.4,
                   decoration: BoxDecoration(
-                    color: null,
-                    image: DecorationImage(
-                      alignment: Alignment(1.0, 0.8),
-                      fit: BoxFit.contain,
-                      image: NetworkImage(
-                        "https://img.freepik.com/premium-vector/person-holding-megaphone-concept-digital-marketing-flat-illustration_203633-7976.jpg",
-                      ),
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        HSLColor.fromAHSL(1.0, 240, 1.0, 0.2)
+                            .toColor(), // hsl(240deg 100% 20%)
+                        HSLColor.fromAHSL(1.0, 227, 1.0, 0.23)
+                            .toColor(), // hsl(227deg 100% 23%)
+                        HSLColor.fromAHSL(1.0, 220, 1.0, 0.26)
+                            .toColor(), // hsl(220deg 100% 26%)
+                        HSLColor.fromAHSL(1.0, 215, 1.0, 0.28)
+                            .toColor(), // hsl(215deg 100% 28%)
+                        HSLColor.fromAHSL(1.0, 210, 1.0, 0.31)
+                            .toColor(), // hsl(210deg 100% 31%)
+                        HSLColor.fromAHSL(1.0, 205, 1.0, 0.32)
+                            .toColor(), // hsl(205deg 100% 32%)
+                        HSLColor.fromAHSL(1.0, 201, 1.0, 0.34)
+                            .toColor(), // hsl(201deg 100% 34%)
+                        HSLColor.fromAHSL(1.0, 201, 0.74, 0.41)
+                            .toColor(), // hsl(201deg 74% 41%)
+                        HSLColor.fromAHSL(1.0, 201, 0.51, 0.49)
+                            .toColor(), // hsl(201deg 51% 49%)
+                        HSLColor.fromAHSL(1.0, 199, 0.47, 0.56)
+                            .toColor(), // hsl(199deg 47% 56%)
+                        HSLColor.fromAHSL(1.0, 197, 0.44, 0.62)
+                            .toColor(), // hsl(197deg 44% 62%)
+                        HSLColor.fromAHSL(1.0, 195, 0.42, 0.69)
+                            .toColor(), // hsl(195deg 42% 69%)
+                        HSLColor.fromAHSL(1.0, 192, 0.39, 0.76)
+                            .toColor(), // hsl(192deg 39% 76%)
+                        HSLColor.fromAHSL(1.0, 189, 0.36, 0.83)
+                            .toColor(), // hsl(189deg 36% 83%)
+                        HSLColor.fromAHSL(1.0, 185, 0.31, 0.91)
+                            .toColor(), // hsl(185deg 31% 91%)
+                        HSLColor.fromAHSL(1.0, 180, 0.14, 0.99)
+                            .toColor(), // hsl(180deg 14% 99%)
+                      ],
+                      stops: [
+                        0.0,
+                        0.07,
+                        0.13,
+                        0.2,
+                        0.27,
+                        0.33,
+                        0.4,
+                        0.47,
+                        0.53,
+                        0.6,
+                        0.67,
+                        0.73,
+                        0.8,
+                        0.87,
+                        0.93,
+                        1.0
+                      ],
                     ),
+                    // color: null,
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -248,7 +337,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             child: Icon(
                               Icons.menu,
                               size: 34,
-                              color: const Color.fromARGB(255, 0, 0, 0),
+                              color: Color.fromARGB(255, 255, 255, 255),
                             ),
                           ),
                           SizedBox(
@@ -257,7 +346,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           Text(
                             "SUDIKAP APPS",
                             style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                           SizedBox(
                             width: 10,
@@ -275,7 +367,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             },
                             child: Icon(
                               Icons.notification_add_sharp,
-                              color: const Color.fromARGB(255, 0, 0, 0),
+                              color: Color.fromARGB(255, 255, 255, 255),
                             ),
                           )
                         ],
@@ -326,42 +418,60 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         child: Text(
                           "Selamat Datang Di Pesisir Selatan",
                           style: TextStyle(
-                              color: Colors.black,
+                              color: const Color.fromARGB(255, 255, 255, 255),
                               fontSize: 14,
                               fontWeight: FontWeight.w500),
                         ),
                       ),
                       SizedBox(
-                        height: 10,
+                        height: 8,
                       ),
                       Sliderdashoard(),
-                      SizedBox(
-                        height: 4,
-                      ),
-
-                      Center(
-                        child: Text(
-                          "Menu Apps",
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 2,
-                      ),
-                      Container(
-                        width: MediaQuery.sizeOf(context).width * 0.5,
-                        height: 0.1,
-                        decoration: BoxDecoration(
-                          color: const Color.fromARGB(255, 161, 161, 161),
-                        ),
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.all(5),
-                          child: Menu(),
+                      Padding(
+                        padding: EdgeInsets.only(top: 10),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            image: DecorationImage(
+                              alignment: Alignment(1.18, 0),
+                              fit: BoxFit.contain,
+                              image: NetworkImage(
+                                "https://img.freepik.com/premium-vector/person-holding-megaphone-concept-digital-marketing-flat-illustration_203633-7976.jpg",
+                              ),
+                            ),
+                          ),
+                          width: MediaQuery.sizeOf(context).width,
+                          height: MediaQuery.sizeOf(context).height,
+                          child: Column(
+                            children: [
+                              Center(
+                                child: Text(
+                                  "Menu Apps",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 2,
+                              ),
+                              Container(
+                                width: MediaQuery.sizeOf(context).width * 0.5,
+                                height: 0.1,
+                                decoration: BoxDecoration(
+                                  color:
+                                      const Color.fromARGB(255, 161, 161, 161),
+                                ),
+                              ),
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(5),
+                                  child: Menu(),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ],
@@ -586,14 +696,14 @@ Widget SearchingBar(BuildContext context) {
       height: MediaQuery.of(context).size.width * 0.09,
       width: MediaQuery.sizeOf(context).width * 0.9,
       decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: const Color.fromARGB(255, 234, 234, 234).withOpacity(0.5),
-            spreadRadius: 5,
-            blurRadius: 7,
-            offset: Offset(0, 2), // changes position of shadow
-          ),
-        ],
+        // boxShadow: [
+        //   BoxShadow(
+        //     color: const Color.fromARGB(255, 234, 234, 234).withOpacity(0.5),
+        //     spreadRadius: 5,
+        //     blurRadius: 7,
+        //     offset: Offset(0, 2), // changes position of shadow
+        //   ),
+        // ],
         color: Color.fromARGB(122, 146, 146, 146),
         borderRadius: BorderRadius.all(
           Radius.circular(10),

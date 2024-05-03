@@ -1,8 +1,10 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
@@ -63,7 +65,6 @@ class _SuratKeluarFormState extends State<SuratKeluarForm> {
     });
   }
 
-  
   Future<void> _actionSubmitData() async {
     setState(() {
       isLoading = true;
@@ -144,30 +145,37 @@ class _SuratKeluarFormState extends State<SuratKeluarForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.white,
+        // actions: <Widget>[
+        //   Padding(
+        //     padding: const EdgeInsets.only(right: 15),
+        //     child: GestureDetector(
+        //       onTap: () {
+        //         return null;
+        //       },
+        //       child: Icon(
+        //         Icons.add,
+        //         color: Color.fromARGB(255, 0, 0, 0),
+        //       ),
+        //     ),
+        //   )
+        // ],
+        iconTheme: IconThemeData(color: const Color.fromARGB(255, 0, 0, 0)),
+        title: Text('Surat Keluar  ${widget.idSurat == 0 ? "Tambah" : "Edit"}'),
+        actionsIconTheme: IconThemeData(color: Colors.black),
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Icon(Icons.arrow_back_ios_sharp),
+        ),
+      ),
       body: SafeArea(
         child: Column(
           children: [
-            GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  SizedBox(width: 20),
-                  Icon(Icons.arrow_back_ios_new),
-                  SizedBox(width: 10),
-                  Text(
-                    "Surat Keluar ${widget.idSurat == 0 ? "Tambah" : "Edit"}",
-                    style: TextStyle(fontSize: 18),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
             Expanded(
               child: SingleChildScrollView(
                 child: Form(
@@ -187,90 +195,150 @@ class _SuratKeluarFormState extends State<SuratKeluarForm> {
                         //   textAlign: TextAlign.center,
                         // ),
                         // SizedBox(height: 20),
-                        TextFormField(
-                          controller: _kodeController,
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 10,
-                                horizontal:
-                                    10), // Atur ukuran teks kecil di sini
-                            labelText: 'Kode Klafikasi',
-                            // prefixIcon: Icon(Icons.person),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(
-                                  11.0)), // Mengatur radius border
-                              borderSide: BorderSide(
-                                color: Colors.grey, // Warna border
-                                width: 1.0, // Ketebalan border
-                              ),
+                        Container(
+                          // color: Colors.red,
+                          decoration: BoxDecoration(
+                            color: const Color.fromARGB(255, 202, 202, 202),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(11),
                             ),
                           ),
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Please enter some text';
-                            }
-                            return null;
-                          },
+                          height: 40,
+                          child: Padding(
+                            padding: const EdgeInsets.only(bottom: 5),
+                            child: TextFormField(
+                              controller: _kodeController,
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 10,
+                                    horizontal:
+                                        10), // Atur ukuran teks kecil di sini
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.never,
+                                enabledBorder: InputBorder.none,
+                                // labelText: 'Nama Arsip'
+                                labelText: 'Kode Klafikasi',
+                                border: InputBorder.none,
+                                // prefixIcon: Icon(Icons.person),
+                                // border: OutlineInputBorder(
+                                //   borderRadius: BorderRadius.all(Radius.circular(
+                                //       11.0)), // Mengatur radius border
+                                //   borderSide: BorderSide(
+                                //     color: Colors.grey, // Warna border
+                                //     width: 1.0, // Ketebalan border
+                                //   ),
+                                // ),
+                              ),
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Please enter some text';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
                         ),
+
                         SizedBox(
                           height: 15,
                         ),
-                        TextFormField(
-                          controller: _noAgendaController,
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 10,
-                                horizontal:
-                                    10), // Atur ukuran teks kecil di sini
-                            labelText: 'No Agenda',
-                            // prefixIcon: Icon(Icons.person),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(
-                                  11.0)), // Mengatur radius border
-                              borderSide: BorderSide(
-                                color: Colors.grey, // Warna border
-                                width: 1.0, // Ketebalan border
-                              ),
+
+                        Container(
+                          // color: Colors.red,
+                          decoration: BoxDecoration(
+                            color: const Color.fromARGB(255, 202, 202, 202),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(11),
                             ),
                           ),
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Please enter some text';
-                            }
-                            return null;
-                          },
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        TextFormField(
-                          controller: _nosuratController,
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 10,
-                                horizontal:
-                                    10), // Atur ukuran teks kecil di sini
-                            labelText: 'No Surat',
-                            // prefixIcon: Icon(Icons.person),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(
-                                  11.0)), // Mengatur radius border
-                              borderSide: BorderSide(
-                                color: Colors.grey, // Warna border
-                                width: 1.0, // Ketebalan border
+                          height: 40,
+                          child: Padding(
+                            padding: const EdgeInsets.only(bottom: 5),
+                            child: TextFormField(
+                              controller: _noAgendaController,
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 10,
+                                    horizontal:
+                                        10), // Atur ukuran teks kecil di sini
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.never,
+                                enabledBorder: InputBorder.none,
+                                // labelText: 'Nama Arsip'
+                                labelText: 'No  Agenda',
+                                border: InputBorder.none,
                               ),
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Please enter some text';
+                                }
+                                return null;
+                              },
                             ),
                           ),
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Wajib di isi enter some text';
-                            }
-                            return null;
-                          },
                         ),
 
                         SizedBox(
                           height: 10,
+                        ),
+                        // TextFormField(
+                        //   controller: _nosuratController,
+                        //   decoration: InputDecoration(
+                        //     contentPadding: EdgeInsets.symmetric(
+                        //         vertical: 10,
+                        //         horizontal:
+                        //             10), // Atur ukuran teks kecil di sini
+                        //     labelText: 'No Surat',
+                        //     // prefixIcon: Icon(Icons.person),
+                        //     border: OutlineInputBorder(
+                        //       borderRadius: BorderRadius.all(Radius.circular(
+                        //           11.0)), // Mengatur radius border
+                        //       borderSide: BorderSide(
+                        //         color: Colors.grey, // Warna border
+                        //         width: 1.0, // Ketebalan border
+                        //       ),
+                        //     ),
+                        //   ),
+                        //   validator: (value) {
+                        //     if (value!.isEmpty) {
+                        //       return 'Wajib di isi enter some text';
+                        //     }
+                        //     return null;
+                        //   },
+                        // ),
+                        Container(
+                          // color: Colors.red,
+                          decoration: BoxDecoration(
+                            color: const Color.fromARGB(255, 202, 202, 202),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(11),
+                            ),
+                          ),
+                          height: 40,
+                          child: Padding(
+                            padding: const EdgeInsets.only(bottom: 5),
+                            child: TextFormField(
+                              controller: _nosuratController,
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 10,
+                                    horizontal:
+                                        10), // Atur ukuran teks kecil di sini
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.never,
+                                enabledBorder: InputBorder.none,
+                                // labelText: 'Nama Arsip'
+                                labelText: 'No  Surat',
+                                border: InputBorder.none,
+                              ),
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Please enter some text';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
                         ),
                         SizedBox(
                           height: 15,

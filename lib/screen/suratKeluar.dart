@@ -25,8 +25,11 @@ class _suratKeluarState extends State<suratKeluar> {
   final scrollController = ScrollController();
   final TextEditingController searchcontroller = TextEditingController();
   bool isLoadingMore = false;
-  int page = 0;
+  int page = 1;
+  int totaldata = 0;
   bool loading = true;
+  String todata = '';
+
   @override
   void initState() {
     super.initState();
@@ -35,22 +38,15 @@ class _suratKeluarState extends State<suratKeluar> {
   }
 
   Future<void> fetchData() async {
-    try {
-      var data =
-          await SuratRepo.getDataSuratKeluar(page, searchcontroller.text);
-      print("response data : ${data}");
-      setState(() {
-        suratData = data;
-        loading = false;
-      });
-    } catch (e) {
-      setState(() {
-        suratData = [];
-        loading = false;
-      });
-      print('Error fetching data: $e');
-      // Handle error accordingly
-    }
+    var data = await SuratRepo.getDataSuratKeluar(page, searchcontroller.text);
+    // print(data[0]['data']);
+    setState(() {
+      suratData = data['data'];
+      totaldata = data['total'];
+      todata = data['to'];
+      loading = false;
+    });
+    print("response Data s ${suratData}");
   }
 
   Widget build(BuildContext context) {
@@ -129,46 +125,12 @@ class _suratKeluarState extends State<suratKeluar> {
                   SizedBox(
                     width: 10,
                   ),
-
                   SizedBox(
                     height: 30,
                   ),
                   Container(
                       width: MediaQuery.sizeOf(context).width * 0.90,
                       child: SearchingBar(context)),
-                  // SizedBox(
-                  //   width: 10,
-                  // ),
-                  // Container(
-                  //   margin: EdgeInsets.only(top: 20)5
-                  //   width: MediaQuery.sizeOf(context).width * 0.80,
-                  //   child: TextFormField(
-                  //     // controller: username,
-                  //     decoration: InputDecoration(
-                  //       isDense: true,x
-                  //       contentPadding: EdgeInsets.fromLTRB(
-                  //           10, 6, 10, 0), // Atur ukuran teks kecil di sini
-                  //       labelText: 'Search',
-                  //       prefixIcon: Icon(Icons.search),
-                  //       border: OutlineInputBorder(
-                  //         borderRadius: BorderRadius.all(
-                  //             Radius.circular(4.0)), // Mengatur radius border
-                  //         borderSide: BorderSide(
-                  //           color: Colors.grey, // Warna border
-                  //           width: 1.0, // Ketebalan border
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-                  // CircleAvatar(
-                  //   backgroundColor: Colors.grey,
-                  //   child: Icon(
-                  //     Icons.filter_alt_sharp,
-                  //     size: 29,
-                  //     color: Colors.white,
-                  //   ),
-                  // ),
                 ],
               ),
             ),
@@ -325,8 +287,8 @@ class _suratKeluarState extends State<suratKeluar> {
       setState(() {
         loading = false;
         isLoadingMore = true;
-        if (suratData.isEmpty) {
-          page = 10;
+        if (todata.isEmpty) {
+          page = page - 1;
         } else {
           page = page + 1;
         }
@@ -391,5 +353,18 @@ class _suratKeluarState extends State<suratKeluar> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    suratData;
+    scrollController;
+    searchcontroller;
+    isLoadingMore;
+    page;
+    totaldata;
+    loading;
+    todata;
+    super.dispose();
   }
 }

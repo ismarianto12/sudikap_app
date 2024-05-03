@@ -35,8 +35,10 @@ class _suratDisposisiState extends State<suratDisposisi> {
   }
 
   Future<void> getDataDisposisi() async {
+    print("disposisi data");
     try {
       var data = await SuratRepo.getDataDisposisi(page, search);
+
       setState(() {
         loading = false;
         suratData = data;

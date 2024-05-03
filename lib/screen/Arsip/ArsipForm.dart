@@ -24,7 +24,7 @@ class _ArsipFormState extends State<ArsipForm> {
   String _selectedLokasi = '';
   String _selectedSatuan = '';
   List<String> _selectedPermissions = [];
-  dynamic datedit = [];
+  List datedit = [];
 
   List<String> _jenisArsip = [
     'Pilih Jenis Arsip',
@@ -65,6 +65,8 @@ class _ArsipFormState extends State<ArsipForm> {
   @override
   Future<dynamic> getDataEdit() async {
     var responsedata = await arsipRepo.getDataDetail(widget.idarsip);
+    print("data arsip edit ${responsedata[0]['nama_arsip']}");
+    print(responsedata);
     setState(() {
       datedit = responsedata;
     });
@@ -73,16 +75,14 @@ class _ArsipFormState extends State<ArsipForm> {
   void initState() {
     super.initState();
     if (widget.idarsip != 0 || widget.idarsip != '') {
-      getDataEdit();
-      print("testing data ${datedit}");
-      print(datedit);
-
-      _namaArsipController.text = "";
-      _jumlahController.text = "test";
-      _keteranganController.text = "test";
-      id_satuanController.text = "test";
-      id_jenisController.text = "test";
-      id_pejabatController.text = "test";
+      getDataEdit().then((_) {
+        _namaArsipController.text = "${datedit[0]['nama_arsip']}";
+        _jumlahController.text = "${datedit[0]['jumlah']}";
+        _keteranganController.text = "${datedit[0]['keterangan']}";
+        id_satuanController.text = "";
+        id_jenisController.text = "";
+        id_pejabatController.text = "";
+      });
     }
     _selectedJenisArsip =
         _jenisArsip.first; // Set initial value to the first item in the list
@@ -99,6 +99,18 @@ class _ArsipFormState extends State<ArsipForm> {
   }
 
   Future<void> _submitdata() async {
+    print(
+      [
+        widget.idarsip,
+        _namaArsipController.text,
+        _jumlahController.text,
+        _keteranganController.text,
+        id_satuanController.text,
+        id_jenisController.text,
+        id_pejabatController.text,
+        "testing submit"
+      ],
+    );
     var response = widget.idarsip != 0
         ? await arsipRepo.updateArchive(
             widget.idarsip,
@@ -201,10 +213,6 @@ class _ArsipFormState extends State<ArsipForm> {
           onTap: () {
             Navigator.pop(context);
           },
-          child: Icon(
-            Icons.arrow_back_ios_sharp,
-            color: Colors.black,
-          ),
         ),
         // Menghilangkan border bawah
         shape: Border(bottom: BorderSide.none),
@@ -273,6 +281,7 @@ class _ArsipFormState extends State<ArsipForm> {
                         height: 10,
                       ),
                       Container(
+                        padding: EdgeInsets.only(left: 10),
                         height: 50,
                         width: MediaQuery.sizeOf(context).width,
                         decoration: BoxDecoration(
@@ -284,6 +293,8 @@ class _ArsipFormState extends State<ArsipForm> {
                         child: TextFormField(
                           controller: _namaArsipController,
                           decoration: InputDecoration(
+                              floatingLabelBehavior:
+                                  FloatingLabelBehavior.never,
                               enabledBorder: InputBorder.none,
                               labelText: 'Nama Arsip'),
                           validator: (value) {
@@ -352,8 +363,10 @@ class _ArsipFormState extends State<ArsipForm> {
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
-                            controller: _namaArsipController,
+                            controller: _jumlahController,
                             decoration: InputDecoration(
+                              floatingLabelBehavior:
+                                  FloatingLabelBehavior.never,
                               labelText: 'Jumlah',
                               border: InputBorder.none,
                             ),
@@ -381,8 +394,10 @@ class _ArsipFormState extends State<ArsipForm> {
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
-                            controller: _namaArsipController,
+                            controller: _keteranganController,
                             decoration: InputDecoration(
+                              floatingLabelBehavior:
+                                  FloatingLabelBehavior.never,
                               labelText: 'Keterangan',
                               enabledBorder: InputBorder.none,
                             ),
@@ -411,7 +426,6 @@ class _ArsipFormState extends State<ArsipForm> {
 
   @override
   void dispose() {
-    
     super.dispose();
   }
 }

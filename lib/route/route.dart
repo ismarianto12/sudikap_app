@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sistem_kearsipan/components/splashScreen.dart';
 import 'package:sistem_kearsipan/main.dart';
 import 'package:sistem_kearsipan/screen/dataArsip.dart';
 import 'package:sistem_kearsipan/screen/dataPegawai.dart';
@@ -10,6 +11,8 @@ import 'package:sistem_kearsipan/screen/suratMasuk.dart';
 class RouteAplikasi {
   static Route<dynamic> generateRoute(RouteSettings setting) {
     switch (setting.name) {
+      case '/welcomepage':
+        return _buildRoute(SplashScreen());
       case '/login':
         return MaterialPageRoute(
           builder: (_) => MyHomePage(
@@ -17,17 +20,17 @@ class RouteAplikasi {
           ),
         );
       case '/sppd':
-        return MaterialPageRoute(builder: (_) => sppdData());
+        return _buildRoute(sppdData());
       case '/surat_masuk':
-        return MaterialPageRoute(builder: (_) => suratMasuk());
+        return _buildRoute(suratMasuk());
       case '/surat_keluar':
-        return MaterialPageRoute(builder: (_) => suratKeluar());
+        return _buildRoute(suratKeluar());
       case '/disposisi':
-        return MaterialPageRoute(builder: (_) => suratDisposisi());
+        return _buildRoute(suratDisposisi());
       case '/data_pegawai':
-        return MaterialPageRoute(builder: (_) => dataPegawai());
+        return _buildRoute(dataPegawai());
       case '/arsip':
-        return MaterialPageRoute(builder: (_) => dataArsip());
+        return _buildRoute(dataArsip());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
@@ -61,5 +64,23 @@ class RouteAplikasi {
           ),
         );
     }
+  }
+
+  static PageRouteBuilder _buildRoute(Widget page) {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => page,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        var begin = Offset(0.9, 0.0);
+        var end = Offset.zero;
+        var curve = Curves.ease;
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        var offsetAnimation = animation.drive(tween);
+        return SlideTransition(
+          position: offsetAnimation,
+          child: child,
+        );
+      },
+    );
   }
 }

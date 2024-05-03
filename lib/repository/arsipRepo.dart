@@ -33,7 +33,7 @@ class arsipRepo {
       },
     );
     if (response.statusCode == 200) {
-      return json.decode(response.body)[0];
+      return json.decode(response.body);
     } else {
       throw Exception('Failed to load data');
     }

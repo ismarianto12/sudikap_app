@@ -26,16 +26,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     if (event is LoginSubmitted) {
       yield LoginLoading();
       try {
+        yield LoginInitial();
         final response =
             await loginrepo.authenticate(event.username, event.password);
         // print("testing parameter ..");
         // print(response);
-        if (response != null) {
-          authenticateBloc.add(LoggedIn(response));
-          // yield AuthenticateAuthenticated();
-        } else {
-          yield LoginInitial();
-        }
+        authenticateBloc.add(LoggedIn(response));
+        // yield AuthenticateAuthenticated();
       } catch (e) {
         yield LoginFailure(error: e.toString());
       }

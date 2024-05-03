@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:sistem_kearsipan/repository/loginRepo.dart';
 import 'package:sistem_kearsipan/widget/Button.dart';
 
 class Profile extends StatefulWidget {
@@ -11,7 +12,94 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  List editdata = [];
+  bool loading = true;
+  final TextEditingController username = TextEditingController();
+  final TextEditingController password = TextEditingController();
+  final TextEditingController ulangipassword = TextEditingController();
+  final TextEditingController passwordlama = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+
   @override
+  Future<dynamic> getDataEdit() async {
+    var responsedata = await loginRepo.getuserData();
+    print(responsedata);
+    setState(() {
+      editdata = responsedata;
+    });
+  }
+
+  void submitData() async {
+    setState(() {
+      loading = true;
+    });
+    var status = await loginRepo.updatePassword(username.text, password.text);
+    if (password.text != ulangipassword.text) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+                },
+                child: Text('Ok'),
+              ),
+            ],
+            title: Text(
+              "Password tidak sama silahkan diulangi",
+            ),
+          );
+        },
+      );
+    }
+    if (status.responseCode == 200) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Informasi'),
+            content: Text('Username dan password berhasil di update'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(false); // Tutup dialog tanpa logout
+                },
+                child: Text('Ok'),
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text('${status.body}'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(false); // Tutup dialog tanpa logout
+                },
+                child: Text('Ok'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
+  void initState() {
+    getDataEdit().then((_) {
+      username.text = "${editdata[0]['username']}";
+    });
+    super.initState();
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -46,6 +134,7 @@ class _ProfileState extends State<Profile> {
             Expanded(
               child: SingleChildScrollView(
                 child: Form(
+                  key: _formKey,
                   child: Padding(
                     padding: const EdgeInsets.all(35.0),
                     child: Column(
@@ -58,6 +147,13 @@ class _ProfileState extends State<Profile> {
                           height: 10,
                         ),
                         TextFormField(
+                          controller: passwordlama,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Field required';
+                            }
+                            return null;
+                          },
                           decoration: InputDecoration(
                             contentPadding: EdgeInsets.symmetric(
                               vertical: 10,
@@ -79,6 +175,13 @@ class _ProfileState extends State<Profile> {
                           height: 10,
                         ),
                         TextFormField(
+                          controller: password,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Field required';
+                            }
+                            return null;
+                          },
                           decoration: InputDecoration(
                             contentPadding: EdgeInsets.symmetric(
                               vertical: 10,
@@ -100,6 +203,13 @@ class _ProfileState extends State<Profile> {
                           height: 10,
                         ),
                         TextFormField(
+                          controller: ulangipassword,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Field required';
+                            }
+                            return null;
+                          },
                           decoration: InputDecoration(
                             contentPadding: EdgeInsets.symmetric(
                               vertical: 10,
@@ -126,9 +236,16 @@ class _ProfileState extends State<Profile> {
                 ),
               ),
             ),
-            Button(
-              title: "Simpan Surat",
-              color: Color.fromARGB(255, 4, 110, 152),
+            GestureDetector(
+              onTap: () {
+                if (_formKey.currentState!.validate()) {
+                  submitData();
+                }
+              },
+              child: Button(
+                title: "Simpan Surat",
+                color: Color.fromARGB(255, 4, 110, 152),
+              ),
             ),
             SizedBox(
               height: 20,

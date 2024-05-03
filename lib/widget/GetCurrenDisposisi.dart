@@ -40,7 +40,7 @@ class _GetCurrenDisposisiState extends State<GetCurrenDisposisi> {
         },
       );
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Username dan password Salah ${e}'),
+        content: Text('Java lang execption: ${e}'),
         backgroundColor: Colors.red,
       ));
     }

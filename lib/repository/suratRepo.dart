@@ -14,22 +14,25 @@ class SuratRepo {
     return token;
   }
 
-  static Future<dynamic> getData(int page) async {
+  static Future<dynamic> getData(int page, String search) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString("token");
-
-    String url = '${Base_Url}surat/list?page=$page';
+    String url = '${Base_Url}surat/list?page=$page&search=$search';
     var response = await http.get(
       Uri.parse(url),
       headers: <String, String>{
         'Authorization': 'Bearer ' + token!,
       },
     );
-    if (response.statusCode == 200) {
-      print(json.decode(response.body)['data']);
-      return json.decode(response.body)['data'];
-    } else {
-      throw Exception('Failed to load data');
+    try {
+      if (response.statusCode == 200) {
+        print(json.decode(response.body)['data']);
+        return json.decode(response.body)['data'];
+      } else {
+        throw Exception('Failed to load data');
+      }
+    } catch (e) {
+      print("error : ${e.toString()}");
     }
   }
 
@@ -37,8 +40,7 @@ class SuratRepo {
   static Future<dynamic> getDataSuratKeluar(int page, String search) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString("token");
-
-    String url = '${Base_Url}surat_keluar/list?page=$page&search=${search}';
+    String url = '${Base_Url}surat_keluar/list?page=$page&search=${search!}';
     var response = await http.get(
       Uri.parse(url),
       headers: <String, String>{
@@ -46,8 +48,7 @@ class SuratRepo {
       },
     );
     if (response.statusCode == 200) {
-      //print(json.decode(response.body)['data']);
-      return json.decode(response.body)['data'];
+      return json.decode(response.body);
     } else {
       throw Exception('Failed to load data');
     }
@@ -60,10 +61,12 @@ class SuratRepo {
     String url = '${Base_Url}disposisi/list?page=$page';
     var response = await http.get(
       Uri.parse(url),
-      headers: <String, String>{
+      headers: {
         'Authorization': 'Bearer $token',
       },
     );
+
+    print("body response : ${token} ");
     if (response.statusCode == 200) {
       print(json.decode(response.body)['data']);
       print("disposisi json");

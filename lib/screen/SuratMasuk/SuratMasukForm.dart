@@ -8,7 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 
 class SuratMasukForm extends StatefulWidget {
-  final int idSurat;
+  int idSurat;
 
   SuratMasukForm({this.idSurat = 0});
 
