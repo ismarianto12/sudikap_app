@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:sistem_kearsipan/components/Comloading.dart';
 import 'package:sistem_kearsipan/repository/loginRepo.dart';
 import 'package:sistem_kearsipan/widget/Button.dart';
 
@@ -29,68 +30,36 @@ class _ProfileState extends State<Profile> {
     });
   }
 
+  void showLoading(loading) {
+    loading
+        ? showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return Dialog(child: Comloading(title: "Pleae Wait"));
+            },
+          )
+        : null;
+  }
+
   void submitData() async {
     setState(() {
       loading = true;
     });
+    // showLoading(loading);
+    // try {
     var status = await loginRepo.updatePassword(username.text, password.text);
-    if (password.text != ulangipassword.text) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(false);
-                },
-                child: Text('Ok'),
-              ),
-            ],
-            title: Text(
-              "Password tidak sama silahkan diulangi",
-            ),
-          );
-        },
-      );
-    }
-    if (status.responseCode == 200) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Informasi'),
-            content: Text('Username dan password berhasil di update'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(false); // Tutup dialog tanpa logout
-                },
-                child: Text('Ok'),
-              ),
-            ],
-          );
-        },
-      );
-    } else {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Error'),
-            content: Text('${status.body}'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(false); // Tutup dialog tanpa logout
-                },
-                child: Text('Ok'),
-              ),
-            ],
-          );
-        },
-      );
-    }
+    // if (status) {
+    //   print("${status}");
+    //   showLoading(false);
+    // } else {
+    // } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text('${status}'),
+      backgroundColor: Colors.red,
+    ));
+    // }
+    // }
   }
 
   void initState() {
@@ -147,6 +116,7 @@ class _ProfileState extends State<Profile> {
                           height: 10,
                         ),
                         TextFormField(
+                          obscureText: true,
                           controller: passwordlama,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -175,6 +145,7 @@ class _ProfileState extends State<Profile> {
                           height: 10,
                         ),
                         TextFormField(
+                          obscureText: true,
                           controller: password,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -203,10 +174,13 @@ class _ProfileState extends State<Profile> {
                           height: 10,
                         ),
                         TextFormField(
+                          obscureText: true,
                           controller: ulangipassword,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Field required';
+                            } else if (passwordlama.text != value) {
+                              return 'Password tidak sesuai';
                             }
                             return null;
                           },
@@ -243,7 +217,7 @@ class _ProfileState extends State<Profile> {
                 }
               },
               child: Button(
-                title: "Simpan Surat",
+                title: "Simpan Data",
                 color: Color.fromARGB(255, 4, 110, 152),
               ),
             ),

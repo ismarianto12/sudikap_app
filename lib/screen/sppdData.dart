@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sistem_kearsipan/components/Loadingpage.dart';
 import 'package:sistem_kearsipan/repository/arsipRepo.dart';
+import 'package:sistem_kearsipan/screen/Sppd/SppdForm_create.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class sppdData extends StatefulWidget {
@@ -50,11 +51,23 @@ class _sppdDataState extends State<sppdData> {
         elevation: 0, // Menghilangkan bayangan di bawah appbar
         backgroundColor: Color.fromARGB(226, 0, 170, 255),
         actions: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(right: 15),
-            child: Icon(
-              Icons.add,
-              color: Color.fromARGB(255, 255, 255, 255),
+          GestureDetector(
+            onTap: () {
+              // Navigator.push(context,
+              //     MaterialPageRoute(builder: (context) => SppdForm_create()));
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SppdForm_create(),
+                ),
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(right: 15),
+              child: Icon(
+                Icons.add,
+                color: Color.fromARGB(255, 255, 255, 255),
+              ),
             ),
           )
         ],

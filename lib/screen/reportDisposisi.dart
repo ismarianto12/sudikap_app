@@ -7,6 +7,7 @@ import 'package:sistem_kearsipan/components/Loadingpage.dart';
 import 'package:sistem_kearsipan/repository/suratRepo.dart';
 import 'package:sistem_kearsipan/widget/Button.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:pager/pager.dart';
 
 class reportDisposisi extends StatefulWidget {
   String typereport = "surat";
@@ -23,8 +24,8 @@ class _reportSuratState extends State<reportDisposisi> {
 
   final scrollController = ScrollController();
   bool isLoadingMore = false;
+  int _currentPage = 1;
   List<dynamic> suratData = [];
-
   String asc = 'desc';
   String perpage = '1';
   double heightpanel = 0.50;
@@ -106,106 +107,124 @@ class _reportSuratState extends State<reportDisposisi> {
                   padding: const EdgeInsets.all(8.0),
                   child: loading
                       ? LoadingPage(color: Colors.black26, itemCount: 14)
-                      : ListView.builder(
-                          controller: scrollController,
-                          itemCount: isLoadingMore
-                              ? suratData.length + 1
-                              : suratData.length,
-                          shrinkWrap: true,
-                          itemBuilder: (BuildContext context, int index) {
-                            if (index < suratData.length) {
-                              return Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        // boxShadow: [
-                                        //   BoxShadow(
-                                        //     color: Colors.grey.withOpacity(0.5),
-                                        //     spreadRadius: 0,
-                                        //     blurRadius: 10,
-                                        //     offset: Offset(1, 0),
-                                        //   ),
-                                        // ],
-                                        color:
-                                            Color.fromARGB(255, 255, 255, 255),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(6)),
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                // CircleAvatar(
-                                                //   backgroundColor:
-                                                //       const Color.fromARGB(255, 0, 0, 0),
-                                                //   child: Text(
-                                                //     "${index + 1}",
-                                                //     style: TextStyle(
-                                                //       color: Colors.white,
-                                                //     ),
-                                                //   ),
-                                                // ),
-                                                Expanded(
-                                                  flex: 1,
-                                                  child: Text(
-                                                    '${suratData[index]['no_surat']}',
+                      : Column(
+                          children: [
+                            Pager(
+                              currentPage: _currentPage,
+                              totalPages: 15,
+                              onPageChanged: (page) {
+                                setState(() {
+                                  _currentPage = page;
+                                });
+                              },
+                            ),
+                            Expanded(
+                              child: ListView.builder(
+                                controller: scrollController,
+                                itemCount: isLoadingMore
+                                    ? suratData.length + 1
+                                    : suratData.length,
+                                shrinkWrap: true,
+                                itemBuilder: (BuildContext context, int index) {
+                                  if (index < suratData.length) {
+                                    return Padding(
+                                      padding: const EdgeInsets.all(5.0),
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              // boxShadow: [
+                                              //   BoxShadow(
+                                              //     color: Colors.grey.withOpacity(0.5),
+                                              //     spreadRadius: 0,
+                                              //     blurRadius: 10,
+                                              //     offset: Offset(1, 0),
+                                              //   ),
+                                              // ],
+                                              color: Color.fromARGB(
+                                                  255, 255, 255, 255),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(6)),
+                                            ),
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      // CircleAvatar(
+                                                      //   backgroundColor:
+                                                      //       const Color.fromARGB(255, 0, 0, 0),
+                                                      //   child: Text(
+                                                      //     "${index + 1}",
+                                                      //     style: TextStyle(
+                                                      //       color: Colors.white,
+                                                      //     ),
+                                                      //   ),
+                                                      // ),
+                                                      Expanded(
+                                                        flex: 1,
+                                                        child: Text(
+                                                          '${suratData[index]['no_surat']}',
+                                                          style: TextStyle(
+                                                            color: const Color
+                                                                .fromARGB(
+                                                                255, 0, 0, 0),
+                                                            fontSize: 16.0,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                        ),
+                                                      ),
+                                                      GestureDetector(
+                                                        onTap: () {},
+                                                        child: Icon(
+                                                          Icons
+                                                              .arrow_forward_ios_outlined,
+                                                          color: const Color
+                                                              .fromARGB(
+                                                              255, 0, 0, 0),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Text(
+                                                    '${suratData[index]['asal_surat']}',
                                                     style: TextStyle(
                                                       color:
                                                           const Color.fromARGB(
                                                               255, 0, 0, 0),
-                                                      fontSize: 16.0,
-                                                      fontWeight:
-                                                          FontWeight.bold,
+                                                      fontSize: 14.0,
                                                     ),
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
                                                   ),
-                                                ),
-                                                GestureDetector(
-                                                  onTap: () {},
-                                                  child: Icon(
-                                                    Icons
-                                                        .arrow_forward_ios_outlined,
-                                                    color: const Color.fromARGB(
-                                                        255, 0, 0, 0),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            Text(
-                                              '${suratData[index]['asal_surat']}',
-                                              style: TextStyle(
-                                                color: const Color.fromARGB(
-                                                    255, 0, 0, 0),
-                                                fontSize: 14.0,
+                                                ],
                                               ),
                                             ),
-                                          ],
-                                        ),
+                                          ),
+                                          Divider(),
+                                        ],
                                       ),
-                                    ),
-                                    Divider(),
-                                  ],
-                                ),
-                              );
-                            } else {
-                              return Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: CircularProgressIndicator(),
-                                ),
-                              );
-                            }
-                          },
+                                    );
+                                  } else {
+                                    return Center(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: CircularProgressIndicator(),
+                                      ),
+                                    );
+                                  }
+                                },
+                              ),
+                            ),
+                          ],
                         ),
                 ),
               ),

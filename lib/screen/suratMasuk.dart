@@ -14,6 +14,7 @@ import 'package:sistem_kearsipan/screen/suratKeluar/DetailSurat.dart';
 import 'package:sistem_kearsipan/screen/SuratMasuk/SuratMasukForm.dart';
 import 'package:sistem_kearsipan/screen/dataArsip.dart';
 import 'package:sistem_kearsipan/screen/suratKeluar/SuratKeluarForm.dart';
+import 'package:sistem_kearsipan/widget/Button.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class suratMasuk extends StatefulWidget {
@@ -38,6 +39,76 @@ class _suratMasukState extends State<suratMasuk> {
     super.initState();
     scrollController.addListener(_scrollistener);
     fetchData(); // Call fetchData() on initState()
+  }
+
+  void _showConfirmationBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Container(
+          padding: EdgeInsets.all(11.0),
+          height: 200.0,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Image.network(
+                    "https://cdn-icons-png.flaticon.com/512/10302/10302977.png",
+                    width: 30,
+                    height: 30,
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    'Konfirmasi hapus',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                    width: MediaQuery.sizeOf(context).width * 0.45,
+                    child: Button(
+                      title: "Hapus",
+                      color: Color.fromARGB(255, 4, 110, 152),
+                    ),
+                  ),
+                  Container(
+                    width: MediaQuery.sizeOf(context).width * 0.45,
+                    child: Button(
+                      title: "Batal",
+                      color: Color.fromARGB(255, 255, 128, 0),
+                    ),
+                  ),
+                  // ElevatedButton(
+                  //   onPressed: () {
+                  //     // Handle left button press
+                  //     Navigator.of(context).pop();
+                  //   },
+                  //   child: Text('Left Button'),
+                  // ),
+                  // ElevatedButton(
+                  //   onPressed: () {
+                  //     // Handle right button press
+                  //     Navigator.of(context).pop();
+                  //   },
+                  //   child: Text('Right Button'),
+                  // ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   Future<void> fetchData() async {
@@ -383,16 +454,8 @@ class _suratMasukState extends State<suratMasuk> {
                                                           // );
                                                         } else if (value ==
                                                             'delete') {
-                                                          // Navigator.push(
-                                                          //   context,
-                                                          //   MaterialPageRoute(
-                                                          //     builder: (_) {
-                                                          //       return ArsipForm(
-                                                          //           idarsip: 0,
-                                                          //           judul: '');
-                                                          //     },
-                                                          //   ),
-                                                          // );
+                                                          _showConfirmationBottomSheet(
+                                                              context);
                                                         }
                                                       },
                                                     ),

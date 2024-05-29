@@ -29,7 +29,7 @@ class DetailSuratKeluar extends StatelessWidget {
                 ),
                 Flexible(
                   child: Text(
-                    "${suratData['asal_surat']}",
+                    "${suratData['asal_surat'] ?? "${suratData['kode']}-Data Kosong"}",
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -42,19 +42,22 @@ class DetailSuratKeluar extends StatelessWidget {
               height: 20,
             ),
             Card(
+              color: Colors.white,
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
-                      height: 50,
+                      height: 10,
                     ),
-                    Text(
-                      "Detail Surat Keluar:",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                    Center(
+                      child: Text(
+                        "Detail Surat Keluar:",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                     SizedBox(
@@ -110,7 +113,7 @@ class DetailSuratKeluar extends StatelessWidget {
                               child: Padding(
                                 padding: EdgeInsets.all(8.0),
                                 child: Text(
-                                  "${suratData['indeks']}",
+                                  "${suratData['indeks'] ?? "Kosong"}",
                                   textAlign: TextAlign.start,
                                 ),
                               ),
@@ -135,7 +138,7 @@ class DetailSuratKeluar extends StatelessWidget {
                               child: Padding(
                                 padding: EdgeInsets.all(8.0),
                                 child: Text(
-                                  "${suratData['no_agenda']}",
+                                  "${suratData['no_agenda'] != '' ? suratData['no_agenda'] : "Kosong"}",
                                   textAlign: TextAlign.start,
                                 ),
                               ),

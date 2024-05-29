@@ -24,7 +24,7 @@ class _GetCurrenDisposisiState extends State<GetCurrenDisposisi> {
     final suratrepo = SuratRepo();
     try {
       var response = await suratrepo.getlistDisposisi();
-      print("response Data");
+      // print("response Data");
       print("${response} parameter");
       setState(
         () {

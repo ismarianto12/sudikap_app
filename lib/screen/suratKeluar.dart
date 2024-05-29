@@ -62,11 +62,21 @@ class _suratKeluarState extends State<suratKeluar> {
         elevation: 0,
         backgroundColor: Colors.white,
         actions: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(right: 15),
-            child: Icon(
-              Icons.add,
-              color: Color.fromARGB(255, 0, 0, 0),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SuratKeluarForm(idSurat: 0),
+                ),
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(right: 15),
+              child: Icon(
+                Icons.add,
+                color: Color.fromARGB(255, 0, 0, 0),
+              ),
             ),
           )
         ],

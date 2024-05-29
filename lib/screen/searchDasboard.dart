@@ -16,16 +16,16 @@ class _searchDashoardState extends State<searchDashoard> {
   Future<dynamic> getdata() async {
     var response = await SuratRepo.getCurrentsurat(search);
     print("${response.length} responsedata server:");
-    if (response.length > 0) {
-      setState(() {
-        data = response;
-      });
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Can\'t call api '),
-        backgroundColor: Colors.red,
-      ));
-    }
+    // if (response.length > 0) {
+    setState(() {
+      data = response;
+    });
+    // } else {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text('${response}'),
+      backgroundColor: Colors.red,
+    ));
+    // }
   }
 
   void initState() {
@@ -43,7 +43,7 @@ class _searchDashoardState extends State<searchDashoard> {
             icon: Icon(Icons.search),
             onPressed: () {
               showSearch(
-                  context: context, delegate: CustomSearchDelegate(items));
+                  context: context, delegate: CustomSearchDelegate(data));
             },
           ),
         ],
@@ -61,7 +61,7 @@ class _searchDashoardState extends State<searchDashoard> {
 }
 
 class CustomSearchDelegate extends SearchDelegate<String> {
-  final List<String> items;
+  final List<dynamic> items;
   final FocusNode _focusNode = FocusNode();
 
   CustomSearchDelegate(this.items);
@@ -142,6 +142,18 @@ class CustomSearchDelegate extends SearchDelegate<String> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return Container(); // No suggestions in this example
+    return SingleChildScrollView(
+      child: Column(children: [
+        Image.network(
+            "https://static.vecteezy.com/system/resources/previews/005/163/930/non_2x/incomplete-data-concept-illustration-flat-design-eps10-modern-graphic-element-for-landing-page-empty-state-ui-infographic-icon-vector.jpg"),
+        ListView.builder(
+            itemCount: items.length,
+            shrinkWrap: true,
+            itemBuilder: (BuildContext context, int index) {
+              return Text('${items[index]['no_surat']}');
+            }),
+      ]),
+    );
+    // No suggestions in this example
   }
 }

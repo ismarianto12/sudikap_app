@@ -7,6 +7,7 @@ import 'package:sistem_kearsipan/components/Loadingpage.dart';
 import 'package:sistem_kearsipan/repository/arsipRepo.dart';
 import 'package:sistem_kearsipan/route/transitionPage.dart';
 import 'package:sistem_kearsipan/screen/Arsip/ArsipForm.dart';
+import 'package:sistem_kearsipan/widget/Button.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class dataArsip extends StatefulWidget {
@@ -27,6 +28,7 @@ class _dataArsipState extends State<dataArsip> {
   bool isFocused = false;
   double heigOfSlide = 0.80;
   bool loading = true;
+  bool deleteConfirm = false;
   @override
   void initState() {
     super.initState();
@@ -56,6 +58,79 @@ class _dataArsipState extends State<dataArsip> {
       });
       print('Error fetching data: $e');
     }
+  }
+
+  void _showConfirmationBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Container(
+          padding: EdgeInsets.all(16.0),
+          height: 200.0,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Image.network(
+                    "https://cdn-icons-png.flaticon.com/512/10302/10302977.png",
+                    width: 30,
+                    height: 30,
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    'Konfirmasi hapus',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: MediaQuery.sizeOf(context).width * 0.40,
+                    child: Button(
+                      title: "Hapus",
+                      color: Color.fromARGB(255, 4, 110, 152),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Container(
+                    width: MediaQuery.sizeOf(context).width * 0.40,
+                    child: Button(
+                      title: "Batal",
+                      color: Color.fromARGB(255, 255, 128, 0),
+                    ),
+                  ),
+                  // ElevatedButton(
+                  //   onPressed: () {
+                  //     // Handle left button press
+                  //     Navigator.of(context).pop();
+                  //   },
+                  //   child: Text('Left Button'),
+                  // ),
+                  // ElevatedButton(
+                  //   onPressed: () {
+                  //     // Handle right button press
+                  //     Navigator.of(context).pop();
+                  //   },
+                  //   child: Text('Right Button'),
+                  // ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -301,16 +376,22 @@ class _dataArsipState extends State<dataArsip> {
                                                           );
                                                         } else if (value ==
                                                             'delete') {
-                                                          Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                              builder: (_) {
-                                                                return ArsipForm(
-                                                                    idarsip: 0,
-                                                                    judul: '');
-                                                              },
-                                                            ),
-                                                          );
+                                                          // setState(() {
+                                                          //   deleteConfirm =
+                                                          //       true;
+                                                          // });
+                                                          _showConfirmationBottomSheet(
+                                                              context);
+                                                          // Navigator.push(
+                                                          //   context,
+                                                          //   MaterialPageRoute(
+                                                          //     builder: (_) {
+                                                          //       return ArsipForm(
+                                                          //           idarsip: 0,
+                                                          //           judul: '');
+                                                          //     },
+                                                          //   ),
+                                                          // );
                                                         }
                                                       },
                                                     ),
@@ -362,7 +443,6 @@ class _dataArsipState extends State<dataArsip> {
                           ),
               ),
             ),
-        
           ],
         ),
         body: Container(
@@ -406,12 +486,32 @@ class _dataArsipState extends State<dataArsip> {
                     ),
                   ],
                 ),
-              )
+              ),
+              // Confrim(context, deleteConfirm),
             ],
           ),
         ),
       ),
     );
+  }
+
+  Widget Confrim(BuildContext context, bool deleteConfirm) {
+    return deleteConfirm
+        ? SlidingUpPanel(
+            backdropEnabled: true,
+            panel: Center(
+              child: Text("Konformasi"),
+            ),
+            body: Scaffold(
+              appBar: AppBar(
+                title: Text("Anda yakin hapus data ini"),
+              ),
+              body: Center(
+                child: Text("This is the Widget behind the sliding panel"),
+              ),
+            ),
+          )
+        : Container();
   }
 
   Future<void> _scrollistener() async {

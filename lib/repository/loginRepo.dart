@@ -76,19 +76,37 @@ class loginRepo {
     }
   }
 
+  // static Future<dynamic> updatePassword(
+  //     String username, String password) async {
+  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   String? token = prefs.getString("token");
+  //   try {
+  //     var response = await http.post(
+  //       Uri.parse("${Base_Url}/updatepassword"),
+  //       headers: <String, String>{'Authorization': 'Bearer ${token}'},
+  //       body: {username: username, password: password},
+  //     );
+  //     return response.body;
+  //   } catch (e) {
+  //     throw Exception("Failed get data user ${e}");
+  //   }
+  // }
   static Future<dynamic> updatePassword(
       String username, String password) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString("token");
     try {
-      var response = await http.post(
-        Uri.parse("${Base_Url}/updatepassword"),
-        headers: <String, String>{'Authorization': 'Bearer ${token}'},
-        body: {username: username, password: password},
-      );
-      return response;
+      var response = await http.post(Uri.parse("${Base_Url}updatepassword"),
+          headers: <String, String>{'Authorization': '${token}'},
+          body: {"username": username, "password": password});
+      var jsonResponse = json.decode(response.body);
+      if (response.statusCode == 200) {
+        return jsonResponse;
+      } else {
+        return jsonResponse;
+      }
     } catch (e) {
-      throw Exception("Failed get data user ${e}");
+      return e;
     }
   }
 

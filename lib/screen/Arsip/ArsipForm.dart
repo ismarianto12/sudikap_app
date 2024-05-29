@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sistem_kearsipan/repository/arsipRepo.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class ArsipForm extends StatefulWidget {
   int idarsip = 0;
