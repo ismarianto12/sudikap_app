@@ -16,7 +16,7 @@ class _searchDashoardState extends State<searchDashoard> {
   Future<dynamic> getdata() async {
     var response = await SuratRepo.getCurrentsurat(search);
     print("${response.length} responsedata server:");
-    if (response.length < 0) {
+    if (response.length > 0) {
       setState(() {
         data = response;
       });

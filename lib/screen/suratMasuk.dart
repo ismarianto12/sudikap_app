@@ -529,7 +529,7 @@ class _suratMasukState extends State<suratMasuk> {
           children: [
             Padding(
               padding: const EdgeInsets.only(
-                bottom: 47,
+                bottom: 17,
                 left: 10,
               ),
               child: Icon(Icons.search, color: Colors.white),
@@ -548,9 +548,18 @@ class _suratMasukState extends State<suratMasuk> {
                   decoration: InputDecoration(
                     floatingLabelBehavior: FloatingLabelBehavior.never,
                     enabledBorder: InputBorder.none,
+                    focusColor: Colors.white,
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Colors
+                              .white), // Mengatur warna border bawah menjadi putih saat aktif
+                    ),
                     labelText: 'Cari Surat',
-                    hintStyle: TextStyle(color: Colors.white),
                     border: InputBorder.none,
+                    labelStyle: TextStyle(
+                        color:
+                            Colors.white), // Mengatur warna label menjadi putih
+                    hintStyle: TextStyle(color: Colors.white),
                   ),
                   style: TextStyle(color: Colors.white),
                 ),

@@ -8,63 +8,50 @@ import 'package:sistem_kearsipan/repository/suratRepo.dart';
 import 'package:sistem_kearsipan/widget/Button.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-class reportSurat extends StatefulWidget {
+class reportDisposisi extends StatefulWidget {
   String typereport = "surat";
-  reportSurat({required typereport});
+  reportDisposisi({required typereport});
 
   @override
-  State<reportSurat> createState() => _reportSuratState();
+  State<reportDisposisi> createState() => _reportSuratState();
 }
 
-class _reportSuratState extends State<reportSurat> {
+class _reportSuratState extends State<reportDisposisi> {
   TextEditingController _dariController = TextEditingController();
   TextEditingController _sampaiController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   final scrollController = ScrollController();
   bool isLoadingMore = false;
+  List<dynamic> suratData = [];
 
-  List suratData = [];
   String asc = 'desc';
-  int perpage = 1;
+  String perpage = '1';
   double heightpanel = 0.50;
   bool isPanelOpen = false;
   bool loading = true;
 
   @override
-  Future<dynamic> getReportData() async {
-    try {
-      var response = await SuratRepo.ReportSurat(
-          asc, perpage, _dariController.text, _sampaiController.text);
-      setState(() {
-        suratData = response;
-      });
-    } catch (e) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Java Lang Error: Exp'),
-            content: Text('Error: ${e}'),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('OK'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
-      );
-    }
-  }
-
   void initState() {
     super.initState();
-    print("${widget.typereport} Tipe report");
+  }
 
-    // getReportData();
+  Future<void> getReportData() async {
+    try {
+      var data = await SuratRepo.apireportDisposisi(
+          asc, perpage, _dariController.text, _sampaiController.text);
+      print("responsenya");
+      print(data);
+      setState(() {
+        loading = false;
+        suratData = data;
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Can\'t call api: ${e}'),
+        backgroundColor: Colors.red,
+      ));
+    }
   }
 
   @override
@@ -230,15 +217,11 @@ class _reportSuratState extends State<reportSurat> {
               SizedBox(
                 height: 40,
               ),
-              Text(
-                widget.typereport == "surat"
-                    ? "Laporan Surat ${widget.typereport}"
-                    : "Laporan Disposisi",
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.black,
-                ),
-              ),
+              Text("Laporan Disposisi",
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.black,
+                  )),
               SizedBox(
                 height: 10,
               ),
@@ -333,10 +316,9 @@ class _reportSuratState extends State<reportSurat> {
                         GestureDetector(
                             onTap: () {
                               FocusScope.of(context).unfocus();
-
                               if (_formKey.currentState!.validate()) {
+                                getReportData();
                                 setState(() {
-                                  getReportData();
                                   isPanelOpen = true;
                                 });
                               }
@@ -360,4 +342,11 @@ class _reportSuratState extends State<reportSurat> {
           )),
     );
   }
+
+  // @override
+  // void dispose() {
+  //   _dariController.dispose();
+  //   _sampaiController.dispose();
+  //   super.dispose();
+  // }
 }

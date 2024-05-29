@@ -182,126 +182,151 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   @override
+  Future<String?> getTokenapp() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString("token");
+    return token;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 50,
-            ),
-            Text(
-              "SUDIKAP APPS",
-              style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              "Satu layanan Arsip Terpadu.",
-              style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                    fontWeight: FontWeight.w100,
-                  ),
-            ),
-            Image.network(
-              "https://simpel4.ombudsman.go.id/media/svg/icons/Tools/banerlogin.png",
-              width: 300,
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Form(
-              key: _formKey,
-              child: Padding(
-                padding: const EdgeInsets.all(18.0),
+      body: FutureBuilder<String?>(
+        future: getTokenapp(),
+        builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return SplashScreen();
+          } else {
+            String? tokenya = snapshot.data;
+            if (tokenya == null) {
+              return SingleChildScrollView(
                 child: Column(
                   children: [
-                    TextFormField(
-                      controller: username,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(
-                            vertical: 10,
-                            horizontal: 10), // Atur ukuran teks kecil di sini
-                        labelText: 'Username',
-                        prefixIcon: Icon(Icons.person),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(4.0),
-                          ), // Mengatur radius border
-                          borderSide: BorderSide(
-                            color: Colors.grey, // Warna border
-                            width: 1.0, // Ketebalan border
-                          ),
-                        ),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Masukkan username';
-                        }
-                        return null;
-                      },
+                    SizedBox(
+                      height: 50,
+                    ),
+                    Text(
+                      "SUDIKAP APPS",
+                      style:
+                          Theme.of(context).textTheme.headlineSmall!.copyWith(
+                                fontWeight: FontWeight.w700,
+                              ),
                     ),
                     SizedBox(
-                      height: 30,
+                      height: 10,
                     ),
-                    TextFormField(
-                      obscureText: true,
-                      controller: password,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(
-                            vertical: 10,
-                            horizontal: 10), // Atur ukuran teks kecil di sini
-                        labelText: 'Password',
-                        prefixIcon: Icon(Icons.password),
-                        border: OutlineInputBorder(),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Masukkan password';
-                        }
-                        return null;
-                      },
+                    Text(
+                      "Satu layanan Arsip Terpadu.",
+                      style:
+                          Theme.of(context).textTheme.headlineSmall!.copyWith(
+                                fontWeight: FontWeight.w100,
+                              ),
+                    ),
+                    Image.network(
+                      "https://simpel4.ombudsman.go.id/media/svg/icons/Tools/banerlogin.png",
+                      width: 300,
                     ),
                     SizedBox(
                       height: 20,
                     ),
-                    GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => lupaPassord(
-                                title: 'Lupa Password',
+                    Form(
+                      key: _formKey,
+                      child: Padding(
+                        padding: const EdgeInsets.all(18.0),
+                        child: Column(
+                          children: [
+                            TextFormField(
+                              controller: username,
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 10,
+                                    horizontal:
+                                        10), // Atur ukuran teks kecil di sini
+                                labelText: 'Username',
+                                prefixIcon: Icon(Icons.person),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(4.0),
+                                  ), // Mengatur radius border
+                                  borderSide: BorderSide(
+                                    color: Colors.grey, // Warna border
+                                    width: 1.0, // Ketebalan border
+                                  ),
+                                ),
                               ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Masukkan username';
+                                }
+                                return null;
+                              },
                             ),
-                          );
-                        },
-                        child: Text("Lupa Kata Sandi ? ")),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        if (_formKey.currentState!.validate()) {
-                          _submitForm();
-                          setState(() {
-                            closeinfo = false;
-                          });
-                        }
-                      },
-                      child: Button(title: "Login", color: Colors.orange),
+                            SizedBox(
+                              height: 30,
+                            ),
+                            TextFormField(
+                              obscureText: true,
+                              controller: password,
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 10,
+                                    horizontal:
+                                        10), // Atur ukuran teks kecil di sini
+                                labelText: 'Password',
+                                prefixIcon: Icon(Icons.password),
+                                border: OutlineInputBorder(),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Masukkan password';
+                                }
+                                return null;
+                              },
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => lupaPassord(
+                                        title: 'Lupa Password',
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Text("Lupa Kata Sandi ? ")),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                if (_formKey.currentState!.validate()) {
+                                  _submitForm();
+                                  setState(() {
+                                    closeinfo = false;
+                                  });
+                                }
+                              },
+                              child:
+                                  Button(title: "Login", color: Colors.orange),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ],
                 ),
-              ),
-            ),
-          ],
-        ),
+              );
+            } else {
+              return DashboardScreen();
+            }
+          }
+        },
       ),
     );
-
     // }
     // if (state is LoginFailure) {
     //   return Scaffold(

@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sistem_kearsipan/main.dart';
 import 'package:sistem_kearsipan/screen/Notifikasi.dart';
 import 'package:sistem_kearsipan/screen/profile.dart';
+import 'package:sistem_kearsipan/screen/reportDisposisi.dart';
 import 'package:sistem_kearsipan/screen/reportSurat.dart';
 import 'package:sistem_kearsipan/screen/searchDasboard.dart';
 import 'package:sistem_kearsipan/widget/Alert.dart';
@@ -36,10 +37,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   List<Widget> screens = [
-    reportSurat(),
-    reportSurat(),
-    reportSurat(),
-    reportSurat(),
+    DashboardScreen(),
+    reportDisposisi(typereport: 'disposisi'),
+    reportSurat(typereport: "surat"),
+    Profile(),
   ];
 
   @override
@@ -205,12 +206,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   SizedBox(
                     height: 8,
                   ),
-                  Text(
-                    "Surat Disposisi Terbaru",
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          fontWeight: FontWeight.w700,
-                        ),
-                  ),
                   isPanelOpen
                       ? Container()
                       : Padding(
@@ -246,6 +241,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          Text(
+                            "Surat Disposisi Terbaru",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(
+                                  fontWeight: FontWeight.w700,
+                                ),
+                          ),
                           SingleChildScrollView(child: GetCurrenDisposisi()),
                           SizedBox(
                             height: 300,
@@ -328,18 +332,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         height: 40,
                       ),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          GestureDetector(
-                            onTap: () {
-                              _openDrawer();
-                            },
-                            child: Icon(
-                              Icons.menu,
-                              size: 34,
-                              color: Color.fromARGB(255, 255, 255, 255),
-                            ),
-                          ),
+                          // GestureDetector(
+                          //   onTap: () {
+                          //     _openDrawer();
+                          //   },
+                          //   child: Icon(
+                          //     Icons.menu,
+                          //     size: 34,
+                          //     color: Color.fromARGB(255, 255, 255, 255),
+                          //   ),
+                          // ),
                           SizedBox(
                             width: 20,
                           ),
@@ -354,20 +358,28 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           SizedBox(
                             width: 10,
                           ),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) {
-                                    return Notifikasi();
-                                  },
+                          CircleAvatar(
+                            backgroundColor: Color.fromARGB(215, 17, 73, 119),
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return Notifikasi();
+                                    },
+                                  ),
+                                );
+                              },
+                              child: GestureDetector(
+                                onTap: () {
+                                  logout(context);
+                                },
+                                child: Icon(
+                                  Icons.logout,
+                                  color: Color.fromARGB(255, 255, 255, 255),
                                 ),
-                              );
-                            },
-                            child: Icon(
-                              Icons.notification_add_sharp,
-                              color: Color.fromARGB(255, 255, 255, 255),
+                              ),
                             ),
                           )
                         ],

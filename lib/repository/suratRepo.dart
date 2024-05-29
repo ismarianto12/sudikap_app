@@ -48,7 +48,7 @@ class SuratRepo {
       },
     );
     if (response.statusCode == 200) {
-      return json.decode(response.body);
+      return json.decode(response.body)['data'];
     } else {
       throw Exception('Failed to load data');
     }
@@ -366,10 +366,72 @@ class SuratRepo {
       throw Exception("Cant get data");
     }
   }
-}
 
-// action to create or delete function in
-// static Future<void> saveDataSurat() async{
-//   String url = '${Base_Url}/surat_masuk/save';
-//   var response = await http.post()
-// }
+  // report surat
+  static Future<dynamic> ReportSurat(
+      String asc, int perpage, String dari, String sampai) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String? token = preferences.getString("token");
+    var response = await http.post(
+      Uri.parse("${Base_Url}report/datareportsurat"),
+      headers: <String, String>{"Authorization": "${token}"},
+      body: {perpage: perpage, asc: asc, dari: dari, sampai: sampai},
+    );
+    if (response.statusCode == 200) {
+      return json.decode(response.body)['data']['data'];
+    } else {
+      return response;
+    }
+  }
+
+  // static Future<dynamic> apireportDisposisi(
+  //     String asc, String perpage, String dari, String sampai) async {
+  //   SharedPreferences preferences = await SharedPreferences.getInstance();
+  //   String? token = preferences.getString("token");
+  //   var response = await http.post(
+  //     Uri.parse("${Base_Url}report/reportdisposisi"),
+  //     headers: <String, String>{"Authorization": "Bearer ${token}"},
+  //     body: {'perpage': perpage, 'asc': asc, 'dari': dari, 'sampai': sampai},
+  //   );
+  //   if (response.statusCode == 200) {
+  //     return json.decode(response.body)["data"];
+  //   } else {
+  //     return response;
+  //   }
+  // }
+  static Future<dynamic> apireportDisposisi(
+      String asc, String perpage, String dari, String sampai) async {
+    try {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString("token");
+      if (token == null) {
+        throw Exception('Token not found');
+      }
+      String url = '${Base_Url}report/diposisi';
+      var response = await http.post(
+        Uri.parse(url),
+        headers: <String, String>{
+          'Authorization': 'Bearer $token',
+        },
+        body: {
+          'perpage': perpage,
+          'asc': asc,
+          'dari': dari,
+          'sampai': sampai,
+        },
+      );
+      print(url);
+      print("parsing");
+      if (response.statusCode == 200) {
+        var responseData = json.decode(response.body)['data']['data'];
+        return responseData;
+      } else {
+        throw Exception('${response.statusCode}');
+      }
+    } catch (e) {
+      print("Error: $e");
+      // Rethrow the caught error to propagate it upwards
+      throw e;
+    }
+  }
+}

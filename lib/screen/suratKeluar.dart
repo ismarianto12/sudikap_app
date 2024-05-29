@@ -38,15 +38,22 @@ class _suratKeluarState extends State<suratKeluar> {
   }
 
   Future<void> fetchData() async {
-    var data = await SuratRepo.getDataSuratKeluar(page, searchcontroller.text);
-    // print(data[0]['data']);
-    setState(() {
-      suratData = data['data'];
-      totaldata = data['total'];
-      todata = data['to'];
-      loading = false;
-    });
-    print("response Data s ${suratData}");
+    try {
+      var data =
+          await SuratRepo.getDataSuratKeluar(page, searchcontroller.text);
+      // print(data[0]['data']);
+      setState(() {
+        suratData = data;
+        // totaldata = data['total'];
+        // todata = data['to'];
+        loading = false;
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('${e}'),
+        backgroundColor: Color.fromARGB(255, 244, 149, 54),
+      ));
+    }
   }
 
   Widget build(BuildContext context) {
@@ -285,14 +292,9 @@ class _suratKeluarState extends State<suratKeluar> {
     if (scrollController.position.pixels ==
         scrollController.position.maxScrollExtent) {
       setState(() {
-        loading = false;
         isLoadingMore = true;
-        if (todata.isEmpty) {
-          page = page - 1;
-        } else {
-          page = page + 1;
-        }
       });
+      page = page + 1;
       await fetchData();
       print("Scrool call");
     } else {

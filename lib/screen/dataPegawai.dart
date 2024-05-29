@@ -24,7 +24,7 @@ class _dataPegawaiState extends State<dataPegawai> {
   bool isLoadingMore = false;
   int page = 0;
   bool loading = true;
-
+  int totalpeg = 0;
   @override
   void initState() {
     super.initState();
@@ -38,6 +38,7 @@ class _dataPegawaiState extends State<dataPegawai> {
       setState(() {
         loading = false;
         suratData = data;
+        totalpeg = data?.length;
       });
       print(data);
     } catch (e) {
@@ -322,13 +323,13 @@ class _dataPegawaiState extends State<dataPegawai> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(
-                                  Icons.people,
+                                  Icons.check_box_rounded,
                                   color: Colors.white,
                                   size: 40,
                                 ),
                                 SizedBox(width: 10),
                                 Text(
-                                  '100',
+                                  '${loading ? '...' : totalpeg.toString()}',
                                   style: TextStyle(
                                     color: const Color.fromARGB(
                                         255, 255, 255, 255),
@@ -343,7 +344,7 @@ class _dataPegawaiState extends State<dataPegawai> {
                       ),
                     ),
                     Container(
-                      width: MediaQuery.sizeOf(context).width * 0.45,
+                      width: MediaQuery.sizeOf(context).width * 0.40,
                       decoration: BoxDecoration(
                         boxShadow: [
                           BoxShadow(
@@ -354,7 +355,7 @@ class _dataPegawaiState extends State<dataPegawai> {
                             offset: Offset(2, 10), // changes position of shadow
                           ),
                         ],
-                        color: Color.fromARGB(255, 255, 143, 5),
+                        color: Color.fromARGB(255, 30, 255, 5),
                         borderRadius: BorderRadius.all(
                           Radius.circular(10),
                         ),
