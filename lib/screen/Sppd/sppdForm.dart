@@ -32,7 +32,7 @@ class _sppDformState extends State<sppDform> {
       //   title: Text("Tambah Data SPPD"),
       // ),
       body: SlidingUpPanel(
-        maxHeight: MediaQuery.of(context).size.height * 0.88,
+        maxHeight: MediaQuery.of(context).size.height * 0.86,
         minHeight: MediaQuery.of(context).size.height * 0.50,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(30),
@@ -57,10 +57,6 @@ class _sppDformState extends State<sppDform> {
               SizedBox(
                 height: 10,
               ),
-              Container(
-                width: MediaQuery.of(context).size.width * 0.90,
-                child: TabData(indextab),
-              ),
               Expanded(child: listdata[indextab]),
             ],
           ),
@@ -71,29 +67,9 @@ class _sppDformState extends State<sppDform> {
             SizedBox(
               height: 30,
             ),
-            GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Icon(Icons.arrow_back_ios_new),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    "Kembali",
-                    style: TextStyle(fontSize: 15),
-                  )
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 100,
+            Container(
+              width: MediaQuery.of(context).size.width * 0.90,
+              child: TabData(indextab),
             ),
             Center(
               child: Image.network(
@@ -232,7 +208,5 @@ class _sppDformState extends State<sppDform> {
     );
   }
 
-  void dispose() {
-    
-  }
+  void dispose() {}
 }

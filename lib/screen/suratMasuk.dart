@@ -14,6 +14,7 @@ import 'package:sistem_kearsipan/screen/suratKeluar/DetailSurat.dart';
 import 'package:sistem_kearsipan/screen/SuratMasuk/SuratMasukForm.dart';
 import 'package:sistem_kearsipan/screen/dataArsip.dart';
 import 'package:sistem_kearsipan/screen/suratKeluar/SuratKeluarForm.dart';
+import 'package:sistem_kearsipan/utils/reques.dart';
 import 'package:sistem_kearsipan/widget/Button.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -41,7 +42,25 @@ class _suratMasukState extends State<suratMasuk> {
     fetchData(); // Call fetchData() on initState()
   }
 
-  void _showConfirmationBottomSheet(BuildContext context) {
+  Future<dynamic> _deleteact(int id) async {
+    try {
+      var resonse = postData({'id': id}, "suratmasuk/destory/${id}");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Berhasil di hapus'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      fetchData();
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('${e}'),
+        backgroundColor: Colors.red,
+      ));
+    }
+  }
+
+  void _showConfirmationBottomSheet(BuildContext context, int id) {
     showModalBottomSheet(
       context: context,
       builder: (context) {
@@ -76,16 +95,26 @@ class _suratMasukState extends State<suratMasuk> {
                 children: [
                   Container(
                     width: MediaQuery.sizeOf(context).width * 0.45,
-                    child: Button(
-                      title: "Hapus",
-                      color: Color.fromARGB(255, 4, 110, 152),
+                    child: GestureDetector(
+                      onTap: () {
+                        _deleteact(id);
+                      },
+                      child: Button(
+                        title: "Hapus",
+                        color: Color.fromARGB(255, 4, 110, 152),
+                      ),
                     ),
                   ),
-                  Container(
-                    width: MediaQuery.sizeOf(context).width * 0.45,
-                    child: Button(
-                      title: "Batal",
-                      color: Color.fromARGB(255, 255, 128, 0),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Container(
+                      width: MediaQuery.sizeOf(context).width * 0.45,
+                      child: Button(
+                        title: "Batal",
+                        color: Color.fromARGB(255, 255, 128, 0),
+                      ),
                     ),
                   ),
                   // ElevatedButton(
@@ -455,7 +484,7 @@ class _suratMasukState extends State<suratMasuk> {
                                                         } else if (value ==
                                                             'delete') {
                                                           _showConfirmationBottomSheet(
-                                                              context);
+                                                              context, 2);
                                                         }
                                                       },
                                                     ),

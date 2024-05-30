@@ -7,6 +7,7 @@ import 'package:sistem_kearsipan/components/Loadingpage.dart';
 import 'package:sistem_kearsipan/repository/arsipRepo.dart';
 import 'package:sistem_kearsipan/route/transitionPage.dart';
 import 'package:sistem_kearsipan/screen/Arsip/ArsipForm.dart';
+import 'package:sistem_kearsipan/utils/reques.dart';
 import 'package:sistem_kearsipan/widget/Button.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -44,6 +45,43 @@ class _dataArsipState extends State<dataArsip> {
     });
   }
 
+  Future<void> _deleteData(int? id) async {
+    if (id == null) {
+      print("Invalid ID: null");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error: Invalid ID'),
+          backgroundColor: Colors.orange,
+        ),
+      );
+      return;
+    }
+
+    final String passing = id.toString();
+    print("delete $passing");
+
+    try {
+      var response = await deleteData('arsip/destroy/$passing');
+      print("resdata: $response");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Berhasil di $response'),
+          backgroundColor: Color.fromARGB(255, 3, 149, 112),
+        ),
+      );
+      fetchData();
+    } catch (e) {
+      print('$e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('$e'),
+          backgroundColor: Colors.orange,
+        ),
+      );
+    }
+    Navigator.pop(context);
+  }
+
   Future<void> fetchData() async {
     try {
       var data = await arsipRepo.listdataArsip(page, searchingdata.text);
@@ -60,7 +98,7 @@ class _dataArsipState extends State<dataArsip> {
     }
   }
 
-  void _showConfirmationBottomSheet(BuildContext context) {
+  void _showConfirmationBottomSheet(BuildContext context, int id) {
     showModalBottomSheet(
       context: context,
       builder: (context) {
@@ -95,9 +133,14 @@ class _dataArsipState extends State<dataArsip> {
                 children: [
                   Container(
                     width: MediaQuery.sizeOf(context).width * 0.40,
-                    child: Button(
-                      title: "Hapus",
-                      color: Color.fromARGB(255, 4, 110, 152),
+                    child: GestureDetector(
+                      onTap: () async {
+                        await _deleteData(id);
+                      },
+                      child: Button(
+                        title: "Hapus",
+                        color: Color.fromARGB(255, 4, 110, 152),
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -105,9 +148,14 @@ class _dataArsipState extends State<dataArsip> {
                   ),
                   Container(
                     width: MediaQuery.sizeOf(context).width * 0.40,
-                    child: Button(
-                      title: "Batal",
-                      color: Color.fromARGB(255, 255, 128, 0),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Button(
+                        title: "Batal",
+                        color: Color.fromARGB(255, 255, 128, 0),
+                      ),
                     ),
                   ),
                   // ElevatedButton(
@@ -381,7 +429,9 @@ class _dataArsipState extends State<dataArsip> {
                                                           //       true;
                                                           // });
                                                           _showConfirmationBottomSheet(
-                                                              context);
+                                                              context,
+                                                              suratData[index]
+                                                                  ['id_arsip']);
                                                           // Navigator.push(
                                                           //   context,
                                                           //   MaterialPageRoute(
@@ -582,5 +632,17 @@ class _dataArsipState extends State<dataArsip> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    // _focusNode;
+    // isLoadingMore;
+    // page;
+    // isFocused;
+    // heigOfSlide;
+    // loading;
+    // deleteConfirm;
   }
 }

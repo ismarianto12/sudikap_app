@@ -60,11 +60,21 @@ class _suratDisposisiState extends State<suratDisposisi> {
         elevation: 0, // Menghilangkan bayangan di bawah appbar
         backgroundColor: Color.fromARGB(225, 255, 255, 255),
         actions: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(right: 25),
-            child: Icon(
-              Icons.add,
-              color: Colors.black,
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => sppDform(),
+                ),
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(right: 25),
+              child: Icon(
+                Icons.add,
+                color: Colors.black,
+              ),
             ),
           )
         ],
@@ -91,7 +101,7 @@ class _suratDisposisiState extends State<suratDisposisi> {
       ),
       body: SlidingUpPanel(
         maxHeight: MediaQuery.sizeOf(context).height * 0.88,
-        minHeight: MediaQuery.sizeOf(context).height * 0.55,
+        minHeight: MediaQuery.sizeOf(context).height * 0.80,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(30),
           topRight: Radius.circular(30),

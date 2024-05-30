@@ -184,7 +184,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(30), topRight: Radius.circular(30)),
               maxHeight: MediaQuery.sizeOf(context).height * 0.80,
-              minHeight: MediaQuery.sizeOf(context).height * 0.25,
+              minHeight: isPanelOpen
+                  ? MediaQuery.sizeOf(context).height * 0.25
+                  : MediaQuery.sizeOf(context).height * 0.22,
               backdropEnabled: true,
               panel: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -443,6 +445,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         padding: EdgeInsets.only(top: 10),
                         child: Container(
                           decoration: BoxDecoration(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(14.0)),
                             color: Colors.white,
                             image: DecorationImage(
                               alignment: Alignment(1.18, 0),
@@ -452,7 +456,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               ),
                             ),
                           ),
-                          width: MediaQuery.sizeOf(context).width,
+                          width: MediaQuery.sizeOf(context).width * 30,
                           height: MediaQuery.sizeOf(context).height,
                           child: Column(
                             children: [
@@ -643,29 +647,39 @@ class Menu extends StatelessWidget {
         color: Colors.red,
         route: "/sppd"),
     MenuData(
-        icon: Icons.shopping_cart,
+        icon: Icons.email_rounded,
         text: 'Surat Masuk',
         color: Colors.green,
         route: "/surat_masuk"),
     MenuData(
-        icon: Icons.notifications,
+        icon: Icons.ios_share_rounded,
         text: 'Surat Keluar',
         color: Colors.orange,
         route: "/surat_keluar"),
     MenuData(
-        icon: Icons.settings,
+        icon: Icons.mark_email_read_sharp,
         text: 'Disposisi',
         color: Colors.cyan,
         route: "/disposisi"),
     MenuData(
-        icon: Icons.favorite,
+        icon: Icons.people_outlined,
         text: 'Data Pegawai',
         color: Colors.orangeAccent,
         route: "/data_pegawai"),
     MenuData(
-        icon: Icons.search,
+        icon: Icons.account_tree_sharp,
         text: 'Arsip',
         color: Colors.yellow,
+        route: "/arsip"),
+    MenuData(
+        icon: Icons.account_tree_sharp,
+        text: 'Satuan',
+        color: const Color.fromARGB(255, 59, 101, 255),
+        route: "/arsip"),
+    MenuData(
+        icon: Icons.ad_units,
+        text: 'Pengajuan',
+        color: Color.fromARGB(255, 174, 105, 7),
         route: "/arsip"),
   ];
   @override
@@ -687,7 +701,7 @@ class Menu extends StatelessWidget {
               ),
             );
           },
-          itemCount: 6,
+          itemCount: 8,
         ),
       ),
     );
@@ -695,14 +709,41 @@ class Menu extends StatelessWidget {
 }
 
 Widget SearchingBar(BuildContext context) {
+  final List<MenuData> lismenu = [
+    MenuData(
+        icon: Icons.account_circle,
+        text: 'SPPD',
+        color: Colors.red,
+        route: "/sppd"),
+    MenuData(
+        icon: Icons.email_rounded,
+        text: 'Surat Masuk',
+        color: Colors.green,
+        route: "/surat_masuk"),
+    MenuData(
+        icon: Icons.ios_share_rounded,
+        text: 'Surat Keluar',
+        color: Colors.orange,
+        route: "/surat_keluar"),
+    MenuData(
+        icon: Icons.mark_email_read_sharp,
+        text: 'Disposisi',
+        color: Colors.cyan,
+        route: "/disposisi"),
+    MenuData(
+        icon: Icons.people_outlined,
+        text: 'Data Pegawai',
+        color: Colors.orangeAccent,
+        route: "/data_pegawai"),
+    MenuData(
+        icon: Icons.account_tree_sharp,
+        text: 'Arsip',
+        color: Colors.yellow,
+        route: "/arsip"),
+  ];
   return GestureDetector(
     onTap: () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => searchDashoard(),
-        ),
-      );
+      showSearch(context: context, delegate: CustomSearchDelegate(lismenu));
     },
     child: Container(
       height: MediaQuery.of(context).size.width * 0.09,

@@ -1,19 +1,106 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:sistem_kearsipan/widget/Button.dart';
 
 class DisposisDetail extends StatelessWidget {
   final dynamic disposisidata;
   const DisposisDetail({Key? key, this.disposisidata}) : super(key: key);
   @override
+  void _sharedApp(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Container(
+          padding: EdgeInsets.all(16.0),
+          height: MediaQuery.sizeOf(context).height * 0.30,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Image.network(
+                    "https://cdn-icons-png.flaticon.com/512/10302/10302977.png",
+                    width: 30,
+                    height: 30,
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    'Share this?',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: MediaQuery.sizeOf(context).width * 0.40,
+                    child: GestureDetector(
+                      onTap: () async {},
+                      child: Button(
+                        title: "Hapus",
+                        color: Color.fromARGB(255, 4, 110, 152),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Container(
+                    width: MediaQuery.sizeOf(context).width * 0.40,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Button(
+                        title: "Batal",
+                        color: Color.fromARGB(255, 255, 128, 0),
+                      ),
+                    ),
+                  ),
+                  // ElevatedButton(
+                  //   onPressed: () {
+                  //     // Handle left button press
+                  //     Navigator.of(context).pop();
+                  //   },
+                  //   child: Text('Left Button'),
+                  // ),
+                  // ElevatedButton(
+                  //   onPressed: () {
+                  //     // Handle right button press
+                  //     Navigator.of(context).pop();
+                  //   },
+                  //   child: Text('Right Button'),
+                  // ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   Widget build(BuildContext context) {
     // print(disposisidata['tujuan']);
     return Scaffold(
       appBar: AppBar(
         actions: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(right: 15),
-            child: Icon(Icons.share),
+          GestureDetector(
+            onTap: () {
+              _sharedApp(context);
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(right: 15),
+              child: Icon(Icons.share),
+            ),
           )
         ],
         iconTheme: IconThemeData(color: const Color.fromARGB(255, 0, 0, 0)),

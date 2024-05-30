@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:sistem_kearsipan/components/Loadingpage.dart';
 import 'package:sistem_kearsipan/repository/arsipRepo.dart';
 import 'package:sistem_kearsipan/screen/Sppd/SppdForm_create.dart';
+import 'package:sistem_kearsipan/screen/Sppd/sppdForm.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class sppdData extends StatefulWidget {
@@ -58,7 +59,7 @@ class _sppdDataState extends State<sppdData> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => SppdForm_create(),
+                  builder: (context) => sppDform(),
                 ),
               );
             },

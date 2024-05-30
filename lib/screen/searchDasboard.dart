@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sistem_kearsipan/repository/suratRepo.dart';
+import 'package:sistem_kearsipan/screen/dashboard.dart';
 
 class searchDashoard extends StatefulWidget {
   const searchDashoard({super.key});
@@ -41,6 +42,7 @@ class _searchDashoardState extends State<searchDashoard> {
         actions: [
           IconButton(
             icon: Icon(Icons.search),
+            autofocus: true,
             onPressed: () {
               showSearch(
                   context: context, delegate: CustomSearchDelegate(data));
@@ -64,6 +66,39 @@ class CustomSearchDelegate extends SearchDelegate<String> {
   final List<dynamic> items;
   final FocusNode _focusNode = FocusNode();
 
+  final List<dynamic> menu = [
+    MenuData(
+        icon: Icons.account_circle,
+        text: 'SPPD',
+        color: Colors.red,
+        route: "/sppd"),
+    MenuData(
+        icon: Icons.email_rounded,
+        text: 'Surat Masuk',
+        color: Colors.green,
+        route: "/surat_masuk"),
+    MenuData(
+        icon: Icons.ios_share_rounded,
+        text: 'Surat Keluar',
+        color: Colors.orange,
+        route: "/surat_keluar"),
+    MenuData(
+        icon: Icons.mark_email_read_sharp,
+        text: 'Disposisi',
+        color: Colors.cyan,
+        route: "/disposisi"),
+    MenuData(
+        icon: Icons.people_outlined,
+        text: 'Data Pegawai',
+        color: Colors.orangeAccent,
+        route: "/data_pegawai"),
+    MenuData(
+        icon: Icons.account_tree_sharp,
+        text: 'Arsip',
+        color: Colors.yellow,
+        route: "/arsip"),
+  ];
+
   CustomSearchDelegate(this.items);
   @override
   Widget build(BuildContext context) {
@@ -77,6 +112,7 @@ class CustomSearchDelegate extends SearchDelegate<String> {
           },
         ),
         title: TextField(
+          autofocus: true,
           focusNode: _focusNode,
           onChanged: (value) {
             // Do nothing here, handle search logic in search results
@@ -122,8 +158,8 @@ class CustomSearchDelegate extends SearchDelegate<String> {
   @override
   Widget buildResults(BuildContext context) {
     final searchResults = query.isEmpty
-        ? items
-        : items
+        ? menu
+        : menu
             .where((item) => item.toLowerCase().contains(query.toLowerCase()))
             .toList();
 
@@ -144,14 +180,9 @@ class CustomSearchDelegate extends SearchDelegate<String> {
   Widget buildSuggestions(BuildContext context) {
     return SingleChildScrollView(
       child: Column(children: [
+        Center(child: Text("Search Fast Menu")),
         Image.network(
             "https://static.vecteezy.com/system/resources/previews/005/163/930/non_2x/incomplete-data-concept-illustration-flat-design-eps10-modern-graphic-element-for-landing-page-empty-state-ui-infographic-icon-vector.jpg"),
-        ListView.builder(
-            itemCount: items.length,
-            shrinkWrap: true,
-            itemBuilder: (BuildContext context, int index) {
-              return Text('${items[index]['no_surat']}');
-            }),
       ]),
     );
     // No suggestions in this example
