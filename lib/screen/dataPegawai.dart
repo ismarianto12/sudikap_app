@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:pager/pager.dart';
 import 'package:sistem_kearsipan/components/Loadingpage.dart';
 import 'package:sistem_kearsipan/repository/pegawaiRepo.dart';
 import 'package:sistem_kearsipan/repository/suratRepo.dart';
@@ -11,6 +12,7 @@ import 'package:sistem_kearsipan/screen/Sppd/sppdForm.dart';
 import 'package:sistem_kearsipan/screen/suratKeluar/DetailSurat.dart';
 import 'package:sistem_kearsipan/screen/SuratMasuk/SuratMasukForm.dart';
 import 'package:sistem_kearsipan/screen/dataArsip.dart';
+import 'package:sistem_kearsipan/utils/reques.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class dataPegawai extends StatefulWidget {
@@ -25,10 +27,12 @@ class _dataPegawaiState extends State<dataPegawai> {
   int page = 0;
   bool loading = true;
   int totalpeg = 0;
+  int _currentPage = 1;
+
   @override
   void initState() {
     super.initState();
-    scrollController.addListener(_scrollistener);
+    // scrollController.addListener(_scrollistener);
     fetchData(); // Call fetchData() on initState()
   }
 
@@ -53,11 +57,30 @@ class _dataPegawaiState extends State<dataPegawai> {
     }
   }
 
+  Future<dynamic> _deleteact(int id) async {
+    try {
+      var resonse = postData({'id': id}, "suratmasuk/destory/${id}");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Berhasil di hapus'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      fetchData();
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('${e}'),
+        backgroundColor: Colors.red,
+      ));
+    }
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       // bottomNavigationBar: Button,
       floatingActionButton: FloatingActionButton(
-        backgroundColor: const Color.fromARGB(255, 59, 59, 59),
+        shape: const CircleBorder(),
+        backgroundColor: Color.fromARGB(255, 18, 92, 204),
         onPressed: () {
           Navigator.push(
             context,
@@ -93,7 +116,7 @@ class _dataPegawaiState extends State<dataPegawai> {
                 borderRadius: BorderRadius.all(
                   Radius.circular(100),
                 ),
-                color: Color.fromARGB(133, 5, 70, 119),
+                color: Color.fromARGB(255, 18, 92, 204),
               ),
             ),
             Padding(
@@ -111,30 +134,17 @@ class _dataPegawaiState extends State<dataPegawai> {
                   SizedBox(
                     width: 10,
                   ),
-                  // Container(
-                  //   margin: EdgeInsets.only(top: 20)5
-                  //   width: MediaQuery.sizeOf(context).width * 0.80,
-                  //   child: TextFormField(
-                  //     // controller: username,
-                  //     decoration: InputDecoration(
-                  //       isDense: true,x
-                  //       contentPadding: EdgeInsets.fromLTRB(
-                  //           10, 6, 10, 0), // Atur ukuran teks kecil di sini
-                  //       labelText: 'Search',
-                  //       prefixIcon: Icon(Icons.search),
-                  //       border: OutlineInputBorder(
-                  //         borderRadius: BorderRadius.all(
-                  //             Radius.circular(4.0)), // Mengatur radius border
-                  //         borderSide: BorderSide(
-                  //           color: Colors.grey, // Warna border
-                  //           width: 1.0, // Ketebalan border
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
                 ],
               ),
+            ),
+            Pager(
+              currentPage: _currentPage,
+              totalPages: 5,
+              onPageChanged: (page) {
+                setState(() {
+                  _currentPage = page;
+                });
+              },
             ),
             Expanded(
               child: Padding(
@@ -158,14 +168,20 @@ class _dataPegawaiState extends State<dataPegawai> {
                               padding: const EdgeInsets.all(5.0),
                               child: Container(
                                 decoration: BoxDecoration(
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.5),
-                                      spreadRadius: 0.1,
-                                      blurRadius: 0.1,
-                                      offset: Offset(0, 2),
+                                  // border: Border.fromBorderSide(BorderSide.lerp(1,10)), // boxShadow: [
+                                  //   BoxShadow(
+                                  //     color: Colors.grey.withOpacity(0.5),
+                                  //     spreadRadius: 0.1,
+                                  //     blurRadius: 0.1,
+                                  //     offset: Offset(0, 2),
+                                  //   ),
+                                  // ],
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      color: Colors.black, // Border color
+                                      width: 0.1, // Border width
                                     ),
-                                  ],
+                                  ),
                                   color: Color.fromARGB(255, 255, 255, 255),
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(10)),
@@ -181,9 +197,8 @@ class _dataPegawaiState extends State<dataPegawai> {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           CircleAvatar(
-                                            backgroundColor:
-                                                const Color.fromARGB(
-                                                    255, 0, 0, 0),
+                                            backgroundColor: Color.fromARGB(
+                                                255, 18, 92, 204),
                                             child: Text(
                                               "${index + 1}",
                                               style: TextStyle(
@@ -282,122 +297,20 @@ class _dataPegawaiState extends State<dataPegawai> {
                 ),
               ),
               SizedBox(
-                height: 50,
+                height: 10,
               ),
               Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: const Color.fromARGB(255, 234, 234, 234)
-                                .withOpacity(0.5),
-                            spreadRadius: 5,
-                            blurRadius: 15,
-                            offset: Offset(2, 10), // changes position of shadow
-                          ),
-                        ],
-                        color: Color.fromARGB(255, 255, 143, 5),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10),
-                        ),
-                      ),
-                      width: MediaQuery.sizeOf(context).width * 0.45,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Total Karyawan',
-                              style: TextStyle(
-                                color: const Color.fromARGB(255, 255, 255, 255),
-                                fontSize: 15.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.check_box_rounded,
-                                  color: Colors.white,
-                                  size: 40,
-                                ),
-                                SizedBox(width: 10),
-                                Text(
-                                  '${loading ? '...' : totalpeg.toString()}',
-                                  style: TextStyle(
-                                    color: const Color.fromARGB(
-                                        255, 255, 255, 255),
-                                    fontSize: 30.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Container(
-                      width: MediaQuery.sizeOf(context).width * 0.40,
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: const Color.fromARGB(255, 234, 234, 234)
-                                .withOpacity(0.5),
-                            spreadRadius: 3,
-                            blurRadius: 10,
-                            offset: Offset(2, 10), // changes position of shadow
-                          ),
-                        ],
-                        color: Color.fromARGB(255, 30, 255, 5),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10),
-                        ),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Total Karyawan',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.people,
-                                  color: Colors.white,
-                                  size: 40,
-                                ),
-                                SizedBox(width: 10),
-                                Text(
-                                  '100',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 30.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      _buildCard(context, Icons.people, 'Total Pegawai', 10),
+                      _buildCard(context, Icons.mail, 'Strata Satu', 10),
+                      _buildCard(context, Icons.input_sharp, 'Strata Dua', 10),
+                      _buildCard(context, Icons.mail, 'Strata Tiga', 10),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -464,6 +377,49 @@ Widget SearchingBar(BuildContext context) {
                 style: TextStyle(color: Colors.white),
               ),
             ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+Widget _buildCard(BuildContext context, icon, String title, int count) {
+  return Container(
+    width: MediaQuery.sizeOf(context).width * 0.32,
+    decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(
+          Radius.circular(10),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: const Color.fromARGB(255, 234, 234, 234).withOpacity(0.5),
+            spreadRadius: 3,
+            blurRadius: 10,
+            offset: Offset(2, 10), // changes position of shadow
+          ),
+        ]),
+    margin: EdgeInsets.all(10),
+    child: Padding(
+      padding: EdgeInsets.all(15),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Icon(
+            icon,
+            size: 24,
+            color: Colors.blue,
+          ),
+          SizedBox(height: 10),
+          Text(
+            title,
+            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 5),
+          Text(
+            'Jumlah: $count',
+            style: TextStyle(fontSize: 16),
           ),
         ],
       ),

@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sistem_kearsipan/environtment.dart';
 import 'package:sistem_kearsipan/main.dart';
 import 'package:sistem_kearsipan/screen/Notifikasi.dart';
 import 'package:sistem_kearsipan/screen/profile.dart';
@@ -44,11 +45,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
   ];
 
   @override
-  // Future logout() async {
-  //   SharedPreferences pref = await SharedPreferences.getInstance();
-  //   pref.remove("token");
-  //   Navigator.pushNamed(context, '/login');
-  // }
+  initState() {
+    super.initState();
+    print("API_URL");
+    print(Base_Url);
+  }
+
   Future<void> logout(BuildContext context) async {
     // Tampilkan dialog konfirmasi logout
     bool confirmLogout = await showDialog(
@@ -88,6 +90,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: _index == 0
+          ? FloatingActionButton(
+              shape: const CircleBorder(),
+              onPressed: () {},
+              backgroundColor: Colors.green,
+              child: ClipOval(
+                child: Container(
+                  color: Colors.green,
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.refresh,
+                      color: Colors.white,
+                    ),
+                    onPressed: () {
+                      setState(() {});
+                    },
+                  ),
+                ),
+              ),
+            )
+          : null,
       extendBody: true,
       bottomNavigationBar: SingleChildScrollView(
         physics: NeverScrollableScrollPhysics(),
@@ -185,7 +208,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   topLeft: Radius.circular(30), topRight: Radius.circular(30)),
               maxHeight: MediaQuery.sizeOf(context).height * 0.80,
               minHeight: isPanelOpen
-                  ? MediaQuery.sizeOf(context).height * 0.25
+                  ? MediaQuery.sizeOf(context).height * 0.80
                   : MediaQuery.sizeOf(context).height * 0.22,
               backdropEnabled: true,
               panel: Column(
@@ -193,17 +216,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(
-                    height: 25,
-                  ),
-                  Container(
-                    width: MediaQuery.sizeOf(context).width * 0.2,
-                    height: MediaQuery.sizeOf(context).height * 0.01,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(100),
-                      ),
-                      color: Color.fromARGB(133, 5, 70, 119),
-                    ),
+                    height: 10,
                   ),
                   SizedBox(
                     height: 8,
@@ -243,6 +256,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          Container(
+                            width: MediaQuery.sizeOf(context).width * 0.2,
+                            height: MediaQuery.sizeOf(context).height * 0.01,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(100),
+                              ),
+                              color: Color.fromARGB(133, 5, 70, 119),
+                            ),
+                          ),
                           Text(
                             "Surat Disposisi Terbaru",
                             style: Theme.of(context)
@@ -253,9 +276,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 ),
                           ),
                           SingleChildScrollView(child: GetCurrenDisposisi()),
-                          SizedBox(
-                            height: 300,
-                          ),
                         ],
                       ),
                     ),
@@ -460,6 +480,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           height: MediaQuery.sizeOf(context).height,
                           child: Column(
                             children: [
+                              SizedBox(
+                                height: 15,
+                              ),
                               Center(
                                 child: Text(
                                   "Menu Apps",
@@ -590,10 +613,10 @@ Widget ListData(BuildContext context) {
         padding: const EdgeInsets.all(10.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.end,
+          // mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   "Example Surat Yang Disampaikan...",
@@ -675,12 +698,12 @@ class Menu extends StatelessWidget {
         icon: Icons.account_tree_sharp,
         text: 'Satuan',
         color: const Color.fromARGB(255, 59, 101, 255),
-        route: "/arsip"),
+        route: "/satuan"),
     MenuData(
         icon: Icons.ad_units,
         text: 'Pengajuan',
         color: Color.fromARGB(255, 174, 105, 7),
-        route: "/arsip"),
+        route: "/pengajuan"),
   ];
   @override
   Widget build(BuildContext context) {

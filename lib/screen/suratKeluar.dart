@@ -1,15 +1,11 @@
-import 'dart:ffi';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sistem_kearsipan/components/Loadingpage.dart';
 import 'package:sistem_kearsipan/repository/suratRepo.dart';
-import 'package:sistem_kearsipan/screen/Sppd/sppdForm.dart';
 import 'package:sistem_kearsipan/screen/suratKeluar/DetailSurat.dart';
-import 'package:sistem_kearsipan/screen/SuratMasuk/SuratMasukForm.dart';
-import 'package:sistem_kearsipan/screen/dataArsip.dart';
 import 'package:sistem_kearsipan/screen/suratKeluar/SuratKeluarForm.dart';
+import 'package:sistem_kearsipan/utils/reques.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class suratKeluar extends StatefulWidget {
@@ -37,6 +33,24 @@ class _suratKeluarState extends State<suratKeluar> {
     fetchData();
   }
 
+  Future<dynamic> _deleteact(int id) async {
+    try {
+      var resonse = postData({'id': id}, "suratmasuk/destory/${id}");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Berhasil di hapus'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      fetchData();
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('${e}'),
+        backgroundColor: Colors.red,
+      ));
+    }
+  }
+
   Future<void> fetchData() async {
     try {
       var data =
@@ -59,7 +73,9 @@ class _suratKeluarState extends State<suratKeluar> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        shadowColor: null,
         elevation: 0,
+        scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         actions: <Widget>[
           GestureDetector(
@@ -89,22 +105,21 @@ class _suratKeluarState extends State<suratKeluar> {
             },
             child: Icon(Icons.arrow_back_ios_sharp)),
       ),
-      floatingActionButton: CircleAvatar(
-        child: FloatingActionButton(
-          backgroundColor: const Color.fromARGB(255, 97, 97, 97),
-          onPressed: () {
-            setState(() {
-              searchcontroller.text = "";
-              page = 10;
-              loading = true;
-            });
+      floatingActionButton: FloatingActionButton(
+        shape: const CircleBorder(),
+        backgroundColor: Color.fromARGB(255, 18, 92, 204),
+        onPressed: () {
+          setState(() {
+            searchcontroller.text = "";
+            page = 10;
+            loading = true;
+          });
 
-            fetchData();
-          },
-          child: Icon(
-            Icons.refresh,
-            color: Colors.white,
-          ),
+          fetchData();
+        },
+        child: Icon(
+          Icons.refresh,
+          color: Colors.white,
         ),
       ),
       // appBar: AppBar(
@@ -207,13 +222,14 @@ class _suratKeluarState extends State<suratKeluar> {
                                                       .symmetric(
                                                       horizontal: 8.0),
                                                   child: Text(
-                                                    '${suratData[index]['no_surat']}',
+                                                    '${suratData[index]['no_surat']} - Tujuan Surat : ${suratData[index]['tujuan']}',
                                                     style: TextStyle(
-                                                      color:
-                                                          const Color.fromARGB(
-                                                              255, 0, 0, 0),
-                                                      fontSize: 15.0,
-                                                    ),
+                                                        color: const Color
+                                                            .fromARGB(
+                                                            255, 0, 0, 0),
+                                                        fontSize: 15.0,
+                                                        fontWeight:
+                                                            FontWeight.bold),
                                                     overflow:
                                                         TextOverflow.ellipsis,
                                                   ),
@@ -244,7 +260,7 @@ class _suratKeluarState extends State<suratKeluar> {
                                             padding:
                                                 const EdgeInsets.only(left: 45),
                                             child: Text(
-                                              '${suratData[index]['tujuan']}',
+                                              '${suratData[index]['tujuan']} - ${suratData[index]['tgl_surat']}',
                                               style: TextStyle(
                                                 color: const Color.fromARGB(
                                                     255, 0, 0, 0),
@@ -274,23 +290,24 @@ class _suratKeluarState extends State<suratKeluar> {
             ),
           ],
         ),
-        body: Container(
-          color: Colors.white,
+        body: Positioned(
+          bottom: 200,
+          // color: Colors.white,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              SizedBox(
-                height: 40,
-              ),
-
+              // SizedBox(
+              //   height: 40,
+              // ),
               // SizedBox(
               //   height: 100,
               // ),
-              Center(
+              Positioned(
+                bottom: 1000,
                 child: Image.network(
-                    "https://i.pinimg.com/736x/e9/80/82/e98082ffb2d6b55c886b97be1f340bef.jpg"),
+                    "https://img.freepik.com/premium-vector/ux-designs-websites-show-different-styles-different-types-business_711010-235.jpg"),
               ),
-              Text("Form SPTPD - ")
+              // Text("Form SPTPD - ")
             ],
           ),
         ),

@@ -49,6 +49,7 @@ class _sppdDataState extends State<sppdData> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         elevation: 0, // Menghilangkan bayangan di bawah appbar
         backgroundColor: Color.fromARGB(226, 0, 170, 255),
         actions: <Widget>[

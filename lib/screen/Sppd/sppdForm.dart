@@ -7,6 +7,8 @@ import 'package:flutter/widgets.dart';
 import 'package:sistem_kearsipan/screen/Sppd/Lainnya.dart';
 import 'package:sistem_kearsipan/screen/Sppd/SppdForm_create.dart';
 import 'package:sistem_kearsipan/screen/Sppd/Tebusan.dart';
+import 'package:sistem_kearsipan/screen/dashboard.dart';
+import 'package:sistem_kearsipan/screen/sppdData.dart';
 import 'package:sistem_kearsipan/widget/Button.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -25,6 +27,98 @@ class _sppDformState extends State<sppDform> {
   ];
 
   @override
+  void _showConfirmationBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Container(
+          padding: EdgeInsets.all(16.0),
+          height: 200.0,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Image.network(
+                    "https://cdn-icons-png.flaticon.com/512/10302/10302977.png",
+                    width: 30,
+                    height: 30,
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    'Anda Yakin Membatalkan ',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+              Text(
+                'Data yang yang di buat tidak dapat disimpan.',
+                style: TextStyle(
+                  fontSize: 14.0,
+                  // fontWeight: FontWeight.bold,
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: MediaQuery.sizeOf(context).width * 0.40,
+                    child: GestureDetector(
+                      onTap: () {},
+                      child: Button(
+                        title: "Lanjut",
+                        color: Color.fromARGB(255, 4, 110, 152),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Container(
+                    width: MediaQuery.sizeOf(context).width * 0.40,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DashboardScreen(),
+                            ));
+                      },
+                      child: Button(
+                        title: "Batal",
+                        color: Color.fromARGB(255, 255, 128, 0),
+                      ),
+                    ),
+                  ),
+                  // ElevatedButton(
+                  //   onPressed: () {
+                  //     // Handle left button press
+                  //     Navigator.of(context).pop();
+                  //   },
+                  //   child: Text('Left Button'),
+                  // ),
+                  // ElevatedButton(
+                  //   onPressed: () {
+                  //     // Handle right button press
+                  //     Navigator.of(context).pop();
+                  //   },
+                  //   child: Text('Right Button'),
+                  // ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
@@ -85,125 +179,131 @@ class _sppDformState extends State<sppDform> {
   Widget TabData(indexdata) {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
-      child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            GestureDetector(
-              onTap: () {
-                setState(() {
-                  indextab = 0;
-                });
-              },
-              child: Container(
-                width: MediaQuery.sizeOf(context).width * 0.28,
-                height: MediaQuery.sizeOf(context).width * 0.10,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: indextab == 0
-                        ? Color.fromARGB(255, 6, 141, 156)
-                        : Colors.black, // Warna border
-                  ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          GestureDetector(
+            onTap: () {
+              _showConfirmationBottomSheet(context);
+            },
+            child: Icon(Icons.arrow_back_ios_sharp),
+          ),
+          SizedBox(
+            width: 10,
+          ),
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                indextab = 0;
+              });
+            },
+            child: Container(
+              width: MediaQuery.sizeOf(context).width * 0.28,
+              height: MediaQuery.sizeOf(context).width * 0.10,
+              decoration: BoxDecoration(
+                border: Border.all(
                   color: indextab == 0
                       ? Color.fromARGB(255, 6, 141, 156)
-                      : Color.fromARGB(255, 255, 255, 255),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(10),
-                  ),
+                      : Colors.black, // Warna border
                 ),
-                child: Center(
-                  child: Text(
-                    'SPPD',
-                    style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
-                        color: indextab == 0
-                            ? Colors.white
-                            : const Color.fromARGB(255, 0, 0, 0)),
-                  ),
+                color: indextab == 0
+                    ? Color.fromARGB(255, 6, 141, 156)
+                    : Color.fromARGB(255, 255, 255, 255),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10),
+                ),
+              ),
+              child: Center(
+                child: Text(
+                  'SPPD',
+                  style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                      color: indextab == 0
+                          ? Colors.white
+                          : const Color.fromARGB(255, 0, 0, 0)),
                 ),
               ),
             ),
-            SizedBox(
-              width: 5,
-            ),
-            GestureDetector(
-              onTap: () {
-                setState(() {
-                  indextab = 1;
-                });
-              },
-              child: Container(
-                width: MediaQuery.sizeOf(context).width * 0.28,
-                height: MediaQuery.sizeOf(context).width * 0.10,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: indextab == 1
-                        ? Color.fromARGB(255, 6, 141, 156)
-                        : Colors.black, // Warna border
-                  ),
+          ),
+          SizedBox(
+            width: 5,
+          ),
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                indextab = 1;
+              });
+            },
+            child: Container(
+              width: MediaQuery.sizeOf(context).width * 0.28,
+              height: MediaQuery.sizeOf(context).width * 0.10,
+              decoration: BoxDecoration(
+                border: Border.all(
                   color: indextab == 1
                       ? Color.fromARGB(255, 6, 141, 156)
-                      : Color.fromARGB(255, 255, 255, 255),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(10),
-                  ),
+                      : Colors.black, // Warna border
                 ),
-                child: Center(
-                  child: Text(
-                    'Tebusan',
-                    style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
-                        color: indextab == 1
-                            ? Colors.white
-                            : const Color.fromARGB(255, 0, 0, 0)),
-                  ),
+                color: indextab == 1
+                    ? Color.fromARGB(255, 6, 141, 156)
+                    : Color.fromARGB(255, 255, 255, 255),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10),
+                ),
+              ),
+              child: Center(
+                child: Text(
+                  'Tebusan',
+                  style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                      color: indextab == 1
+                          ? Colors.white
+                          : const Color.fromARGB(255, 0, 0, 0)),
                 ),
               ),
             ),
-            SizedBox(
-              width: 5,
-            ),
-            GestureDetector(
-              onTap: () {
-                setState(() {
-                  indextab = 2;
-                });
-              },
-              child: Container(
-                width: MediaQuery.sizeOf(context).width * 0.28,
-                height: MediaQuery.sizeOf(context).width * 0.10,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: indextab == 2
-                        ? Color.fromARGB(255, 6, 141, 156)
-                        : Colors.black, // Warna border
-                  ),
+          ),
+          SizedBox(
+            width: 5,
+          ),
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                indextab = 2;
+              });
+            },
+            child: Container(
+              width: MediaQuery.sizeOf(context).width * 0.28,
+              height: MediaQuery.sizeOf(context).width * 0.10,
+              decoration: BoxDecoration(
+                border: Border.all(
                   color: indextab == 2
                       ? Color.fromARGB(255, 6, 141, 156)
-                      : Color.fromARGB(255, 255, 255, 255),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(10),
-                  ),
+                      : Colors.black, // Warna border
                 ),
-                child: Center(
-                  child: Text(
-                    'Lainya',
-                    style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w700,
-                          color: indextab == 2
-                              ? const Color.fromARGB(255, 255, 255, 255)
-                              : Color.fromARGB(255, 7, 7, 7),
-                        ),
-                  ),
+                color: indextab == 2
+                    ? Color.fromARGB(255, 6, 141, 156)
+                    : Color.fromARGB(255, 255, 255, 255),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10),
+                ),
+              ),
+              child: Center(
+                child: Text(
+                  'Lainya',
+                  style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                        color: indextab == 2
+                            ? const Color.fromARGB(255, 255, 255, 255)
+                            : Color.fromARGB(255, 7, 7, 7),
+                      ),
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

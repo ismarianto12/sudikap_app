@@ -3,6 +3,8 @@ import 'package:sistem_kearsipan/components/splashScreen.dart';
 import 'package:sistem_kearsipan/main.dart';
 import 'package:sistem_kearsipan/screen/dataArsip.dart';
 import 'package:sistem_kearsipan/screen/dataPegawai.dart';
+import 'package:sistem_kearsipan/screen/pengajuan/pengajuan.dart';
+import 'package:sistem_kearsipan/screen/satuan/satuan.dart';
 import 'package:sistem_kearsipan/screen/sppdData.dart';
 import 'package:sistem_kearsipan/screen/suratDisposisi.dart';
 import 'package:sistem_kearsipan/screen/suratKeluar.dart';
@@ -31,6 +33,10 @@ class RouteAplikasi {
         return _buildRoute(dataPegawai());
       case '/arsip':
         return _buildRoute(dataArsip());
+      case '/satuan':
+        return _buildRoute(Satuan());
+      case '/pengajuan':
+        return _buildRoute(Pengajuan());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

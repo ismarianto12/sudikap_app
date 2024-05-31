@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pager/pager.dart';
 import 'package:sistem_kearsipan/repository/pegawaiRepo.dart';
 
 class pegawaiForm extends StatefulWidget {
@@ -33,6 +34,7 @@ class _pegawaiFormState extends State<pegawaiForm> {
   TextEditingController keteranganController = TextEditingController();
   TextEditingController namaPelatihanController = TextEditingController();
   TextEditingController tanggalPelatihanController = TextEditingController();
+  int _currentPage = 1;
 
   @override
   Future<dynamic> CallactionEdit() async {
@@ -239,7 +241,7 @@ class _pegawaiFormState extends State<pegawaiForm> {
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Expanded(
                     child: ElevatedButton(

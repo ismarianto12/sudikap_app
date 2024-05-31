@@ -151,12 +151,13 @@ class SuratRepo {
       var response = await http.get(
           Uri.parse("${Base_Url}disposisi/currentdisposisi"),
           headers: <String, String>{
-            'Authorization': '${token}',
+            'Authorization': 'Bearer ${token}',
           });
+      // print("${response.body} body res");
       if (response.statusCode == 200) {
         return json.decode(response.body)['data'];
       } else {
-        throw Exception('Failed to load data');
+        return json.decode(response.body);
       }
     } catch (e) {
       throw Exception('Failed to load data');

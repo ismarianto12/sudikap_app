@@ -1,4 +1,9 @@
+final String ENV = 'dev'; // prod
 final String API_DEV = "http://10.2.115.59/backend_arsip/public/api/v1/";
+// if get compiled
+
 final String API_PROD = "https://apisudikap.gotrain.id/public/api/v1/";
-final String Base_Url = API_DEV;
-final String App_version = "";
+String Base_Url = ENV == 'prod' ? API_PROD : API_DEV;
+String App_version = "";
+
+// print("${Base_url}");

@@ -16,11 +16,12 @@ class PegawaiRepo {
         'Authorization': 'Bearer $token',
       },
     );
+    print("Response Pegawai : ${Uri.parse(url)}");
     if (response.statusCode == 200) {
-      print(json.decode(response.body)['data']);
+      // print(json.decode(response.body)['data']);
       return json.decode(response.body)['data'];
     } else {
-      throw Exception('Failed to load data');
+      throw Exception('${response}');
     }
   }
 

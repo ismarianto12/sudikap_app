@@ -10,6 +10,7 @@ import 'package:sistem_kearsipan/screen/Sppd/sppdForm.dart';
 import 'package:sistem_kearsipan/screen/suratKeluar/DetailSurat.dart';
 import 'package:sistem_kearsipan/screen/SuratMasuk/SuratMasukForm.dart';
 import 'package:sistem_kearsipan/screen/dataArsip.dart';
+import 'package:sistem_kearsipan/utils/reques.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class suratDisposisi extends StatefulWidget {
@@ -34,6 +35,24 @@ class _suratDisposisiState extends State<suratDisposisi> {
     getDataDisposisi(); // Call getDataDisposisi() on initState()
   }
 
+  Future<dynamic> _deleteact(int id) async {
+    try {
+      var resonse = postData({'id': id}, "suratmasuk/destory/${id}");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Berhasil di hapus'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      getDataDisposisi();
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('${e}'),
+        backgroundColor: Colors.red,
+      ));
+    }
+  }
+
   Future<void> getDataDisposisi() async {
     print("disposisi data");
     try {
@@ -55,9 +74,39 @@ class _suratDisposisiState extends State<suratDisposisi> {
 
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        shape: const CircleBorder(),
+        onPressed: () {
+          setState(() {
+            loading = true;
+            page = 10;
+            // searchingdata.text = "";
+          });
+          // fetchData();
+        },
+        backgroundColor: Colors.green,
+        child: ClipOval(
+          child: Container(
+            color: Colors.green,
+            child: IconButton(
+              icon: Icon(
+                Icons.refresh,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                setState(() {
+                  loading = true;
+                });
+                // fetchData();
+              }, // Dapat diubah jika diperlukan, tetapi tidak akan dijalankan karena FloatingActionButton sudah memiliki onPressed
+            ),
+          ),
+        ),
+      ),
       appBar: AppBar(
         shadowColor: Colors.transparent,
-        elevation: 0, // Menghilangkan bayangan di bawah appbar
+        scrolledUnderElevation: 0,
+        elevation: 0,
         backgroundColor: Color.fromARGB(225, 255, 255, 255),
         actions: <Widget>[
           GestureDetector(

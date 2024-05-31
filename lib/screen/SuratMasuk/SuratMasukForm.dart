@@ -520,7 +520,7 @@ class _SuratMasukFormState extends State<SuratMasukForm> {
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Expanded(
                     child: ElevatedButton(

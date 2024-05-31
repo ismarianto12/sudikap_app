@@ -32,8 +32,8 @@ class _SliderdashoardState extends State<Sliderdashoard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 100,
-      width: MediaQuery.of(context).size.width * 0.9,
+      height: MediaQuery.of(context).size.width * 0.250,
+      width: MediaQuery.of(context).size.width * 0.97,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(80)),
       ),

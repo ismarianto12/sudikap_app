@@ -7,18 +7,19 @@ import 'package:sistem_kearsipan/components/Loadingpage.dart';
 import 'package:sistem_kearsipan/repository/arsipRepo.dart';
 import 'package:sistem_kearsipan/route/transitionPage.dart';
 import 'package:sistem_kearsipan/screen/Arsip/ArsipForm.dart';
+import 'package:sistem_kearsipan/screen/satuan/satuanForm.dart';
 import 'package:sistem_kearsipan/utils/reques.dart';
 import 'package:sistem_kearsipan/widget/Button.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-class dataArsip extends StatefulWidget {
-  const dataArsip({super.key});
+class Satuan extends StatefulWidget {
+  const Satuan({super.key});
 
   @override
-  State<dataArsip> createState() => _dataArsipState();
+  State<Satuan> createState() => _SatuanState();
 }
 
-class _dataArsipState extends State<dataArsip> {
+class _SatuanState extends State<Satuan> {
   final TextEditingController searchingdata = TextEditingController();
 
   List<dynamic> suratData = [];
@@ -84,7 +85,7 @@ class _dataArsipState extends State<dataArsip> {
 
   Future<void> fetchData() async {
     try {
-      var data = await arsipRepo.listdataArsip(page, searchingdata.text);
+      var data = await arsipRepo.listPengajuan(page, searchingdata.text);
       setState(() {
         suratData = data;
         loading = false;
@@ -194,10 +195,10 @@ class _dataArsipState extends State<dataArsip> {
           });
           fetchData();
         },
-        backgroundColor: Colors.green,
+        backgroundColor: Color.fromARGB(255, 9, 125, 233),
         child: ClipOval(
           child: Container(
-            color: Colors.green,
+            color: Color.fromARGB(255, 9, 125, 233),
             child: IconButton(
               icon: Icon(
                 Icons.refresh,
@@ -216,7 +217,7 @@ class _dataArsipState extends State<dataArsip> {
       appBar: AppBar(
         shadowColor: null,
         elevation: 0, // Menghilangkan bayangan di bawah appbar
-        backgroundColor: Colors.green,
+        backgroundColor: Color.fromARGB(255, 9, 125, 233),
         actions: <Widget>[
           Padding(
             padding: const EdgeInsets.only(right: 15),
@@ -224,7 +225,7 @@ class _dataArsipState extends State<dataArsip> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  transitionPage(ArsipForm(idarsip: 0, judul: "")),
+                  transitionPage(SatuanForm(id: 0)),
                 );
               },
               icon: Icon(
@@ -236,7 +237,7 @@ class _dataArsipState extends State<dataArsip> {
         ],
         // iconTheme: IconThemeData(color: Color.fromARGB(255, 255, 255, 255)),
         title: Text(
-          'Master data Arsip',
+          'Satuan Data',
           style: TextStyle(
             color: Colors.white,
           ),
@@ -290,12 +291,23 @@ class _dataArsipState extends State<dataArsip> {
               child: Padding(
                 padding: const EdgeInsets.all(18.0),
                 child: suratData.length == 0 && loading != true
-                    ? Container(
-                        child: Image.network(
-                          "https://img.freepik.com/premium-vector/file-found-illustration-with-confused-people-holding-big-magnifier-search-no-result_258153-336.jpg",
-                          height: MediaQuery.sizeOf(context).height * 0.40,
-                          width: MediaQuery.sizeOf(context).width,
-                        ),
+                    ? Column(
+                        children: [
+                          Container(
+                            child: Image.network(
+                              "https://img.freepik.com/premium-vector/file-found-illustration-with-confused-people-holding-big-magnifier-search-no-result_258153-336.jpg",
+                              height: MediaQuery.sizeOf(context).height * 0.40,
+                              width: MediaQuery.sizeOf(context).width,
+                            ),
+                          ),
+                          Text(
+                            'Data Satuan Arsip Masih Kosong',
+                            style: TextStyle(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       )
                     : loading
                         ? LoadingPage(
@@ -504,8 +516,8 @@ class _dataArsipState extends State<dataArsip> {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-                Colors.green,
-                Colors.green.withOpacity(
+                Color.fromARGB(255, 9, 125, 233),
+                Color.fromARGB(255, 12, 113, 221).withOpacity(
                     0), // Opacity set to 0 to make it transparent at the bottom
               ],
               stops: [0.3, 0.3], // Stop at 50% of the height

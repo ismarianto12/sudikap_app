@@ -2,10 +2,56 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sistem_kearsipan/widget/Button.dart';
+import 'package:http/http.dart' as http;
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 
-class DetailSurat extends StatelessWidget {
+class DetailSurat extends StatefulWidget {
   final dynamic suratData;
   const DetailSurat({Key? key, this.suratData}) : super(key: key);
+
+  @override
+  _DetailSuratState createState() => _DetailSuratState();
+}
+
+class _DetailSuratState extends State<DetailSurat> {
+  bool _isDownloading = false;
+  String _downloadStatus = '';
+
+  Future<void> _downloadFile(String url, String fileName) async {
+    print("Action download");
+    setState(() {
+      _isDownloading = true;
+      _downloadStatus = 'Downloading...';
+    });
+
+    try {
+      final response = await http.get(Uri.parse(url));
+
+      if (response.statusCode == 200) {
+        final bytes = response.bodyBytes;
+        final directory = await getApplicationDocumentsDirectory();
+        final file = File('${directory.path}/$fileName');
+        await file.writeAsBytes(bytes);
+
+        setState(() {
+          _isDownloading = false;
+          _downloadStatus = 'Download completed: ${file.path}';
+        });
+      } else {
+        setState(() {
+          _isDownloading = false;
+          _downloadStatus = 'Error: Failed to download file';
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _isDownloading = false;
+        _downloadStatus = 'Error: $e';
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +75,7 @@ class DetailSurat extends StatelessWidget {
                 ),
                 Flexible(
                   child: Text(
-                    "${suratData['asal_surat']}",
+                    "${widget.suratData['asal_surat']}",
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -85,7 +131,7 @@ class DetailSurat extends StatelessWidget {
                               child: Padding(
                                 padding: EdgeInsets.all(8.0),
                                 child: Text(
-                                  "${suratData['no_surat']}",
+                                  "${widget.suratData['no_surat']}",
                                   textAlign: TextAlign.start,
                                 ),
                               ),
@@ -110,7 +156,7 @@ class DetailSurat extends StatelessWidget {
                               child: Padding(
                                 padding: EdgeInsets.all(8.0),
                                 child: Text(
-                                  "${suratData['indeks']}",
+                                  "${widget.suratData['indeks']}",
                                   textAlign: TextAlign.start,
                                 ),
                               ),
@@ -135,7 +181,7 @@ class DetailSurat extends StatelessWidget {
                               child: Padding(
                                 padding: EdgeInsets.all(8.0),
                                 child: Text(
-                                  "${suratData['no_agenda']}",
+                                  "${widget.suratData['no_agenda']}",
                                   textAlign: TextAlign.start,
                                 ),
                               ),
@@ -161,7 +207,7 @@ class DetailSurat extends StatelessWidget {
                               child: Padding(
                                 padding: EdgeInsets.all(8.0),
                                 child: Text(
-                                  "${suratData['isi']}",
+                                  "${widget.suratData['isi']}",
                                   textAlign: TextAlign.start,
                                 ),
                               ),
@@ -186,7 +232,7 @@ class DetailSurat extends StatelessWidget {
                               child: Padding(
                                 padding: EdgeInsets.all(8.0),
                                 child: Text(
-                                  "${suratData['kode']}",
+                                  "${widget.suratData['kode']}",
                                   textAlign: TextAlign.start,
                                 ),
                               ),
@@ -211,7 +257,7 @@ class DetailSurat extends StatelessWidget {
                               child: Padding(
                                 padding: EdgeInsets.all(8.0),
                                 child: Text(
-                                  "${suratData['keterangan']}",
+                                  "${widget.suratData['keterangan']}",
                                   textAlign: TextAlign.start,
                                 ),
                               ),
@@ -220,7 +266,6 @@ class DetailSurat extends StatelessWidget {
                         ),
                       ],
                     ),
-              
                   ],
                 ),
               ),
@@ -229,9 +274,20 @@ class DetailSurat extends StatelessWidget {
               height: 50,
             ),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                _downloadFile(
+                  'http://arsip.gotrain.id/sppdprint/download?file=assets/file_surat/surat_keluar_2024-04-10.pdf',
+                  'surat_keluar_2024-04-10.pdf',
+                );
+              },
               child: Button(title: "Download File", color: Colors.orange),
             ),
+            if (_isDownloading) ...[
+              SizedBox(height: 20),
+              CircularProgressIndicator(),
+              SizedBox(height: 20),
+              Text(_downloadStatus),
+            ],
           ],
         ),
       ),

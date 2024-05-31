@@ -571,7 +571,7 @@ class _SuratKeluarFormState extends State<SuratKeluarForm> {
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Expanded(
                     child: ElevatedButton(

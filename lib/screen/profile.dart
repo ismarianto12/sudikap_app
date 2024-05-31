@@ -54,10 +54,10 @@ class _ProfileState extends State<Profile> {
     //   showLoading(false);
     // } else {
     // } catch (e) {
-  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-    content: Text('${status}'),
-    backgroundColor: Colors.red,
-  ));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text('${status}'),
+      backgroundColor: Colors.red,
+    ));
     // }
     // }
   }

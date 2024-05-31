@@ -40,7 +40,7 @@ class _GetCurrenDisposisiState extends State<GetCurrenDisposisi> {
         },
       );
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Java lang execption: ${e}'),
+        content: Text('${e}'),
         backgroundColor: Colors.red,
       ));
     }
@@ -60,88 +60,97 @@ class _GetCurrenDisposisiState extends State<GetCurrenDisposisi> {
       child: loading
           ? LoadingPage(color: Colors.white24, itemCount: 6)
           : data.length > 0
-              ? ListView.builder(
-                  itemCount: data.length,
-                  shrinkWrap: true,
-                  itemBuilder: (BuildContext context, int index) {
-                    print('${data[index]['sifat']} panjang data');
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => DisposisDetail(
-                              disposisidata: data[index],
-                            ),
-                          ),
-                        );
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                // boxShadow: [
-                                //   BoxShadow(
-                                //     color: Colors.grey.withOpacity(0.5),
-                                //     spreadRadius: 0,
-                                //     blurRadius: 10,
-                                //     offset: Offset(1, 0),
-                                //   ),
-                                // ],
-                                color: Color.fromARGB(255, 255, 255, 255),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(6)),
+              ? Column(
+                  children: [
+                    ListView.builder(
+                      itemCount: data.length,
+                      shrinkWrap: true,
+                      itemBuilder: (BuildContext context, int index) {
+                        print('${data[index]['sifat']} panjang data');
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DisposisDetail(
+                                  disposisidata: data[index],
+                                ),
                               ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                            );
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    // boxShadow: [
+                                    //   BoxShadow(
+                                    //     color: Colors.grey.withOpacity(0.5),
+                                    //     spreadRadius: 0,
+                                    //     blurRadius: 10,
+                                    //     offset: Offset(1, 0),
+                                    //   ),
+                                    // ],
+                                    color: Color.fromARGB(255, 255, 255, 255),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(6)),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              '${data[index]['sifat']}',
+                                              style: TextStyle(
+                                                color: const Color.fromARGB(
+                                                    255, 0, 0, 0),
+                                                fontSize: 16.0,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                            GestureDetector(
+                                              onTap: () {},
+                                              child: Icon(
+                                                Icons
+                                                    .arrow_forward_ios_outlined,
+                                                color: const Color.fromARGB(
+                                                    255, 0, 0, 0),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                         Text(
-                                          '${data[index]['sifat']}',
+                                          '${data[index]['asal_surat']}',
                                           style: TextStyle(
                                             color: const Color.fromARGB(
                                                 255, 0, 0, 0),
-                                            fontSize: 16.0,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                        GestureDetector(
-                                          onTap: () {},
-                                          child: Icon(
-                                            Icons.arrow_forward_ios_outlined,
-                                            color: const Color.fromARGB(
-                                                255, 0, 0, 0),
+                                            fontSize: 14.0,
                                           ),
                                         ),
                                       ],
                                     ),
-                                    Text(
-                                      '${data[index]['asal_surat']}',
-                                      style: TextStyle(
-                                        color:
-                                            const Color.fromARGB(255, 0, 0, 0),
-                                        fontSize: 14.0,
-                                      ),
-                                    ),
-                                  ],
+                                  ),
                                 ),
-                              ),
+                                Divider(),
+                              ],
                             ),
-                            Divider(),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
+                          ),
+                        );
+                      },
+                    ),
+                    SizedBox(
+                      height: 500,
+                    ),
+                  ],
                 )
               : Container(
                   child: Column(

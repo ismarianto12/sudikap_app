@@ -162,6 +162,25 @@ class arsipRepo {
       throw Exception('Failed to insert data');
     }
   }
+
+  static Future<dynamic> listPengajuan(int page, String searchingdata) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString("token");
+    String url =
+        '${Base_Url}listpengajuan/list?page=$page&search=${searchingdata}';
+    var response = await http.get(
+      Uri.parse(url),
+      headers: <String, String>{
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      print(json.decode(response.body)['data']);
+      return json.decode(response.body)['data'];
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
 }
 
 
