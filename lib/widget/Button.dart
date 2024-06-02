@@ -69,11 +69,7 @@ class _AnimatedContainerWithTapState extends State<AnimatedContainerWithTap> {
                   borderRadius: BorderRadius.zero)),
           child: Text(
             widget.title,
-            style: Theme.of(context).textTheme.headline6!.copyWith(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white,
-                ),
+            // style:  ,
           ),
           onPressed: null,
         ),
