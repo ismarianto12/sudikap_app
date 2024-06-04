@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:sistem_kearsipan/components/Comloading.dart';
 import 'package:sistem_kearsipan/components/SelectData.dart';
 import 'package:sistem_kearsipan/model/SelectModel.dart';
@@ -31,7 +32,7 @@ class _pengajuanFormState extends State<pengajuanForm> {
   void initState() {
     super.initState();
     print("selected ${_selectedBank}");
-    // _callJenisarsip();
+    _callJenisarsip();
   }
 
   void showLoading(loading) {
@@ -56,6 +57,7 @@ class _pengajuanFormState extends State<pengajuanForm> {
   Future<List<SelectModel>> _callJenisarsip() async {
     try {
       var response = await postData({'getype': 'master'}, 'master/jenisarsip');
+      print(response);
       List<dynamic> json = jsonDecode(response!)['data'];
       List<SelectModel> datas = json
           .map(
@@ -74,11 +76,11 @@ class _pengajuanFormState extends State<pengajuanForm> {
     } catch (e) {
       setState(() {
         _bankData = [
-          SelectModel(valueCom: '', label: ''),
-          SelectModel(label: 'Arsip Surat Keputusan Rektor', valueCom: '12'),
-          SelectModel(label: 'Arsip Surat Masuk Eksternal', valueCom: '1'),
-          SelectModel(label: 'Arsip Surat Masuk Internal', valueCom: '4'),
-          SelectModel(label: 'Arsip Surat Keluar', valueCom: '6'),
+          SelectModel(valueCom: '1', label: 'Failed Load data'),
+          // SelectModel(label: 'Arsip Surat Keputusan Rektor', valueCom: '12'),
+          // SelectModel(label: 'Arsip Surat Masuk Eksternal', valueCom: '1'),
+          // SelectModel(label: 'Arsip Surat Masuk Internal', valueCom: '4'),
+          // SelectModel(label: 'Arsip Surat Keluar', valueCom: '6'),
         ];
       });
       ScaffoldMessenger.of(context).showSnackBar(
@@ -139,6 +141,7 @@ class _pengajuanFormState extends State<pengajuanForm> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         shadowColor: null,
         elevation: 0, // Menghilangkan bayangan di bawah appbar
         actions: <Widget>[
@@ -166,6 +169,7 @@ class _pengajuanFormState extends State<pengajuanForm> {
         title: Text(
           widget.id != 0 ? 'Edit Pengajuan Arsips' : 'Tambah Pengajuan Arsip',
           style: TextStyle(
+            fontSize: 18,
             color: Colors.black,
           ),
         ),
@@ -191,6 +195,7 @@ class _pengajuanFormState extends State<pengajuanForm> {
                     padding:
                         const EdgeInsets.only(left: 20, right: 20, top: 40),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         InputApp(context, "Kode", kodesatuan),
                         SizedBox(
@@ -200,13 +205,19 @@ class _pengajuanFormState extends State<pengajuanForm> {
                         SizedBox(
                           height: 10,
                         ),
-                        InputApp(context, "Nama arsip", kodesatuan),
+                        InputApp(context, "Jumlah", kodesatuan),
                         SizedBox(
                           height: 10,
                         ),
-                        InputApp(context, "Nama arsip", kodesatuan),
+                        Text(
+                          "Satuan Arsip : ",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
+                        ),
                         SizedBox(
-                          height: 20,
+                          height: 10,
                         ),
                         WidgetSelect(
                           context,
@@ -217,7 +228,50 @@ class _pengajuanFormState extends State<pengajuanForm> {
                               _selectedBank = newSelectedBank;
                             });
                           },
-                        )
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Text(
+                          "Jenis Arsip : ",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        WidgetSelect(
+                          context,
+                          _bankData,
+                          _selectedBank,
+                          (String? newSelectedBank) {
+                            setState(() {
+                              _selectedBank = newSelectedBank;
+                            });
+                          },
+                        ),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            // bor
+                            border: Border.all(color: Colors.black),
+
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                            color: Colors.white,
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: TextField(
+                              maxLines: 6, //or null
+                              decoration: InputDecoration.collapsed(
+                                  hintText: "Catatan"),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),

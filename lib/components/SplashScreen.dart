@@ -37,14 +37,14 @@ class _SplashScreenState extends State<SplashScreen> {
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           // crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Center(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Text(
-                    "Sudikap APPS",
+                    "Sudikap (surat dinas dan kearsipan) APPS",
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: 28,

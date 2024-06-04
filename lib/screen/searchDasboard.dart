@@ -118,10 +118,13 @@ class CustomSearchDelegate extends SearchDelegate<String> {
             // Do nothing here, handle search logic in search results
           },
           decoration: InputDecoration(
-            hintText: 'Search...',
+            hintText: 'Fast Access...',
             border: InputBorder.none,
           ),
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 10,
+          ),
         ),
         backgroundColor: Colors.blue,
       ),
@@ -138,7 +141,6 @@ class CustomSearchDelegate extends SearchDelegate<String> {
         icon: Icon(Icons.clear),
         onPressed: () {
           query = '';
-          // Trigger rebuild by calling showResults with empty query
           showResults(context);
         },
       ),
@@ -160,7 +162,8 @@ class CustomSearchDelegate extends SearchDelegate<String> {
     final searchResults = query.isEmpty
         ? menu
         : menu
-            .where((item) => item.toLowerCase().contains(query.toLowerCase()))
+            .where(
+                (item) => item.text.toLowerCase().contains(query.toLowerCase()))
             .toList();
 
     return ListView.builder(
@@ -178,13 +181,31 @@ class CustomSearchDelegate extends SearchDelegate<String> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(children: [
-        Center(child: Text("Search Fast Menu")),
-        Image.network(
-            "https://static.vecteezy.com/system/resources/previews/005/163/930/non_2x/incomplete-data-concept-illustration-flat-design-eps10-modern-graphic-element-for-landing-page-empty-state-ui-infographic-icon-vector.jpg"),
-      ]),
+    return Expanded(
+      child: ListView.builder(
+        itemCount: menu.length,
+        itemBuilder: (BuildContext context, int index) {
+          final item = menu[index];
+          return ListTile(
+            leading: Icon(
+              item.icon,
+              color: item.color,
+            ),
+            title: Text(item.text),
+            onTap: () {
+              Navigator.pushNamed(context, item.route);
+            },
+          );
+        },
+      ),
     );
+
+    // children: [
+    //   Center(child: Text("Search Fast Menu")),
+    //   Image.network(
+    //       "https://static.vecteezy.com/system/resources/previews/005/163/930/non_2x/incomplete-data-concept-illustration-flat-design-eps10-modern-graphic-element-for-landing-page-empty-state-ui-infographic-icon-vector.jpg"),
+    // ]),
+    //);
     // No suggestions in this example
   }
 }

@@ -4,7 +4,7 @@ import 'package:sistem_kearsipan/model/SelectModel.dart';
 Widget WidgetSelect(BuildContext context, List<SelectModel> listdata,
     String? selected, Function(String?)? setValue) {
   return Container(
-    margin: EdgeInsets.only(left: 0, top: 10, right: 0),
+    height: 46,
     child: FormField<String>(
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -15,6 +15,7 @@ Widget WidgetSelect(BuildContext context, List<SelectModel> listdata,
       builder: (FormFieldState<String> state) {
         return InputDecorator(
           decoration: InputDecoration(
+            isDense: true,
             contentPadding: EdgeInsets.fromLTRB(12, 10, 20, 20),
             errorText: state.hasError ? state.errorText : null,
             errorStyle: TextStyle(color: Colors.redAccent, fontSize: 16.0),

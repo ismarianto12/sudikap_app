@@ -93,7 +93,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
       floatingActionButton: _index == 0
           ? FloatingActionButton(
               shape: const CircleBorder(),
-              onPressed: () {},
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Ini adalah pesan toast'),
+                    duration: Duration(seconds: 2), // durasi pesan toast
+                  ),
+                );
+              },
               backgroundColor: Colors.green,
               child: ClipOval(
                 child: Container(
@@ -353,58 +360,72 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       SizedBox(
                         height: 40,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          // GestureDetector(
-                          //   onTap: () {
-                          //     _openDrawer();
-                          //   },
-                          //   child: Icon(
-                          //     Icons.menu,
-                          //     size: 34,
-                          //     color: Color.fromARGB(255, 255, 255, 255),
-                          //   ),
-                          // ),
-                          SizedBox(
-                            width: 20,
-                          ),
-                          Text(
-                            "SUDIKAP APPS",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          CircleAvatar(
-                            backgroundColor: Color.fromARGB(215, 17, 73, 119),
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) {
-                                      return Notifikasi();
-                                    },
+                      Padding(
+                        padding: EdgeInsets.only(
+                            left: 20.0, right: 20.0, bottom: 20.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            // GestureDetector(
+                            //   onTap: () {
+                            //     _openDrawer();
+                            //   },
+                            //   child: Icon(
+                            //     Icons.menu,
+                            //     size: 34,
+                            //     color: Color.fromARGB(255, 255, 255, 255),
+                            //   ),
+                            // ),
+
+                            Row(
+                              children: [
+                                Text(
+                                  "Sudikap APPS",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
                                   ),
-                                );
-                              },
+                                ),
+                                Text(
+                                  "(surat dinas dan kearsipan)",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                    // fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            CircleAvatar(
+                              backgroundColor: Color.fromARGB(215, 17, 73, 119),
                               child: GestureDetector(
                                 onTap: () {
-                                  logout(context);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) {
+                                        return Notifikasi();
+                                      },
+                                    ),
+                                  );
                                 },
-                                child: Icon(
-                                  Icons.logout,
-                                  color: Color.fromARGB(255, 255, 255, 255),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    logout(context);
+                                  },
+                                  child: Icon(
+                                    Icons.logout,
+                                    color: Color.fromARGB(255, 255, 255, 255),
+                                  ),
                                 ),
                               ),
-                            ),
-                          )
-                        ],
+                            )
+                          ],
+                        ),
                       ),
                       SizedBox(
                         height: 10,

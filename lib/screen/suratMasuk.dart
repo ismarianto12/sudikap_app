@@ -180,7 +180,7 @@ class _suratMasukState extends State<suratMasuk> {
           children: [
             // isPanelOpen ? Container() : Text('List Surat Masuk'),
             Container(
-                width: MediaQuery.sizeOf(context).width * 0.68,
+                width: MediaQuery.sizeOf(context).width * 0.66,
                 child: SearchingBar(context, searchingcontroller)),
             Padding(
               padding: const EdgeInsets.only(left: 15),
@@ -249,7 +249,7 @@ class _suratMasukState extends State<suratMasuk> {
           });
         },
         backdropEnabled: false,
-        maxHeight: MediaQuery.sizeOf(context).height * 0.80,
+        maxHeight: MediaQuery.sizeOf(context).height * 0.88,
         minHeight: MediaQuery.sizeOf(context).height * 0.55,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(30),

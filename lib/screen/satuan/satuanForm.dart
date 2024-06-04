@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sistem_kearsipan/components/Comloading.dart';
+import 'package:sistem_kearsipan/components/SelectData.dart';
+import 'package:sistem_kearsipan/model/SelectModel.dart';
 import 'package:sistem_kearsipan/utils/reques.dart';
 import 'package:sistem_kearsipan/widget/Button.dart';
 
@@ -19,7 +21,18 @@ class _SatuanFormState extends State<SatuanForm> {
   TextEditingController klasifikasi = TextEditingController();
   bool loading = false;
 
+  String _selectedBank = '';
+  // List<SelectModel> _bankData = [];
   final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  List<SelectModel> _bankData = [
+    SelectModel(valueCom: "Kosong", label: "Kosong"),
+  ];
 
   void showLoading(loading) {
     loading
@@ -141,11 +154,16 @@ class _SatuanFormState extends State<SatuanForm> {
                           keterangan,
                         ),
                         SizedBox(height: 25),
-                        InputApp(
+                        WidgetSelect(
                           context,
-                          'Klasifikasi Satuan',
-                          klasifikasi,
-                        ),
+                          _bankData,
+                          _selectedBank,
+                          (String? newSelectedBank) {
+                            setState(() {
+                              _selectedBank = newSelectedBank!;
+                            });
+                          },
+                        )
                       ],
                     ),
                   ),

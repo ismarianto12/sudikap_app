@@ -9,7 +9,7 @@ import 'package:sistem_kearsipan/repository/suratRepo.dart';
 import 'package:sistem_kearsipan/screen/Disposisi/DisposisiDetail.dart';
 
 class GetCurrenDisposisi extends StatefulWidget {
-  const GetCurrenDisposisi({super.key});
+  GetCurrenDisposisi({super.key});
 
   @override
   State<GetCurrenDisposisi> createState() => _GetCurrenDisposisiState();
