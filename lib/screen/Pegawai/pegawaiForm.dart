@@ -53,6 +53,7 @@ class _pegawaiFormState extends State<pegawaiForm> {
     return DefaultTabController(
       length: 4,
       child: Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
           iconTheme: IconThemeData(
               color: Colors.black), // Mengatur warna tombol back menjadi hitam
@@ -75,6 +76,7 @@ class _pegawaiFormState extends State<pegawaiForm> {
               Tab(text: 'Pendidikan'),
               Tab(text: 'Jabatan'),
               Tab(text: 'Pelatihan'),
+              Tab(text: 'Lainya'),
             ],
           ),
         ),

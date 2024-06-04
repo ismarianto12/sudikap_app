@@ -7,6 +7,7 @@ import 'package:sistem_kearsipan/components/Loadingpage.dart';
 import 'package:sistem_kearsipan/repository/arsipRepo.dart';
 import 'package:sistem_kearsipan/route/transitionPage.dart';
 import 'package:sistem_kearsipan/screen/Arsip/ArsipForm.dart';
+import 'package:sistem_kearsipan/screen/pengajuan/pengajuanForm.dart';
 import 'package:sistem_kearsipan/utils/reques.dart';
 import 'package:sistem_kearsipan/widget/Button.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -224,7 +225,9 @@ class _PengajuanState extends State<Pengajuan> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  transitionPage(ArsipForm(idarsip: 0, judul: "")),
+                  transitionPage(pengajuanForm(
+                    id: 0,
+                  )),
                 );
               },
               icon: Icon(

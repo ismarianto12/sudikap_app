@@ -34,6 +34,9 @@ Future<dynamic> postData(var jsonRequest, String path) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   String? token = prefs.getString("token");
   Uri endPoint = Uri.http(_base, path);
+  print("this");
+  print(endPoint);
+
   final http.Response response = await http.post(
     endPoint,
     headers: <String, String>{

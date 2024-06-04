@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:pager/pager.dart';
 import 'package:sistem_kearsipan/components/Loadingpage.dart';
 import 'package:sistem_kearsipan/repository/suratRepo.dart';
 import 'package:sistem_kearsipan/screen/suratKeluar/DetailSurat.dart';
@@ -25,6 +28,9 @@ class _suratKeluarState extends State<suratKeluar> {
   int totaldata = 0;
   bool loading = true;
   String todata = '';
+
+  int totalpeg = 1;
+  int _currentPage = 1;
 
   @override
   void initState() {
@@ -53,13 +59,17 @@ class _suratKeluarState extends State<suratKeluar> {
 
   Future<void> fetchData() async {
     try {
-      var data =
-          await SuratRepo.getDataSuratKeluar(page, searchcontroller.text);
+      print("_currentPage");
+      print(_currentPage);
+      var data = await SuratRepo.getDataSuratKeluar(
+          _currentPage, searchcontroller.text);
       // print(data[0]['data']);
+      // jsonDecode(data)['current_page'];
+      print("${jsonDecode(data)} asd");
       setState(() {
-        suratData = data;
-        // totaldata = data['total'];
-        // todata = data['to'];
+        suratData = jsonDecode(data)['data'];
+        totalpeg = jsonDecode(data)['last_page'];
+        _currentPage = jsonDecode(data)['current_page'];
         loading = false;
       });
     } catch (e) {
@@ -165,6 +175,17 @@ class _suratKeluarState extends State<suratKeluar> {
                       child: SearchingBar(context)),
                 ],
               ),
+            ),
+            Pager(
+              currentPage: _currentPage,
+              totalPages: totalpeg,
+              onPageChanged: (page) {
+                setState(() {
+                  _currentPage = page;
+                  loading = true;
+                });
+                fetchData();
+              },
             ),
             Expanded(
               child: Padding(
@@ -316,17 +337,17 @@ class _suratKeluarState extends State<suratKeluar> {
   }
 
   Future<void> _scrollistener() async {
-    if (scrollController.position.pixels ==
-        scrollController.position.maxScrollExtent) {
-      setState(() {
-        isLoadingMore = true;
-      });
-      page = page + 1;
-      await fetchData();
-      print("Scrool call");
-    } else {
-      print("tidak ");
-    }
+    // if (scrollController.position.pixels ==
+    //     scrollController.position.maxScrollExtent) {
+    //   setState(() {
+    //     isLoadingMore = true;
+    //   });
+    //   page = page + 1;
+    //   await fetchData();
+    //   print("Scrool call");
+    // } else {
+    //   print("tidak ");
+    // }
   }
 
   Widget SearchingBar(BuildContext context) {

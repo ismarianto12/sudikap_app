@@ -97,9 +97,10 @@ class loginRepo {
     String? token = prefs.getString("token");
     try {
       var response = await http.post(Uri.parse("${Base_Url}updatepassword"),
-          headers: <String, String>{'Authorization': '${token}'},
+          headers: <String, String>{'Authorization': 'Bearer ${token}'},
           body: {"username": username, "password": password});
       var jsonResponse = json.decode(response.body);
+      print(response.statusCode);
       if (response.statusCode == 200) {
         return jsonResponse;
       } else {

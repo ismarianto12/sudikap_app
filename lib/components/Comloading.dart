@@ -8,22 +8,27 @@ class Comloading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          CircularProgressIndicator(
-            color: Color.fromARGB(255, 9, 92, 128),
+    return Container(
+      color: const Color.fromARGB(255, 140, 139, 139),
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Container(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(
+                color: Color.fromARGB(255, 247, 247, 247),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Text(
+                "${title} ...",
+                style: TextStyle(fontSize: 18.0, color: Colors.white),
+              ),
+            ],
           ),
-          SizedBox(
-            width: 20,
-          ),
-          Text(
-            title,
-            style: TextStyle(fontSize: 18.0),
-          )
-        ],
+        ),
       ),
     );
   }

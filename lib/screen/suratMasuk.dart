@@ -165,6 +165,7 @@ class _suratMasukState extends State<suratMasuk> {
       appBar: AppBar(
         toolbarHeight: MediaQuery.sizeOf(context).height * 0.15,
         // elevation: 0,
+        scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
         iconTheme: IconThemeData(color: const Color.fromARGB(255, 0, 0, 0)),
         actionsIconTheme: IconThemeData(color: Colors.black),
@@ -366,8 +367,11 @@ class _suratMasukState extends State<suratMasuk> {
                                                                     'y'
                                                                 ? MaterialStateProperty
                                                                     .all<Color>(
-                                                                        Colors
-                                                                            .blue)
+                                                                        Color.fromARGB(
+                                                                            255,
+                                                                            243,
+                                                                            170,
+                                                                            33))
                                                                 : MaterialStateProperty
                                                                     .all<Color>(
                                                                         Colors
@@ -379,6 +383,7 @@ class _suratMasukState extends State<suratMasuk> {
                                                           child: Text(
                                                             "${suratData[index]['disposisi'] == 'y' ? "Disposisi" : "Tidak"}",
                                                             style: TextStyle(
+                                                                fontSize: 10,
                                                                 color: Colors
                                                                     .white),
                                                           ),

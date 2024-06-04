@@ -44,7 +44,7 @@ class _LainnyaState extends State<Lainnya> with SingleTickerProviderStateMixin {
                 Text(
                   "C. Lainya",
                   style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                        fontWeight: FontWeight.w200,
+                        fontWeight: FontWeight.bold,
                       ),
                 ),
                 SizedBox(

@@ -262,28 +262,13 @@ class _sppdDataState extends State<sppdData> {
               //   ],
               // ),
 
-              Padding(
-                padding: const EdgeInsets.only(left: 40, top: 25),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Icon(
-                      Icons.list,
-                      color: Colors.white,
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      "Surat Perintah Perjalanan Dinas",
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
-              )
+              // Padding(
+              //   padding: const EdgeInsets.only(left: 40, top: 25),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.start,
+              //     children: [],
+              //   ),
+              // )
             ],
           ),
         ),

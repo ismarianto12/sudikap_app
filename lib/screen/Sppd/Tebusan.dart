@@ -36,7 +36,7 @@ class _TebusanState extends State<Tebusan> with SingleTickerProviderStateMixin {
                 Text(
                   "B.Tebusan Surat",
                   style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                        fontWeight: FontWeight.w200,
+                        fontWeight: FontWeight.bold,
                       ),
                 ),
                 SizedBox(

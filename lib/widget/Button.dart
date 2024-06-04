@@ -61,7 +61,7 @@ class _AnimatedContainerWithTapState extends State<AnimatedContainerWithTap> {
           ),
         ),
         width: MediaQuery.sizeOf(context).width * 0.9,
-        height: MediaQuery.sizeOf(context).height * 0.06,
+        height: MediaQuery.sizeOf(context).height * 0.05,
         child: TextButton(
           style: TextButton.styleFrom(
               // backgroundColor: Color.fromARGB(255, 0, 194, 253),
@@ -70,6 +70,7 @@ class _AnimatedContainerWithTapState extends State<AnimatedContainerWithTap> {
           child: Text(
             widget.title,
             // style:  ,
+            style: TextStyle(fontSize: 16.00, color: Colors.white),
           ),
           onPressed: null,
         ),

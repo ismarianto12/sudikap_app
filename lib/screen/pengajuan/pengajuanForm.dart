@@ -1,25 +1,38 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sistem_kearsipan/components/Comloading.dart';
+import 'package:sistem_kearsipan/components/SelectData.dart';
+import 'package:sistem_kearsipan/model/SelectModel.dart';
+import 'package:sistem_kearsipan/screen/dashboard.dart';
 import 'package:sistem_kearsipan/utils/reques.dart';
 import 'package:sistem_kearsipan/widget/Button.dart';
 
-class SatuanForm extends StatefulWidget {
+class pengajuanForm extends StatefulWidget {
   final int id;
-  SatuanForm({Key? key, required this.id}) : super(key: key);
+  pengajuanForm({Key? key, required this.id}) : super(key: key);
 
   @override
-  State<SatuanForm> createState() => _SatuanFormState();
+  State<pengajuanForm> createState() => _pengajuanFormState();
 }
 
-class _SatuanFormState extends State<SatuanForm> {
+class _pengajuanFormState extends State<pengajuanForm> {
   TextEditingController namaSatuan = TextEditingController();
   TextEditingController kodesatuan = TextEditingController();
   TextEditingController keterangan = TextEditingController();
   TextEditingController klasifikasi = TextEditingController();
   bool loading = false;
+  String? _selectedBank = '';
+  List<SelectModel> _bankData = [];
 
   final _formKey = GlobalKey<FormState>();
+  @override
+  void initState() {
+    super.initState();
+    print("selected ${_selectedBank}");
+    // _callJenisarsip();
+  }
 
   void showLoading(loading) {
     loading
@@ -33,12 +46,64 @@ class _SatuanFormState extends State<SatuanForm> {
         : null;
   }
 
+  // List<SelectModel> _bankData = [
+  //   SelectModel(valueCom: '', label: ''),
+  //   SelectModel(label: 'Arsip Surat Keputusan Rektor', valueCom: '12'),
+  //   SelectModel(label: 'Arsip Surat Masuk Eksternal', valueCom: '1'),
+  //   SelectModel(label: 'Arsip Surat Masuk Internal	', valueCom: '4'),
+  //   SelectModel(label: 'Arsip Surat Keluar', valueCom: '6'),
+  // ];
+  Future<List<SelectModel>> _callJenisarsip() async {
+    try {
+      var response = await postData({'getype': 'master'}, 'master/jenisarsip');
+      List<dynamic> json = jsonDecode(response!)['data'];
+      List<SelectModel> datas = json
+          .map(
+            (dynamic item) => SelectModel(
+              valueCom: item['id_jenis'],
+              label: item['jenis_arsip'],
+            ),
+          )
+          .toList();
+      print("datas: ${datas}");
+      setState(() {
+        _bankData = datas;
+      });
+
+      return datas;
+    } catch (e) {
+      setState(() {
+        _bankData = [
+          SelectModel(valueCom: '', label: ''),
+          SelectModel(label: 'Arsip Surat Keputusan Rektor', valueCom: '12'),
+          SelectModel(label: 'Arsip Surat Masuk Eksternal', valueCom: '1'),
+          SelectModel(label: 'Arsip Surat Masuk Internal', valueCom: '4'),
+          SelectModel(label: 'Arsip Surat Keluar', valueCom: '6'),
+        ];
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.amberAccent,
+          content: Text("$e"),
+        ),
+      );
+      return _bankData;
+    }
+  }
+
   Future<void> _submitData() async {
     showLoading(true);
     setState(() {
       loading = true;
     });
     try {
+      print({
+        'namasatuan': namaSatuan.text,
+        'keterangan': keterangan.text,
+        'kodesatuan': kodesatuan.text,
+        'klasifikasi': klasifikasi.text,
+        'id_jenisarsip': _selectedBank,
+      });
       var response = await postData({
         'namasatuan': namaSatuan.text,
         'keterangan': keterangan.text,
@@ -83,10 +148,14 @@ class _SatuanFormState extends State<SatuanForm> {
               style: IconButton.styleFrom(
                 backgroundColor: Color.fromARGB(255, 222, 179, 8),
               ),
-              focusColor: Colors.red,
-              splashColor: Colors.red,
-              color: Colors.red,
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DashboardScreen(),
+                  ),
+                );
+              },
               icon: Icon(
                 Icons.home,
                 color: Color.fromARGB(255, 255, 255, 255),
@@ -95,7 +164,7 @@ class _SatuanFormState extends State<SatuanForm> {
           )
         ],
         title: Text(
-          widget.id != 0 ? 'Edit Satuan Arsip' : 'Tambah Satuan Arsip',
+          widget.id != 0 ? 'Edit Pengajuan Arsips' : 'Tambah Pengajuan Arsip',
           style: TextStyle(
             color: Colors.black,
           ),
@@ -123,35 +192,38 @@ class _SatuanFormState extends State<SatuanForm> {
                         const EdgeInsets.only(left: 20, right: 20, top: 40),
                     child: Column(
                       children: [
-                        InputApp(
-                          context,
-                          'Nama Satuan',
-                          namaSatuan,
+                        InputApp(context, "Kode", kodesatuan),
+                        SizedBox(
+                          height: 10,
                         ),
-                        SizedBox(height: 25),
-                        InputApp(
-                          context,
-                          'Kode Satuan',
-                          kodesatuan,
+                        InputApp(context, "Nama arsip", kodesatuan),
+                        SizedBox(
+                          height: 10,
                         ),
-                        SizedBox(height: 25),
-                        InputApp(
-                          context,
-                          'Keterangan Satuan',
-                          keterangan,
+                        InputApp(context, "Nama arsip", kodesatuan),
+                        SizedBox(
+                          height: 10,
                         ),
-                        SizedBox(height: 25),
-                        InputApp(
-                          context,
-                          'Klasifikasi Satuan',
-                          klasifikasi,
+                        InputApp(context, "Nama arsip", kodesatuan),
+                        SizedBox(
+                          height: 20,
                         ),
+                        WidgetSelect(
+                          context,
+                          _bankData,
+                          _selectedBank,
+                          (String? newSelectedBank) {
+                            setState(() {
+                              _selectedBank = newSelectedBank;
+                            });
+                          },
+                        )
                       ],
                     ),
                   ),
                 ),
               ),
-              SizedBox(height: 25),
+              SizedBox(height: 10),
               GestureDetector(
                 onTap: () {
                   if (_formKey.currentState!.validate()) {

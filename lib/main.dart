@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sistem_kearsipan/bloc/bloc/authenticate_bloc.dart';
 import 'package:sistem_kearsipan/bloc/login_bloc.dart';
+import 'package:sistem_kearsipan/components/Comloading.dart';
 import 'package:sistem_kearsipan/components/splashScreen.dart';
 import 'package:sistem_kearsipan/repository/loginRepo.dart';
 import 'package:sistem_kearsipan/route/route.dart';
@@ -120,14 +121,28 @@ class _MyHomePageState extends State<MyHomePage> {
   bool closeinfo = false;
   TextEditingController username = TextEditingController();
   TextEditingController password = TextEditingController();
+  void showLoading(loading) {
+    loading
+        ? showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return Dialog(child: Comloading(title: "Pleae Wait"));
+            },
+          )
+        : null;
+  }
 
   @override
   void _submitForm() async {
+    showLoading(true);
     var response = await loginRepo.loginApi(username.text, password.text);
     print("params ${response}");
 
     try {
       if (response['success']) {
+        showLoading(false);
+
         Route route = MaterialPageRoute(
           builder: (context) => DashboardScreen(),
         );
@@ -150,8 +165,10 @@ class _MyHomePageState extends State<MyHomePage> {
             );
           },
         );
+        showLoading(false);
       }
     } catch (e) {
+      showLoading(false);
       showDialog(
         context: context,
         builder: (BuildContext context) {

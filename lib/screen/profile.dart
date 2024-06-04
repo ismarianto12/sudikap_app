@@ -47,19 +47,27 @@ class _ProfileState extends State<Profile> {
       loading = true;
     });
     // showLoading(loading);
-    // try {
-    var status = await loginRepo.updatePassword(username.text, password.text);
-    // if (status) {
-    //   print("${status}");
-    //   showLoading(false);
-    // } else {
-    // } catch (e) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text('${status}'),
-      backgroundColor: Colors.red,
-    ));
-    // }
-    // }
+    try {
+      var status = await loginRepo.updatePassword(username.text, password.text);
+      print(status);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Berhasil update password'),
+        backgroundColor: Colors.green,
+      ));
+      // } else {
+      setState(() {
+        loading = false;
+      });
+    } catch (e) {
+      setState(() {
+        loading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('${e}'),
+        backgroundColor: Colors.red,
+      ));
+      // }
+    }
   }
 
   void initState() {

@@ -49,7 +49,7 @@ class _SppdForm_createState extends State<SppdForm_create> {
                         "A. Data Surat",
                         style:
                             Theme.of(context).textTheme.headlineSmall!.copyWith(
-                                  fontWeight: FontWeight.w200,
+                                  fontWeight: FontWeight.bold,
                                 ),
                       ),
                       Container(
@@ -194,7 +194,7 @@ class _SppdForm_createState extends State<SppdForm_create> {
                               decoration: InputDecoration(
                                 contentPadding: EdgeInsets.symmetric(
                                   vertical: 10,
-                                  horizontal: 10,
+                                horizontal: 10,
                                 ),
                                 labelText: 'Lama Perjalanan',
                                 // prefixIcon: Icon(Icons.password),
