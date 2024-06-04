@@ -258,7 +258,8 @@ class _pengajuanFormState extends State<pengajuanForm> {
                         Container(
                           decoration: BoxDecoration(
                             // bor
-                            border: Border.all(color: Colors.black),
+                            border:
+                                Border.all(width: 0.50, color: Colors.black),
 
                             borderRadius: BorderRadius.all(Radius.circular(10)),
                             color: Colors.white,
