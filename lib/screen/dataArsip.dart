@@ -302,7 +302,7 @@ class _dataArsipState extends State<dataArsip> {
                             color: const Color.fromARGB(255, 186, 186, 186),
                             itemCount: 13)
                         : ListView.builder(
-                            controller: scrollController,
+                            controller: scrollController!,
                             itemCount: isLoadingMore
                                 ? suratData.length + 1
                                 : suratData.length,
